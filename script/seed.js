@@ -31,8 +31,7 @@ const totalSeeds = 100
 const dummyUsers = [
   //admin dummy user
   {
-    firstName,
-    lastName,
+    name: firstName + lastName,
     email,
     password,
     status: 'admin',
@@ -43,19 +42,25 @@ const dummyUsers = [
   }
 
   //Edge Cases TK
+  // guest user with cookie/jwt
+  // user w/ email & pwd
+  // user w/ google
+  // user w/ facebook
 ]
 
 //Product
-const productStatus = ['Out of stock', 'Currently available'][
+/*const productStatus = ['Out of stock', 'Currently available'][
   Math.round(Math.random())
-]
+]*/
+const productStatus = faker.random.boolean()
 const battleshipName = 'U.S.S.' + firstName + lastName
 const stock = Math.round(Math.Random() * 100)
 const description = faker.lorem.text()
-const price = '$' + Math.ceil(Math.random() * 100) + 'M'
+const price = faker.random.number() / 100 // integer with two decimal places
 const photo =
   'https://en.wikipedia.org/wiki/List_of_battleships_of_the_United_States_Navy#/media/File:USS_Texas_(1895-1911).jpg'
 const tags = [
+  // todo : no repetition
   [
     'WWI',
     'WWII',
@@ -116,6 +121,7 @@ const tags = [
 ]
 
 const dummyProducts = [
+  // todo: price and status
   //admin dummy user
   {
     status: 'Out of stock',
@@ -141,6 +147,9 @@ const dummyProducts = [
   }
 
   //Edge Cases TK
+  // no photo
+  // no stock given
+  // no price given
 ]
 
 //order
@@ -150,13 +159,14 @@ const orderItems = {
 }
 const orderStatus = [
   'in-cart',
-  'cancelled',
   'payment-in-progress',
+  'cancelled',
   'paid',
   'shipped',
   'delivered',
-  'in-dispute'
-][Math.round(Math.random() * 5)]
+  'in-dispute',
+  'completed'
+][Math.round(Math.random() * 8)]
 
 // const cancelTime = faker.date.future()
 // const paymentInProgressTime = faker.date.future()
@@ -169,7 +179,7 @@ const dummyOrders = [
   //cancelled order
   {
     orderItems,
-    status: 'Cancelled'
+    status: 'cancelled'
   },
 
   //inCart

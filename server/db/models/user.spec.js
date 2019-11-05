@@ -1,7 +1,7 @@
 /* global describe beforeEach it */
 
 const {expect} = require('chai')
-const db = require('../index')
+const db = require('../index.js')
 const User = db.model('user')
 
 describe('User model', () => {
@@ -29,4 +29,14 @@ describe('User model', () => {
       })
     }) // end describe('correctPassword')
   }) // end describe('instanceMethods')
+
+  describe('Making a new user', () => {
+    it('allows only an email', async () => {
+      const dummyCody = {id: 1, email: 'cody@puppybook.com'}
+      const dbCody = User.create({
+        email: 'cody@puppybook.com'
+      })
+      expect(User.findByPk(1).id).to.be.equal(dummyCody.id)
+    })
+  })
 }) // end describe('User model')

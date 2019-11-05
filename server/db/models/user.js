@@ -12,7 +12,7 @@ const User = db.define('user', {
     }
   },
   status: {
-    type: Sequelize.ENUM(['Admin', 'Auth', 'Guest'])
+    type: Sequelize.ENUM(['admin', 'user', 'guest'])
   },
   name: {
     type: Sequelize.STRING

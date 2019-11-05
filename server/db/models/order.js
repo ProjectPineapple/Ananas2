@@ -58,4 +58,6 @@ const Order = db.define('order', {
   // include Product as lineItems ({ price: (at the time!), productId, qty }) , fk: userId
 })
 
+// todo: hooks for times/status
+
 module.exports = Order
