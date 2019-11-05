@@ -2,7 +2,7 @@ const faker = require('faker')
 const {db, User, Order, Product, Review} = require('./server/db')
 const {green, red} = require('chalk')
 
-///User
+//Fake user data variables
 const firstName = faker.name.firstName()
 const lastName = faker.name.lastName()
 const email = faker.internet.email()
@@ -11,14 +11,14 @@ const userStatus = ['admin', 'user'][Math.round(Math.random())]
 const googleId = faker.random.uuid()
 const facebookId = faker.random.uuid()
 const billingAddress = {
-  countryCode: address.countryCode(),
+  countryCode: faker.address.countryCode(),
   streetAddress: faker.address.streetAddress(),
   city: faker.address.city(),
   state: faker.address.stateAbbr(),
   zipCode: faker.address.zipCode()
 }
 const shippingAddress = {
-  countryCode: address.countryCode(),
+  countryCode: faker.address.countryCode(),
   streetAddress: faker.address.streetAddress(),
   city: faker.address.city(),
   state: faker.address.stateAbbr(),
@@ -209,23 +209,43 @@ const dummyOrders = [
 ]
 
 //reviews
+const reviewDescription = faker.lorem.text()
+const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
+
+const dummyReviews = [
+  {
+    reviewDescription,
+    rating: 1
+  },
+  {
+    reviewDescription,
+    rating: 5
+  }
+]
 
 const bigSeed = async () => {
   try {
-    await database.sync({force: true})
-    const dummyUsers = await Promise.all(
+    await db.sync({force: true})
+    const seededUsers = await Promise.all(
       dummyUsers.map(user => User.create(user))
     )
-    const dummyProducts = await Promise.all(
+    const seededProducts = await Promise.all(
       dummyProducts.map(product => Product.create(product))
     )
-    const dummyOrders = await Promise.all(
+    const seededOrders = await Promise.all(
       dummyOrders.map(order => Order.create(order))
     )
+    const seededReviews = await Promise.all(
+      dummyReviews.map(review => Review.create(review))
+    )
 
-    //tk other models
+    //Associations
+    //Reviews = belong to Product
+    //Reviews = belong To User
+    //Product = belong to Order
+    //Order has many products
 
-    //fake users
+    //fake products
     for (let i = 0; i < totalSeeds; i++) {
       const user = {
         firstName,
@@ -238,11 +258,7 @@ const bigSeed = async () => {
         billingAddress,
         shippingAddress
       }
-      await User.create(user)
-    }
 
-    //fake products
-    for (let i = 0; i < totalSeeds; i++) {
       const product = {
         status: productStatus,
         battleshipName,
@@ -252,24 +268,30 @@ const bigSeed = async () => {
         photo,
         tags
       }
-      await Product.create(product)
-    }
 
-    //fake orders
-    for (let i = 0; i < totalSeeds; i++) {
       const order = {
         orderItems,
         status: orderStatus
       }
-      await Order.create(product)
+
+      const review = {
+        reviewDescription,
+        rating
+      }
+
+      await User.create(user)
+      await Product.create(product)
+      await Order.create(order)
+      await Review.create(review)
     }
 
     let totalUsers = totalSeeds + dummyUsers.length
     let totalProducts = totalSeeds + dummyProducts.length
     let totalOrders = totalSeeds + dummyOrders.length
+    let totalReviews = totalSeeds + dummyReviews.length
 
     console.log(
-      `Database seeded with ${totalUsers} users, ${totalProducts} products and ${totalOrders} orders`
+      `Database seeded with ${totalUsers} users, ${totalProducts} products, ${totalOrders} orders and ${totalReviews} reviews. Wahoo!`
     )
   } catch (err) {
     console.log(red(err))
