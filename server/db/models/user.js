@@ -17,9 +17,14 @@ const User = db.define('user', {
   name: {
     type: Sequelize.STRING
   },
+  defaultBillingAddress: {
+    type: Sequelize.STRING
+  },
+  defaultShippingAddress: {
+    type: Sequelize.STRING
+  },
   addresses: {
-    type: Sequelize.ARRAY(Sequelize.STRING), // how to deal with sorting?
-    unique: true
+    type: Sequelize.ARRAY(Sequelize.STRING) // how to deal with sorting?
   },
   password: {
     type: Sequelize.STRING,

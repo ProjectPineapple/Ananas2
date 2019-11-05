@@ -28,7 +28,7 @@ const Product = db.define('product', {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.FLOAT(10, 2),
     validate: {
       min: 0
     },
