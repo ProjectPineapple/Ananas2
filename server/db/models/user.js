@@ -15,7 +15,8 @@ const User = db.define('user', {
     type: Sequelize.STRING
   },
   addresses: {
-    type: Sequelize.ARRAY(Sequelize.STRING) // how to indicate billing/shipping/both? --> front-end issue...select box?
+    type: Sequelize.ARRAY(Sequelize.STRING), // how to deal with sorting?
+    unique: true
   },
   password: {
     type: Sequelize.STRING,
