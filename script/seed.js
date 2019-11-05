@@ -219,7 +219,8 @@ const dummyOrders = [
 ]
 
 //reviews
-const reviewDescription = faker.lorem.text()
+const reviewDescription = faker.lorem.text() + ''
+console.log(reviewDescription)
 const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
 
 const dummyReviews = [
@@ -295,7 +296,7 @@ const bigSeed = async () => {
       }
 
       const review = {
-        reviewDescription,
+        description: reviewDescription,
         rating
       }
 

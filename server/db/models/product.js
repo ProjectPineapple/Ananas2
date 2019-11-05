@@ -29,10 +29,10 @@ const Product = db.define('product', {
   },
   price: {
     type: Sequelize.FLOAT(10, 2),
+    allowNull: false,
     validate: {
       min: 0
-    },
-    defaultValue: 0
+    }
   },
   photos: {
     type: Sequelize.ARRAY(Sequelize.STRING),
