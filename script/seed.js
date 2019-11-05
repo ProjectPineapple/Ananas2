@@ -1,5 +1,5 @@
 const faker = require('faker')
-const {db, User, Order, Product, Review} = require('./server/db')
+const {db, User, Order, Product, Review} = require('../server/db')
 const {green, red} = require('chalk')
 
 //Fake user data variables
@@ -25,14 +25,14 @@ const shippingAddress = {
   zipCode: faker.address.zipCode()
 }
 
-const totalSeeds = 100
+const totalSeeds = 1
 //user
 
 const dummyUsers = [
   //admin dummy user
   {
     name: firstName + lastName,
-    email,
+    email: 'steve@steve.com',
     password,
     status: 'admin',
     googleId,
@@ -54,7 +54,7 @@ const dummyUsers = [
 ]*/
 const productStatus = faker.random.boolean()
 const battleshipName = 'U.S.S.' + firstName + lastName
-const stock = Math.round(Math.Random() * 100)
+const stock = Math.round(Math.random() * 100)
 const description = faker.lorem.text()
 const price = faker.random.number() / 100 // integer with two decimal places
 const photo =
@@ -129,7 +129,7 @@ const dummyProducts = [
     stock: 0,
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
-    price: '$430M',
+    price: 430000000,
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
     tags: ['British', 'battleship', 'gently used']
@@ -140,7 +140,7 @@ const dummyProducts = [
     stock: 1,
     description:
       'USS Main (ACR-1) was a U.S. Navy ship that sank in Havana Harbor. It has been recently restored to previous glory.',
-    price: '$4M',
+    price: 4000000,
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
     tags: ['U.S.', 'cruiser', 'naval', 'retrofitted']
@@ -224,11 +224,11 @@ const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
 
 const dummyReviews = [
   {
-    reviewDescription,
+    description: reviewDescription,
     rating: 1
   },
   {
-    reviewDescription,
+    description: reviewDescription,
     rating: 5
   }
 ]
@@ -255,7 +255,7 @@ const bigSeed = async () => {
     admin.addOrder(seededOrders[0])
 
     //User has many reviews (reviews belongTo user)
-    let nonAdmin = seededUsers[1]
+    let nonAdmin = seededUsers[0]
     nonAdmin.setReviews(seededReviews)
 
     //Order has many products (products belongTo order)
@@ -276,8 +276,7 @@ const bigSeed = async () => {
         status: userStatus,
         googleId,
         facebookId,
-        billingAddress,
-        shippingAddress
+        addresses: [billingAddress, shippingAddress]
       }
 
       const product = {
