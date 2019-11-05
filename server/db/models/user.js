@@ -6,7 +6,20 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isEmail: true
+    }
+  },
+  status: {
+    type: Sequelize.ENUM(['Admin', 'Auth', 'Guest'])
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  addresses: {
+    type: Sequelize.ARRAY(Sequelize.STRING), // how to deal with sorting?
+    unique: true
   },
   password: {
     type: Sequelize.STRING,
@@ -26,7 +39,14 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  facebookId: {
+    type: Sequelize.STRING
+  },
+  sessionId: {
+    type: Sequelize.STRING
   }
+  // includes Review and Order
 })
 
 module.exports = User
