@@ -250,10 +250,21 @@ const bigSeed = async () => {
     )
 
     //Associations
-    //Reviews = belong to Product
-    //Reviews = belong To User
-    //Product = belong to Order
-    //Order has many products
+    //User has many orders (orders belongsTo user)
+    let admin = seededUsers[0]
+    admin.addOrder(seededOrders[0])
+
+    //User has many reviews (reviews belongTo user)
+    let nonAdmin = seededUsers[1]
+    nonAdmin.setReviews(seededReviews)
+
+    //Order has many products (products belongTo order)
+    let order1 = seededOrders[0]
+    order1.setProducts(seededProducts)
+
+    //Products have many reviews (review belongsTo product)
+    let product1 = seededProducts[1]
+    product1.setReviews(seededReviews)
 
     //fake products
     for (let i = 0; i < totalSeeds; i++) {
