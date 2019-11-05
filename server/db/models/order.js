@@ -17,6 +17,7 @@ const Order = db.define('order', {
     type: Sequelize.DATE,
     defaultValue: Date.now()
   }
+  // include Product as lineItems ({ price: (at the time!), productId, qty }) , fk: userId
 })
 
 module.exports = Order
