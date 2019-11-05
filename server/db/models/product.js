@@ -31,5 +31,5 @@ const Product = db.define('product', {
 module.exports = Product
 
 Product.prototype.setVisibility = () => {
-  this.visible = !!this.stock
+  this.visible = Boolean(this.stock)
 }
