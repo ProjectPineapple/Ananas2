@@ -8,6 +8,15 @@ const User = db.define('user', {
     unique: true,
     allowNull: false
   },
+  status: {
+    type: Sequelize.ENUM(['Admin', 'Auth'])
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  addresses: {
+    type: Sequelize.ARRAY(Sequelize.STRING) // how to indicate billing/shipping/both? --> front-end issue...select box?
+  },
   password: {
     type: Sequelize.STRING,
     // Making `.password` act like a func hides it when serializing to JSON.
@@ -25,6 +34,9 @@ const User = db.define('user', {
     }
   },
   googleId: {
+    type: Sequelize.STRING
+  },
+  facebookId: {
     type: Sequelize.STRING
   }
 })
