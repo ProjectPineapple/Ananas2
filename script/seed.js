@@ -2,43 +2,21 @@ const faker = require('faker')
 const {db, User, Order, Product, Review} = require('../server/db')
 const {green, red} = require('chalk')
 
-//Fake user data variables
-const firstName = faker.name.firstName()
-const lastName = faker.name.lastName()
-const email = faker.internet.email()
-const password = '12345'
-const userStatus = ['admin', 'user'][Math.round(Math.random())]
-const googleId = faker.random.uuid()
-const facebookId = faker.random.uuid()
-const billingAddress = {
-  countryCode: faker.address.countryCode(),
-  streetAddress: faker.address.streetAddress(),
-  city: faker.address.city(),
-  state: faker.address.stateAbbr(),
-  zipCode: faker.address.zipCode()
-}
-const shippingAddress = {
-  countryCode: faker.address.countryCode(),
-  streetAddress: faker.address.streetAddress(),
-  city: faker.address.city(),
-  state: faker.address.stateAbbr(),
-  zipCode: faker.address.zipCode()
-}
+const totalSeeds = 100
 
-const totalSeeds = 1
-//user
-
+//dummy users
 const dummyUsers = [
   //admin dummy user
   {
-    name: firstName + lastName,
+    name: faker.name.firstName() + faker.name.lastName(),
     email: 'steve@steve.com',
-    password,
+    password: '12345',
     status: 'admin',
-    googleId,
-    facebookId,
-    billingAddress,
-    shippingAddress
+    googleId: faker.random.uuid(),
+    facebookId: faker.random.uuid(),
+    defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    addresses: [this.defaultBilling, this.defaultShipping]
   }
 
   //Edge Cases TK
@@ -48,83 +26,10 @@ const dummyUsers = [
   // user w/ facebook
 ]
 
-//Product
-/*const productStatus = ['Out of stock', 'Currently available'][
-  Math.round(Math.random())
-]*/
-const productStatus = faker.random.boolean()
-const battleshipName = 'U.S.S.' + firstName + lastName
-const stock = Math.round(Math.random() * 100)
-const description = faker.lorem.text()
-const price = faker.random.number() / 100 // integer with two decimal places
-const photo =
-  'https://en.wikipedia.org/wiki/List_of_battleships_of_the_United_States_Navy#/media/File:USS_Texas_(1895-1911).jpg'
-const tags = [
-  // todo : no repetition
-  [
-    'WWI',
-    'WWII',
-    '305 mm',
-    'France',
-    'French',
-    'naval',
-    'heavy cruiser',
-    'Russian',
-    'destroyer',
-    'U.S.',
-    'British',
-    'steel',
-    'retrofitted',
-    'light aircraft carrier',
-    'battleship',
-    'gently used',
-    'fixer upper'
-  ][Math.round(Math.random())],
-  [
-    'WWI',
-    'WWII',
-    '305 mm',
-    'France',
-    'French',
-    'naval',
-    'heavy cruiser',
-    'Russian',
-    'destroyer',
-    'U.S.',
-    'British',
-    'steel',
-    'retrofitted',
-    'light aircraft carrier',
-    'battleship',
-    'gently used',
-    'fixer upper'
-  ][Math.round(Math.random())],
-  [
-    'WWI',
-    'WWII',
-    '305 mm',
-    'France',
-    'French',
-    'naval',
-    'heavy cruiser',
-    'Russian',
-    'destroyer',
-    'U.S.',
-    'British',
-    'steel',
-    'retrofitted',
-    'light aircraft carrier',
-    'battleship',
-    'gently used',
-    'fixer upper'
-  ][Math.round(Math.random())]
-]
-
 const dummyProducts = [
-  // todo: price and status
   //admin dummy user
   {
-    status: 'Out of stock',
+    status: false,
     battleshipName: 'Warspite',
     stock: 0,
     description:
@@ -135,7 +40,7 @@ const dummyProducts = [
     tags: ['British', 'battleship', 'gently used']
   },
   {
-    status: 'Currently available',
+    status: true,
     battleshipName: 'U.S.S. Maine',
     stock: 1,
     description:
@@ -144,19 +49,47 @@ const dummyProducts = [
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
     tags: ['U.S.', 'cruiser', 'naval', 'retrofitted']
-  }
+  },
 
   //Edge Cases TK
   // no photo
+  {
+    status: true,
+    battleshipName: 'U.S.S. Indiana',
+    stock: 10,
+    description:
+      'USS Indiana transported cows and corn for the troops. It still has corn. Yum! And ... a distinct smell.',
+    price: 1000000,
+    tags: ['U.S.', 'cruiser', 'naval', 'retrofitted']
+  },
   // no stock given
-  // no price given
+  {
+    status: false,
+    battleshipName: 'Roma',
+    description: 'Roma. What a ship. What a battle.',
+    price: 10000007,
+    photo:
+      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
+    tags: ['Italian', 'cruiser', 'naval', 'retrofitted']
+  }
 ]
 
 //order
-const orderItems = {
-  itemId: Math.ceil(Math.random() * 102),
-  qty: Math.ceil(Math.random() * 10)
-}
+const orderItems = [
+  {
+    itemId: Math.ceil(Math.random() * 102),
+    qty: Math.ceil(Math.random() * 10)
+  },
+  {
+    itemId: Math.ceil(Math.random() * 102),
+    qty: Math.ceil(Math.random() * 10)
+  },
+  {
+    itemId: Math.ceil(Math.random() * 102),
+    qty: Math.ceil(Math.random() * 10)
+  }
+]
+
 const orderStatus = [
   'in-cart',
   'payment-in-progress',
@@ -167,13 +100,6 @@ const orderStatus = [
   'in-dispute',
   'completed'
 ][Math.round(Math.random() * 8)]
-
-// const cancelTime = faker.date.future()
-// const paymentInProgressTime = faker.date.future()
-// const paidTime = faker.date.future()
-// const shippedTime = faker.date.future()
-// const deliveredTime = faker.date.future()
-// const inDisputeTime = faker.date.future()
 
 const dummyOrders = [
   //cancelled order
@@ -219,20 +145,49 @@ const dummyOrders = [
 ]
 
 //reviews
-const reviewDescription = faker.lorem.text() + ''
-console.log(reviewDescription)
 const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
 
 const dummyReviews = [
   {
-    description: reviewDescription,
+    description: faker.lorem.text(),
     rating: 1
   },
   {
-    description: reviewDescription,
+    description: faker.lorem.text(),
     rating: 5
   }
 ]
+
+function addTags() {
+  let categories = [
+    'WWI',
+    'WWII',
+    '305 mm',
+    'France',
+    'French',
+    'naval',
+    'heavy cruiser',
+    'Russian',
+    'destroyer',
+    'U.S.',
+    'British',
+    'steel',
+    'retrofitted',
+    'light aircraft carrier',
+    'battleship',
+    'gently used',
+    'fixer upper'
+  ]
+
+  let myTags = []
+
+  let numTags = Math.ceil(Math.random() * 5)
+  for (let i = 0; i < numTags; i++) {
+    myTags.push(categories[Math.floor(Math.random() * categories.length)])
+  }
+
+  return myTags
+}
 
 const bigSeed = async () => {
   try {
@@ -270,24 +225,25 @@ const bigSeed = async () => {
     //fake products
     for (let i = 0; i < totalSeeds; i++) {
       const user = {
-        firstName,
-        lastName,
-        email,
-        password,
-        status: userStatus,
-        googleId,
-        facebookId,
-        addresses: [billingAddress, shippingAddress]
+        name: faker.name.firstName() + faker.name.lastName(),
+        email: faker.internet.email(),
+        password: '12345',
+        status: ['admin', 'user', 'guest'][Math.round(Math.random())],
+        googleId: faker.random.uuid(),
+        facebookId: faker.random.uuid(),
+        defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+        defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+        addresses: [this.defaultBilling, this.defaultShipping]
       }
 
       const product = {
-        status: productStatus,
-        battleshipName,
-        stock,
-        description,
-        price,
-        photo,
-        tags
+        status: faker.random.boolean(),
+        battleshipName:
+          'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
+        stock: Math.round(Math.random() * 100),
+        description: faker.lorem.text(),
+        price: faker.random.number() / 100, // integer with two decimal places
+        tags: addTags()
       }
 
       const order = {
@@ -296,7 +252,7 @@ const bigSeed = async () => {
       }
 
       const review = {
-        description: reviewDescription,
+        description: faker.lorem.text(),
         rating
       }
 
