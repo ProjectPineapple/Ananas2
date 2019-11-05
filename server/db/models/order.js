@@ -23,6 +23,7 @@ const Order = db.define('order', {
     }
   },
   cartTime: {
+    // to delete
     // first item in the cart
     type: Sequelize.DATE,
     defaultValue: Date.now()
@@ -56,6 +57,31 @@ const Order = db.define('order', {
     type: Sequelize.DATE
   }
   // include Product as lineItems ({ price: (at the time!), productId, qty }) , fk: userId
+})
+
+Order.afterUpdate(order => {
+  switch (order.status) {
+    case 'payment-in-progress':
+      order.paymentTime = Date.now()
+      break
+    case 'cancelled':
+      order.cancelTime = Date.now()
+      break
+    case 'shipped':
+      order.shipTime = Date.now()
+      break
+    case 'delivered':
+      order.deliveryTime = Date.now()
+      break
+    case 'completed':
+      order.completedTime = Date.now()
+      break
+    case 'in-dispute':
+      order.disputeTime = Date.now()
+      break
+    default:
+      break
+  }
 })
 
 module.exports = Order

@@ -1,5 +1,5 @@
 const faker = require('faker')
-const {db, User, Order, Product, Review} = require('./server/db')
+const {db, User, Order, Product, Review} = require('../server/db')
 const {green, red} = require('chalk')
 
 //Fake user data variables
@@ -25,15 +25,14 @@ const shippingAddress = {
   zipCode: faker.address.zipCode()
 }
 
-const totalSeeds = 100
+const totalSeeds = 1
 //user
 
 const dummyUsers = [
   //admin dummy user
   {
-    firstName,
-    lastName,
-    email,
+    name: firstName + lastName,
+    email: 'steve@steve.com',
     password,
     status: 'admin',
     googleId,
@@ -43,19 +42,25 @@ const dummyUsers = [
   }
 
   //Edge Cases TK
+  // guest user with cookie/jwt
+  // user w/ email & pwd
+  // user w/ google
+  // user w/ facebook
 ]
 
 //Product
-const productStatus = ['Out of stock', 'Currently available'][
+/*const productStatus = ['Out of stock', 'Currently available'][
   Math.round(Math.random())
-]
+]*/
+const productStatus = faker.random.boolean()
 const battleshipName = 'U.S.S.' + firstName + lastName
-const stock = Math.round(Math.Random() * 100)
+const stock = Math.round(Math.random() * 100)
 const description = faker.lorem.text()
-const price = '$' + Math.ceil(Math.random() * 100) + 'M'
+const price = faker.random.number() / 100 // integer with two decimal places
 const photo =
   'https://en.wikipedia.org/wiki/List_of_battleships_of_the_United_States_Navy#/media/File:USS_Texas_(1895-1911).jpg'
 const tags = [
+  // todo : no repetition
   [
     'WWI',
     'WWII',
@@ -116,6 +121,7 @@ const tags = [
 ]
 
 const dummyProducts = [
+  // todo: price and status
   //admin dummy user
   {
     status: 'Out of stock',
@@ -123,7 +129,7 @@ const dummyProducts = [
     stock: 0,
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
-    price: '$430M',
+    price: 430000000,
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
     tags: ['British', 'battleship', 'gently used']
@@ -134,13 +140,16 @@ const dummyProducts = [
     stock: 1,
     description:
       'USS Main (ACR-1) was a U.S. Navy ship that sank in Havana Harbor. It has been recently restored to previous glory.',
-    price: '$4M',
+    price: 4000000,
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
     tags: ['U.S.', 'cruiser', 'naval', 'retrofitted']
   }
 
   //Edge Cases TK
+  // no photo
+  // no stock given
+  // no price given
 ]
 
 //order
@@ -150,13 +159,14 @@ const orderItems = {
 }
 const orderStatus = [
   'in-cart',
-  'cancelled',
   'payment-in-progress',
+  'cancelled',
   'paid',
   'shipped',
   'delivered',
-  'in-dispute'
-][Math.round(Math.random() * 5)]
+  'in-dispute',
+  'completed'
+][Math.round(Math.random() * 8)]
 
 // const cancelTime = faker.date.future()
 // const paymentInProgressTime = faker.date.future()
@@ -169,7 +179,7 @@ const dummyOrders = [
   //cancelled order
   {
     orderItems,
-    status: 'Cancelled'
+    status: 'cancelled'
   },
 
   //inCart
@@ -209,16 +219,17 @@ const dummyOrders = [
 ]
 
 //reviews
-const reviewDescription = faker.lorem.text()
+const reviewDescription = faker.lorem.text() + ''
+console.log(reviewDescription)
 const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
 
 const dummyReviews = [
   {
-    reviewDescription,
+    description: reviewDescription,
     rating: 1
   },
   {
-    reviewDescription,
+    description: reviewDescription,
     rating: 5
   }
 ]
@@ -245,7 +256,7 @@ const bigSeed = async () => {
     admin.addOrder(seededOrders[0])
 
     //User has many reviews (reviews belongTo user)
-    let nonAdmin = seededUsers[1]
+    let nonAdmin = seededUsers[0]
     nonAdmin.setReviews(seededReviews)
 
     //Order has many products (products belongTo order)
@@ -266,8 +277,7 @@ const bigSeed = async () => {
         status: userStatus,
         googleId,
         facebookId,
-        billingAddress,
-        shippingAddress
+        addresses: [billingAddress, shippingAddress]
       }
 
       const product = {
@@ -286,7 +296,7 @@ const bigSeed = async () => {
       }
 
       const review = {
-        reviewDescription,
+        description: reviewDescription,
         rating
       }
 

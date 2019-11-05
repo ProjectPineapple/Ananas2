@@ -8,13 +8,13 @@ const Product = db.define('product', {
   name: {
     type: Sequelize.STRING,
     validate: {
-      isEmpty: false
+      notEmpty: true
     }
   },
   description: {
     type: Sequelize.TEXT,
     validate: {
-      isEmpty: false
+      notEmpty: true
     }
   },
   stock: {
@@ -24,15 +24,15 @@ const Product = db.define('product', {
     },
     defaultValue: 0
   },
-  categories: {
+  tags: {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
   price: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.FLOAT(10, 2),
+    allowNull: false,
     validate: {
       min: 0
-    },
-    defaultValue: 0
+    }
   },
   photos: {
     type: Sequelize.ARRAY(Sequelize.STRING),
