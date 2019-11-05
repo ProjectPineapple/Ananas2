@@ -12,7 +12,7 @@ const User = db.define('user', {
     }
   },
   status: {
-    type: Sequelize.ENUM(['Admin', 'Auth'])
+    type: Sequelize.ENUM(['Admin', 'Auth', 'Guest'])
   },
   name: {
     type: Sequelize.STRING
@@ -42,7 +42,11 @@ const User = db.define('user', {
   },
   facebookId: {
     type: Sequelize.STRING
+  },
+  sessionId: {
+    type: Sequelize.STRING
   }
+  // includes Review and Order
 })
 
 module.exports = User
