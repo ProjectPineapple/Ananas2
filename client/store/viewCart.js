@@ -1,5 +1,5 @@
 import axios from 'axios'
-import history from '../history'
+//import history from '../history'
 
 /**
  * ACTION TYPES
@@ -21,8 +21,8 @@ const blankCart = {}
  */
 export const fetchCart = () => async dispatch => {
   try {
-    const res = await axios.get(`/api/cart`)
-    dispatch(getCart(res.data || blankCart))
+    const {data} = await axios.get(`/api/cart`)
+    dispatch(getCart(data || blankCart))
   } catch (err) {
     console.error(err)
   }
