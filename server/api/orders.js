@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Order} = require('../db/models')
+const {Session} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -13,11 +14,15 @@ router.get('/', async (req, res, next) => {
 
 router.get('/cart', async (req, res, next) => {
   try {
-    console.log(req.sessionID)
+    const session = await Session.findOne({
+      where: {
+        sid: req.sessionID
+      }
+    })
     const whereClause = {}
     whereClause.status = 'in-cart'
     if (req.user) whereClause.userId = req.user.id
-    else whereClause.SessionId = req.sessionID || null
+    else whereClause.SessionId = session.id
     const cart = await Order.findOrCreate({
       where: whereClause
     })
