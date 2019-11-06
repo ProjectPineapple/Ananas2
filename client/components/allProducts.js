@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {ProductListing} from './productListing'
+import {fetchProducts} from '../store/allProducts'
+import {Image, Item} from 'semantic-ui-react'
 
 class allProducts extends Component {
-  //CHECK ASSUMPTION: FETCHPRODUCTS IN MAIN'S COMPONENT DID MOUNT?
   constructor(props) {
     super(props)
     this.state = {
@@ -13,44 +15,36 @@ class allProducts extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  //POTENTIAL VIEW PRODUCT BUTTON
-  handleClick() {
-    this.setState(state => ({isClicked: !state.isClicked}))
+  componentDidMount() {
+    this.props.fetchProducts()
   }
+
+  //FOR VIEWING INDIVIDUAL PRODUCT
+  // handleClick() {
+  //   this.setState(state => ({isClicked: !state.isClicked}))
+  // }
 
   render() {
     const products = this.props.products
-    const btnClicked = this.state.isClicked
-    const isAdmin = this.state.isAdmin
-    //CREATE ERROR PAGE INSTEAD IF THIS HAPPENS?
+    // const btnClicked = this.state.isClicked
+    // const isAdmin = this.state.isAdmin
+    const truncatedDesc = products.description.slice(0, 50)
+
     if (products === undefined || !products.length) {
       return <h1>No Products</h1>
     } else {
-      return (
-        <div>
-          <p>All Categories</p>
-          {products.map(product => (
-            <ProductListing key={product.id} product={products} />
-          ))}
-
-          {/* INCLUDE ADMIN BUTTONS HERE (TERNARY)? */}
-          <button
-            className={isAdmin ? 'addProduct' : 'hidden'}
-            type="submit"
-            onClick={this.handleClick}
-          >
-            Add Product
-          </button>
-        </div>
-      )
+      return <h2>allProducts</h2>
     }
   }
 }
 
-//CHECK ASSUMPTION: FETCHPRODUCTS IN MAIN?
 const mapStateToProps = state => ({
-  products: state.products,
-  reviews: state.reviews
+  products: state.products
+  // reviews: state.reviews
 })
 
-export default connect(mapStateToProps)(allProducts)
+const mapDispatchToState = dispatch => ({
+  fetchProducts: () => dispatch(fetchProducts)
+})
+
+export default connect(mapStateToProps)(mapDispatchToState)(allProducts)
