@@ -3,9 +3,9 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
-
 import checkout from './checkout'
 import viewCart from './viewCart'
+
 const reducer = combineReducers({user, checkout, viewCart})
 
 const middleware = composeWithDevTools(
