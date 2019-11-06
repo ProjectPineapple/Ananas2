@@ -18,7 +18,7 @@ export const fetchAllProducts = () => {
   }
 }
 
-export const allProductsReducer = (state = initialState, action) => {
+export const allProducts = (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCTS:
       return {...state, products: action.products}
@@ -26,3 +26,5 @@ export const allProductsReducer = (state = initialState, action) => {
       return state
   }
 }
+
+export default allProducts
