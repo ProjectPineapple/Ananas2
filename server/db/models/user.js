@@ -53,6 +53,7 @@ const User = db.define('user', {
   }
   // includes Review and Order
 })
+// indexes
 
 module.exports = User
 
