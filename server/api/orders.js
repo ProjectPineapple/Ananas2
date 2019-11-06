@@ -25,14 +25,15 @@ router.get('/cart', async (req, res, next) => {
     else whereClause.SessionId = session.id
     const cart = await Order.findOrCreate({
       // where: whereClause,
-      where: {id: 109},
+      where: {id: 1},
       include: [
         {
-          model: Product,
-          through: {where: true}
+          model: ProductsAndOrder
+        },
+        {
+          model: Product
         }
-      ],
-      raw: true
+      ]
     })
     console.log(cart[0])
     res.json(cart[0])

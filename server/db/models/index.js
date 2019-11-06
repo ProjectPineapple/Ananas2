@@ -16,9 +16,9 @@ User.hasMany(Order)
 
 Product.belongsToMany(Order, {through: ProductsAndOrder}) // make explicit, add columns for price at purchase
 Order.belongsToMany(Product, {through: ProductsAndOrder})
-// Order.belongsToMany(ProductsAndOrder)
-// Product.belongsToMany(ProductsAndOrder)
-// ProductsAndOrder.hasMany
+
+Order.hasMany(ProductsAndOrder)
+Product.hasMany(ProductsAndOrder)
 
 Order.belongsTo(Session)
 Session.hasOne(Order)

@@ -229,20 +229,19 @@ const smallSeed = async () => {
     //User has many orders (orders belongsTo user)
     let admin = seededUsers[0]
     console.log(seededUsers[0])
-    admin.setOrders(seededOrders)
-    console.log('Orders: ', seededOrders)
+    await admin.setOrders(seededOrders)
 
     //User has many reviews (reviews belongTo user)
     let nonAdmin = seededUsers[0]
-    nonAdmin.setReviews(seededReviews)
+    await nonAdmin.setReviews(seededReviews)
 
     //Order has many products (products belongTo order)
     let order1 = seededOrders[0]
-    order1.setProducts(seededProducts)
+    await order1.setProducts(seededProducts)
 
     //Products have many reviews (review belongsTo product)
     let product1 = seededProducts[1]
-    product1.setReviews(seededReviews)
+    await product1.setReviews(seededReviews)
 
     //fake products
     // for (let i = 0; i < totalSeeds; i++) {
