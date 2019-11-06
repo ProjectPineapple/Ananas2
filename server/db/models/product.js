@@ -28,7 +28,8 @@ const Product = db.define('product', {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
   price: {
-    type: Sequelize.FLOAT,
+    // in cents!
+    type: Sequelize.INTEGER, // e.g. X0000 <--> `$X000.00`
     allowNull: false,
     validate: {
       min: 0
