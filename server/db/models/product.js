@@ -3,7 +3,8 @@ const db = require('../db')
 
 const Product = db.define('product', {
   visible: {
-    type: Sequelize.BOOLEAN
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
   },
   name: {
     type: Sequelize.STRING,
