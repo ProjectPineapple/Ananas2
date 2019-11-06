@@ -17,6 +17,7 @@ Product.belongsToMany(Order, {through: 'ProductOrder'}) // make explicit, add co
 Order.belongsToMany(Product, {through: 'ProductOrder'})
 
 Order.belongsTo(Session)
+Session.hasOne(Order)
 
 module.exports = {
   User,
