@@ -242,7 +242,7 @@ const bigSeed = async () => {
           'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
         stock: Math.round(Math.random() * 100),
         description: faker.lorem.text(),
-        price: faker.random.number() / 100, // integer with two decimal places
+        price: faker.random.number(), // integer with two decimal places
         tags: addTags()
       }
 
