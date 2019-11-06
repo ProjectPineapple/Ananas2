@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
-import {Rating, Button, Segment, Image, Label} from 'semantic-react-ui'
+import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 
 class ProductListing extends React.Component {
   constructor(props) {
@@ -26,9 +26,9 @@ class ProductListing extends React.Component {
           {this.state.isAdmin && (
             <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
           )}
-          {this.state.isAdmin && (
+          {/* {this.state.isAdmin && (
             <Button onClick={() => <ProjectForm />}>Update</Button>
-          )}
+          )} */}
           {product.photos.map(photo => {
             return (
               <Image

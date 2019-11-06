@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {ProductListing} from './productListing'
 import {fetchProducts} from '../store/allProducts'
 import {Image, Item} from 'semantic-ui-react'
 
-class allProducts extends Component {
+class AllProducts extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -65,4 +64,4 @@ const mapDispatchToState = dispatch => ({
   fetchProducts: () => dispatch(fetchProducts)
 })
 
-export default connect(mapStateToProps)(mapDispatchToState)(allProducts)
+export default connect(mapStateToProps, mapDispatchToState)(AllProducts)
