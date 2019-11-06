@@ -33,7 +33,25 @@ class allProducts extends Component {
     if (products === undefined || !products.length) {
       return <h1>No Products</h1>
     } else {
-      return <h2>allProducts</h2>
+      return (
+        <Item.Group>
+          {products.map(product => (
+            <Item key={product.id}>
+              <Link to={`/products/${product.id}`}>
+                <Item.Image size="tiny" src={product.photos[0]} />
+              </Link>
+              <Item.Content>
+                <Item.Header>{product.name}</Item.Header>
+                <Item.Meta>
+                  <span className="price">{product.price}</span>
+                  <span className="rating">{product.rating}</span>
+                </Item.Meta>
+                <Item.Description>{truncatedDesc}</Item.Description>
+              </Item.Content>
+            </Item>
+          ))}
+        </Item.Group>
+      )
     }
   }
 }
