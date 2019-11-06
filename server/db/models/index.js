@@ -12,7 +12,7 @@ Product.hasMany(Review)
 Order.belongsTo(User)
 User.hasMany(Order)
 
-Product.belongsToMany(Order, {through: 'ProductOrder'})
+Product.belongsToMany(Order, {through: 'ProductOrder'}) // make explicit, add columns for price at purchase
 Order.belongsToMany(Product, {through: 'ProductOrder'})
 
 module.exports = {
