@@ -6,7 +6,9 @@ import {Rating, Button, Segment, Image, Label} from 'semantic-react-ui'
 class ProductListing extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      isAdmin: false
+    }
   }
   componentDidMount() {
     const productId = Number(this.props.match.params.productId)
@@ -21,7 +23,12 @@ class ProductListing extends React.Component {
       return (
         <Segment basic textAlign="center">
           <h1>{product.name}</h1>
-          <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
+          {this.state.isAdmin && (
+            <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
+          )}
+          {this.state.isAdmin && (
+            <Button onClick={() => <ProjectForm />}>Update</Button>
+          )}
           {product.photos.map(photo => {
             return (
               <Image
