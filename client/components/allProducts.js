@@ -47,23 +47,6 @@ class allProducts extends Component {
   }
 }
 
-//FETCH_PRODUCTS ACTION CREATOR + THUNK
-// // action creator
-// const GET_PRODUCTS = 'GET_PRODUCTS'
-// const getProducts () => ({type: GET_PRODUCTS, products})
-
-// //reducer case
-// case GET_PRODUCTS:
-// return action.products
-
-// // thunk
-// const fetchProducts = () => {
-//   async dispatch => {
-//     const {data} = axios.get('/api/products')
-//     dispatch(getProducts(data))
-//   }
-// }
-
 //CHECK ASSUMPTION: FETCHPRODUCTS IN MAIN?
 const mapStateToProps = state => ({
   products: state.products,
