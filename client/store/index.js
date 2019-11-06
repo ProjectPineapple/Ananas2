@@ -5,6 +5,8 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import checkout from './checkout'
 import viewCart from './viewCart'
+import allProducts from './allProducts'
+import singleProduct from './singleProduct'
 
 const reducer = combineReducers({
   allProducts,
