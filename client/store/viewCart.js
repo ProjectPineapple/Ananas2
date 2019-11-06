@@ -21,7 +21,7 @@ const blankCart = {}
  */
 export const fetchCart = () => async dispatch => {
   try {
-    const {data} = await axios.get(`/api/cart`)
+    const {data} = await axios.get(`/api/orders/cart`)
     dispatch(getCart(data || blankCart))
   } catch (err) {
     console.error(err)

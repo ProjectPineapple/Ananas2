@@ -16,11 +16,22 @@ const Order = db.define('order', {
     defaultValue: 'in-cart'
   },
   subtotal: {
-    type: Sequelize.DECIMAL(10, 2),
+    type: Sequelize.INTEGER, // in cents; X0000 <--> `$X00.00`
     defaultValue: 0,
     validate: {
       min: 0
     }
+  },
+  total: {
+    // after tax & shipping & discount code, etc
+    type: Sequelize.INTEGER,
+    validate: {
+      min: 0
+    }
+  },
+  address: {
+    // populate from user's shipping address during checkout
+    type: Sequelize.STRING
   },
   cartTime: {
     // to delete

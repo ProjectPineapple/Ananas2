@@ -12,11 +12,16 @@ class ViewCart extends React.Component {
     return (
       <div className="view-cart-container">
         <div className="product-info-col">
-          <div className="product-image">hi</div>
-          <div className="product-name" />
+          <div className="product-image">
+            here's the image of the first product
+          </div>
+          <div className="product-name">
+            here's the name of the first product
+          </div>
         </div>
         <div className="product-order-info-col">
           <div className="product-qty" />
+          Quantity:
           {/* edit quantity / delete */}
         </div>
       </div>
