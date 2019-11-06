@@ -10,9 +10,10 @@ router.get(`/`, async (req, res, next) => {
     const whereClause = {}
     whereClause.status = 'in-cart'
     whereClause.userId = req.user ? req.user.id : null
-    whereClause.sessionId = req.sessionID ? req.sessionID : null
-    // whereClause.sessionId = ????
+    whereClause.SessionId = req.SessionID ? req.SessionID : null
+    // move this to the root / get request!!
     const cart = await Order.findOne({
+      // findOrCreate, actually
       where: whereClause
     })
     res.json(cart)
