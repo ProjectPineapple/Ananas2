@@ -3,11 +3,6 @@ const {Product, Review} = require('../db/models')
 const {Op} = require('sequelize')
 module.exports = router
 
-//NOTE: ADD BELOW TO API/INDEX.JS
-//router.use('/products', require('./products'))
-
-//NOTE: WILL ADD PAGINATION LATER
-
 //api/products route
 router.get('/', async (req, res, next) => {
   try {
@@ -26,7 +21,7 @@ router.post('/', async (req, res, next) => {
       stock: req.body.stock,
       tags: req.body.tags,
       price: req.body.price,
-      photos: [req.body.photo1, req.body.photo2, req.body.photo3]
+      photos: req.body.photos
     })
     // //ASSOCIATION PRODUCT-ORDER
     // //PROB MOVE TO API/ORDERS +/- API/USERS
@@ -62,7 +57,7 @@ router.post('/', async (req, res, next) => {
 
 router.get('/:productId', async (req, res, next) => {
   try {
-    const product = await Product.findbyId(req.params.productId, {
+    const product = await Product.findByPk(Number(req.params.productId), {
       include: [Review]
     })
     res.status(200).json(product)
@@ -73,15 +68,23 @@ router.get('/:productId', async (req, res, next) => {
 
 router.put('/:productId', async (req, res, next) => {
   try {
-    const [updatedRows, update] = await Product.update({
-      name: req.body.productName,
-      description: req.body.description,
-      price: req.body.price,
-      stock: req.body.stock,
-      tags: req.body.tags,
-      photos: [req.body.photo1, req.body.photo2, req.body.photo3]
-    })
-    res.json(update)
+    const productId = Number(req.params.productId)
+    if (!await Product.findByPk(productId, {include: [Review]})) {
+      res.sendStatus(204)
+    } else {
+      const [updatedRows, update] = await Product.update(
+        {
+          name: req.body.name,
+          description: req.body.description,
+          price: req.body.price,
+          stock: req.body.stock,
+          tags: req.body.tags,
+          photos: req.body.photos
+        },
+        {where: {id: productId}}
+      )
+      res.status(200).json(update)
+    }
   } catch (error) {
     next(error)
   }
