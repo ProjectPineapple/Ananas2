@@ -3,9 +3,7 @@ import axios from 'axios'
 const SET_PRODUCTS = 'SET_PRODUCTS'
 const setProducts = products => ({type: SET_PRODUCTS, products})
 
-const initialState = {
-  products: []
-}
+const initialState = []
 
 export const fetchAllProducts = () => {
   return async dispatch => {
@@ -21,7 +19,7 @@ export const fetchAllProducts = () => {
 export const allProducts = (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCTS:
-      return {...state, products: action.products}
+      return action.products
     default:
       return state
   }

@@ -35,7 +35,7 @@ router.get('/cart', async (req, res, next) => {
         }
       ]
     })
-    console.log(cart[0])
+    // console.log(cart[0])
     res.json(cart[0])
   } catch (err) {
     next(err)
