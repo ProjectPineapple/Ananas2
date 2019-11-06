@@ -7,6 +7,8 @@ class ViewCart extends React.Component {
     this.props.fetchCart()
   }
   render() {
+    const {viewCart} = this.props
+    console.log('the cart', viewCart)
     return (
       <div className="view-cart-container">
         <div className="product-info-col">
@@ -22,8 +24,10 @@ class ViewCart extends React.Component {
   }
 }
 
+const mapStateToProps = ({viewCart}) => ({viewCart})
+
 const mapDispatchToProps = dispatch => ({
   fetchCart: () => dispatch(fetchCart())
 })
 
-export default connect(null, mapDispatchToProps)(ViewCart)
+export default connect(mapStateToProps, mapDispatchToProps)(ViewCart)
