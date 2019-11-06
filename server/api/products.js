@@ -19,6 +19,8 @@ router.put('/:productId', async (req, res, next) => {
       name: req.body.productName,
       description: req.body.description,
       price: req.body.price,
+      stock: req.body.stock,
+      tags: req.body.tags,
       photos: [req.body.photo1, req.body.photo2, req.body.photo3]
     })
     res.json(update)
