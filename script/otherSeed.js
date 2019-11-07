@@ -185,46 +185,6 @@ const smallSeed = async () => {
     let product1 = seededProducts[1]
     await product1.setReviews(seededReviews)
 
-    //fake products
-    // for (let i = 0; i < totalSeeds; i++) {
-    //   const user = {
-    //     name: faker.name.firstName() + faker.name.lastName(),
-    //     email: faker.internet.email(),
-    //     password: '12345',
-    //     status: ['admin', 'user', 'guest'][Math.round(Math.random())],
-    //     googleId: faker.random.uuid(),
-    //     facebookId: faker.random.uuid(),
-    //     defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
-    //     defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
-    //     addresses: [this.defaultBilling, this.defaultShipping]
-    //   }
-
-    //   const product = {
-    //     status: faker.random.boolean(),
-    //     name:
-    //       'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
-    //     stock: Math.round(Math.random() * 100),
-    //     description: faker.lorem.text(),
-    //     price: faker.random.number(), // integer with two decimal places
-    //     tags: addTags()
-    //   }
-
-    //   const order = {
-    //     orderItems,
-    //     status: orderStatus
-    //   }
-
-    //   const review = {
-    //     description: faker.lorem.text(),
-    //     rating
-    //   }
-
-    //   await User.create(user)
-    //   await Product.create(product)
-    //   await Order.create(order)
-    //   await Review.create(review)
-    // }
-
     let totalUsers = dummyUsers.length
     let totalProducts = dummyProducts.length
     let totalOrders = dummyOrders.length
