@@ -28,18 +28,18 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route exact path="/products" component={AllProducts} />
-        <Route path="/products/:productId" component={ProductListing} />
-        <Route path="/signup" component={Signup} />
-        <Route path="/cart" render={() => <ViewCart />} />
+        <Route exact path="/products/:productId" component={ProductListing} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/cart" render={() => <ViewCart />} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route exact path="/home" component={UserHome} />
+            <Route path="/" component={UserHome} />
           </Switch>
         )}
-        {/* from boilermaker:
-	      Displays our Login component as a fallback
-              <Route component={Login} /> */}
+        <Route path="/" component={Signup} />
+        {/* add redirect to home on urls that don't exist */}
       </Switch>
     )
   }
