@@ -23,8 +23,6 @@ const AllProducts = props => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
-    // dispatch(createProduct())
-    // dispatch(addToCart())
   }, [])
 
   //ADD ADDTOCART THUNK HERE!
