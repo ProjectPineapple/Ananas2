@@ -40,3 +40,28 @@ router.get('/cart', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/cart', async (req, res, next) => {
+  try {
+    const session = await Session.findOne({
+      where: {
+        sid: req.sessionID
+      }
+    })
+    const whereClause = {}
+    whereClause.status = 'in-cart'
+    if (req.user) whereClause.userId = req.user.id
+    else whereClause.SessionId = session.id
+    const cart = await Order.findOne({
+      where: whereClause
+    })
+    console.log(req.body)
+    /*const productToAdd = await Product.findOne({
+      where: { id: req.body.productId} 
+    })*/
+
+    // cart.addProducts(
+  } catch (err) {
+    next(err)
+  }
+})
