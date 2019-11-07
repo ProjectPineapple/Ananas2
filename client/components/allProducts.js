@@ -1,41 +1,69 @@
 import React, {useEffect, useState} from 'react'
-import {connect, useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fetchAllProducts} from '../store/allProducts'
-import {Image, Item} from 'semantic-ui-react'
+import {fetchAllProducts, createProduct} from '../store/allProducts'
+import {Grid, Rating, Button, Item} from 'semantic-ui-react'
 
 const AllProducts = props => {
   const [isClicked, setIsClicked] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const products = useSelector(state => state.allProducts)
   const dispatch = useDispatch()
-  console.log('HERES THE PRODUCTS', products)
   useEffect(() => {
-    console.log('in UseEffect')
-    dispatch(fetchAllProducts())
+    dispatch(fetchAllProducts(), createProduct())
   }, [])
+
+  // const checkIsAdmin = props => {
+  //   console.log(props)
+  //   setIsAdmin(state => ({isActive: !state.isActive}))
+  // }
+
   return products === undefined || !products.length ? (
     <h1>No Products</h1>
   ) : (
-    <Item.Group>
+    <Grid textAlign="center" columns="three" stackable padded>
       {products.map(product => (
-        <Item key={product.id}>
+        <Grid.Column key={product.id}>
           <Link to={`/products/${product.id}`}>
-            <Item.Image size="tiny" src={product.photos[0]} />
+            <Item.Image size="small" src={product.photos[0]} />
           </Link>
           <Item.Content>
-            <Item.Header>{product.name}</Item.Header>
+            <Link to={`/products/${product.id}`}>
+              <Item.Header>{product.name}</Item.Header>
+            </Link>
             <Item.Meta>
-              <span className="price">{product.price}</span>
-              <span className="rating">{product.rating}</span>
+              <span>Price ${product.price}</span>
             </Item.Meta>
+            <Rating
+              icon="star"
+              defaultRating={product.stars}
+              maxRating={5}
+              disabled
+            />
             <Item.Description>
-              {product.description.slice(0, 50)}
+              {product.description.slice(0, 80)}
             </Item.Description>
+            {/* AddNewButton (createProduct thunk) works; will use path(?) to determine if isAdmin === true */}
+            {/* <Button
+              onClick={() =>
+                dispatch(
+                  createProduct({
+                    name: 'U.S.S. Testing Add Product Thunk',
+                    description:
+                      "Intrepid. Retrofitted. Perfect for a billionaire's pool.",
+                    stock: 43,
+                    tags: ['Pool-side', 'battleship', 'gently used'],
+                    price: 430000000
+                  })
+                )
+              }
+            >
+              Add New Product
+            </Button> */}
           </Item.Content>
-        </Item>
+        </Grid.Column>
       ))}
-    </Item.Group>
+    </Grid>
   )
 }
 
