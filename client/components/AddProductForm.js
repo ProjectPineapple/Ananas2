@@ -1,7 +1,7 @@
 import React from 'react'
 import {setProduct} from '../store/allProducts'
 import {connect} from 'react-redux'
-import {Form} from 'semantic-ui-react'
+import {Form, Header} from 'semantic-ui-react'
 
 const tags = [
   {key: '0', text: 'WWI', value: 'WWI'},
@@ -39,6 +39,7 @@ class AddProductForm extends React.Component {
 
     return (
       <Form>
+        <Header>Add a Product</Header>
         <Form.Group widths="equal">
           <Form.Input fluid label="Name" placeholder="Name" value="name" />
           <Form.Input fluid label="Price" placeholder="Price" value="price" />
