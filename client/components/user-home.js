@@ -6,6 +6,7 @@ import {Button, Image, Icon} from 'semantic-ui-react'
 const UserHome = props => {
   // let [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
+  const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
   return !isAdminStatus ? (
@@ -37,7 +38,7 @@ const UserHome = props => {
       <Image src="https://picsum.photos/100/100" circular />
       {/* Prompt customer to browse catalog if cart empty OR make purchase if cart has items */}
       {/* Need case where user has no orders with "in-cart" status */}
-      {!user.orders ? (
+      {!cart ? (
         <h3>
           Your shopping cart looks empty, but that's okay. You can browse our
           vast catalog of battleships <a href="/products">here.</a>
@@ -46,7 +47,7 @@ const UserHome = props => {
         <h3>
           You've got some items in your shopping cart. You can keep browsing our
           vast catalog of battleships
-          <a href="/products">here</a> or <a href="/cart">go to your cart</a>to
+          <a href="/products"> here</a> or <a href="/cart">go to your cart </a>to
           check out!
         </h3>
       )}
