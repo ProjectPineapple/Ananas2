@@ -102,20 +102,19 @@ Order.addLineItem = async (orderId, productId, quantity = 1) => {
 
 // Method to add a line item to the OrderLineItem table that refers to this order
 // NOTE THAT THIS RETURNS A PROMISE
-Order.updateLineItem = async (
-  orderId,
-  productId,
-  quantity,
-  priceAtPurchase
-) => {
+Order.updateLineItem = (orderId, productId, quantity, priceAtPurchase) => {
   try {
-    const lineItemToUpdate = await OrderLineItem.update(
+    const lineItemToUpdate = OrderLineItem.update(
       {quantity, priceAtPurchase},
       {
+        returning: true,
         where: {productId: productId, orderId: orderId}
       }
-    )
-    return lineItemToUpdate
+    ).then(function([rowsUpdated, [updatedLineItem]]) {
+      return updatedLineItem
+    })
+    // console.log('TCL: lineItemToUpdate', lineItemToUpdate)
+    // return lineItemToUpdate
   } catch (err) {
     console.error(err)
     return err

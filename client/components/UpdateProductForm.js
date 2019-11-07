@@ -132,16 +132,16 @@ const mapDispatchToProps = dispatch => {
     },
     handleChange(evt) {
       this.setState({
-        [evt.target.name]: evt.target.value,
-        [evt.target.price]: evt.target.value,
-        [evt.target.stock]: evt.target.value,
-        [evt.target.tags1]: evt.target.value,
-        [evt.target.tags2]: evt.target.value,
-        [evt.target.tags3]: evt.target.value,
-        [evt.target.photo1]: evt.target.value,
-        [evt.target.photo2]: evt.target.value,
-        [evt.target.photo3]: evt.target.value,
-        [evt.target.description]: evt.target.value
+        [evt.target.name]: evt.target.name.value,
+        [evt.target.price]: evt.target.price.value,
+        [evt.target.stock]: evt.target.stock.value,
+        [evt.target.tags1]: evt.target.tag1.value,
+        [evt.target.tags2]: evt.target.tag2.value,
+        [evt.target.tags3]: evt.target.tag3.value,
+        [evt.target.photo1]: evt.target.photo1.value,
+        [evt.target.photo2]: evt.target.photo2.value,
+        [evt.target.photo3]: evt.target.photo3.value,
+        [evt.target.description]: evt.target.description.value
       })
     }
   }

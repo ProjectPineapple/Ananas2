@@ -5,15 +5,18 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_CART = 'GET_CART'
+const ADDTO_CART = 'ADDTO_CART'
 
 /**
  * ACTION CREATORS
  */
 const getCart = cart => ({type: GET_CART, cart})
+const addToCart = product => ({type: ADDTO_CART, product})
 
 /**
  * INITIAL STATE
  */
+
 const blankCart = {}
 
 /**
@@ -28,8 +31,9 @@ export const fetchCart = () => async dispatch => {
   }
 }
 
-export const addToCart = productToAdd => async dispatch => {
+export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
   try {
+
     const {data} = await axios.post(`/api/orders/cart`, productToAdd)
     console.log(data)
   } catch (err) {
@@ -41,6 +45,22 @@ export const removeFromCart = productToDelete => async dispatch => {
   try {
     const {data} = await axios.delete(`/api/orders/cart`, productToDelete)
     console.log(data)
+
+    
+    if (orderLineItems.includes(productId)) {
+      const {data} = await axios.put(`/api/orders/${orderLineItems.orderId}`, {
+        productId: productId
+      })
+      dispatch(addToCart(data))
+    } else {
+      const {data} = await axios.post(`/api/orders/${orderLineItems.orderId}`, {
+        productId: productId
+      })
+      dispatch(addToCart(data))
+    }
+    // await OrderLineItem.find({where: {productId: productId}})
+
+    
   } catch (err) {
     console.log(err)
   }
@@ -53,6 +73,8 @@ export default (state = blankCart, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart
+    case ADDTO_CART:
+      return {...state, products: action.product}
     default:
       return state
   }
