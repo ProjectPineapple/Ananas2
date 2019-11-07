@@ -38,20 +38,12 @@ class Routes extends Component {
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route exact path="/home" component={UserHome} />
+            <Route path="/" component={UserHome} />
           </Switch>
         )}
-        {isAdmin && (
-          <Switch>
-            <Route
-              path="/products/:productId/update"
-              component={UpdateProductForm}
-            />
-            <Route path="/products/add" component={AddProductForm} />
-          </Switch>
-        )}
-        {/* from boilermaker: Displays our Login component as a fallback
-        <Route component={Login} /> */}
+        <Route path="/" component={Signup} />
+        {/* add redirect to home on urls that don't exist */}
       </Switch>
     )
   }
