@@ -4,6 +4,13 @@ import {Grid, Image, Button} from 'semantic-ui-react'
 
 import {fetchCart} from '../store/viewCart.js'
 
+const commaSeparateNumber = val => {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+  return val
+}
+
 class ViewCart extends React.Component {
   componentDidMount() {
     this.props.fetchCart()
@@ -27,7 +34,7 @@ class ViewCart extends React.Component {
               </div>
               {item.stock > 0 ? (
                 <div className="in-stock">
-                  <div>Price: ${item.price / 100}</div>
+                  <div>Price: ${commaSeparateNumber(item.price / 100)}</div>
                   <div>Qty: {}</div>
                   <Button onClick={() => console.log('you clicked `edit`')}>
                     Edit
@@ -38,9 +45,9 @@ class ViewCart extends React.Component {
                 </div>
               ) : (
                 <div className="out-of-stock">
-                  <div
-                    style={{color: 'red'}}
-                  >Sorry, this item is out of stock.</div>
+                  <div style={{color: 'red'}}>
+                    Sorry, this item is out of stock.
+                  </div>
                   <Button onClick={() => console.log('you clicked `remove`')}>
                     Remove
                   </Button>
