@@ -3,7 +3,7 @@ const Product = require('./product')
 const Order = require('./order')
 const Review = require('./review')
 const Session = require('./session')
-const ProductsAndOrder = require('./ProductOrder')
+const OrderLineItem = require('./OrderLineItem')
 
 Review.belongsTo(User)
 User.hasMany(Review)
@@ -14,11 +14,12 @@ Product.hasMany(Review)
 Order.belongsTo(User)
 User.hasMany(Order)
 
-Product.belongsToMany(Order, {through: ProductsAndOrder}) // make explicit, add columns for price at purchase
-Order.belongsToMany(Product, {through: ProductsAndOrder})
+Product.belongsToMany(Order, {through: OrderLineItem}) // make explicit, add columns for price at purchase
+Order.belongsToMany(Product, {through: OrderLineItem})
 
-Order.hasMany(ProductsAndOrder)
-Product.hasMany(ProductsAndOrder)
+Order.hasMany(OrderLineItem)
+OrderLineItem.belongsTo(Order)
+Product.hasMany(OrderLineItem)
 
 Order.belongsTo(Session)
 Session.hasOne(Order)
@@ -29,5 +30,5 @@ module.exports = {
   Product,
   Review,
   Session,
-  ProductsAndOrder
+  OrderLineItem
 }
