@@ -105,47 +105,67 @@ const dummyOrders = [
   //cancelled order
   {
     orderItems,
-    status: 'cancelled'
+    status: 'in-cart',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
 
   //inCart
   {
     orderItems,
-    status: 'in-cart'
+    status: 'cancelled',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
 
   //customer completing payment
   {
     orderItems,
-    status: 'payment-in-progress'
+    status: 'payment-in-progress',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
 
   //paid
   {
     orderItems,
-    status: 'paid'
+    status: 'paid',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
   //shipped
   {
     orderItems,
-    status: 'shipped'
+    status: 'shipped',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
 
   //delivered
   {
     orderItems,
-    status: 'delivered'
+    status: 'delivered',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   },
 
   //in-dispute
   {
     orderItems,
-    status: 'in-dispute'
+    status: 'in-dispute',
+    subtotal: 100000,
+    total: 110000,
+    address: '1010 Binary Lane, CPU AR 60657'
   }
 ]
 
 //reviews
-const rating = [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
 
 const dummyReviews = [
   {
@@ -189,7 +209,7 @@ function addTags() {
   return myTags
 }
 
-const bigSeed = async () => {
+const smallSeed = async () => {
   try {
     await db.sync({force: true})
     const seededUsers = await Promise.all(
@@ -208,64 +228,65 @@ const bigSeed = async () => {
     //Associations
     //User has many orders (orders belongsTo user)
     let admin = seededUsers[0]
-    admin.addOrder(seededOrders[0])
+    console.log(seededUsers[0])
+    await admin.setOrders(seededOrders)
 
     //User has many reviews (reviews belongTo user)
     let nonAdmin = seededUsers[0]
-    nonAdmin.setReviews(seededReviews)
+    await nonAdmin.setReviews(seededReviews)
 
     //Order has many products (products belongTo order)
     let order1 = seededOrders[0]
-    order1.setProducts(seededProducts)
+    await order1.setProducts(seededProducts)
 
     //Products have many reviews (review belongsTo product)
     let product1 = seededProducts[1]
-    product1.setReviews(seededReviews)
+    await product1.setReviews(seededReviews)
 
     //fake products
-    for (let i = 0; i < totalSeeds; i++) {
-      const user = {
-        name: faker.name.firstName() + faker.name.lastName(),
-        email: faker.internet.email(),
-        password: '12345',
-        status: ['admin', 'user', 'guest'][Math.round(Math.random())],
-        googleId: faker.random.uuid(),
-        facebookId: faker.random.uuid(),
-        defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
-        defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
-        addresses: [this.defaultBilling, this.defaultShipping]
-      }
+    // for (let i = 0; i < totalSeeds; i++) {
+    //   const user = {
+    //     name: faker.name.firstName() + faker.name.lastName(),
+    //     email: faker.internet.email(),
+    //     password: '12345',
+    //     status: ['admin', 'user', 'guest'][Math.round(Math.random())],
+    //     googleId: faker.random.uuid(),
+    //     facebookId: faker.random.uuid(),
+    //     defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    //     defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    //     addresses: [this.defaultBilling, this.defaultShipping]
+    //   }
 
-      const product = {
-        status: faker.random.boolean(),
-        battleshipName:
-          'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
-        stock: Math.round(Math.random() * 100),
-        description: faker.lorem.text(),
-        price: faker.random.number(), // integer with two decimal places
-        tags: addTags()
-      }
+    //   const product = {
+    //     status: faker.random.boolean(),
+    //     name:
+    //       'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
+    //     stock: Math.round(Math.random() * 100),
+    //     description: faker.lorem.text(),
+    //     price: faker.random.number(), // integer with two decimal places
+    //     tags: addTags()
+    //   }
 
-      const order = {
-        orderItems,
-        status: orderStatus
-      }
+    //   const order = {
+    //     orderItems,
+    //     status: orderStatus
+    //   }
 
-      const review = {
-        description: faker.lorem.text(),
-        rating
-      }
+    //   const review = {
+    //     description: faker.lorem.text(),
+    //     rating
+    //   }
 
-      await User.create(user)
-      await Product.create(product)
-      await Order.create(order)
-      await Review.create(review)
-    }
+    //   await User.create(user)
+    //   await Product.create(product)
+    //   await Order.create(order)
+    //   await Review.create(review)
+    // }
 
-    let totalUsers = totalSeeds + dummyUsers.length
-    let totalProducts = totalSeeds + dummyProducts.length
-    let totalOrders = totalSeeds + dummyOrders.length
-    let totalReviews = totalSeeds + dummyReviews.length
+    let totalUsers = dummyUsers.length
+    let totalProducts = dummyProducts.length
+    let totalOrders = dummyOrders.length
+    let totalReviews = dummyReviews.length
 
     console.log(
       `Database seeded with ${totalUsers} users, ${totalProducts} products, ${totalOrders} orders and ${totalReviews} reviews. Wahoo!`
@@ -275,10 +296,10 @@ const bigSeed = async () => {
   }
 }
 
-module.exports = bigSeed
+module.exports = smallSeed
 
 if (require.main === module) {
-  bigSeed()
+  smallSeed()
     .then(() => {
       console.log(green('Seeding success!'))
       db.close()
