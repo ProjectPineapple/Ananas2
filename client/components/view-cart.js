@@ -1,30 +1,42 @@
 import React from 'react'
-import {fetchCart} from '../store/viewCart.js'
 import {connect} from 'react-redux'
+import {Grid, Image, Button} from 'semantic-ui-react'
+
+import {fetchCart} from '../store/viewCart.js'
 
 class ViewCart extends React.Component {
   componentDidMount() {
     this.props.fetchCart()
   }
   render() {
-    const {viewCart} = this.props
-    console.log('the cart', viewCart)
-    return (
-      <div className="view-cart-container">
-        <div className="product-info-col">
-          <div className="product-image">
-            here's the image of the first product
-          </div>
-          <div className="product-name">
-            here's the name of the first product
-          </div>
-        </div>
-        <div className="product-order-info-col">
-          <div className="product-qty" />
-          Quantity:
-          {/* edit quantity / delete */}
-        </div>
-      </div>
+    const products = this.props.viewCart.products || []
+    console.log('the cart', products)
+    return products.length === 0 ? (
+      <h1>Your cart is empty!</h1>
+    ) : (
+      <Grid padded="horizontally">
+        {products.map(item => (
+          <Grid.Row key={item.id}>
+            <Grid.Column width={4}>
+              <Image src={item.photos[0]} />
+            </Grid.Column>
+            <Grid.Column width={9} />
+            <Grid.Column width={3}>
+              <div>
+                <b>{item.name}</b>
+              </div>
+              <div>Price: $ cash money</div>
+              <div>Qty: </div>
+              <Button onClick={() => console.log('you clicked `edit`')}>
+                Edit
+              </Button>
+              <Button onClick={() => console.log('you clicked `remove`')}>
+                Remove
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        ))}
+      </Grid>
     )
   }
 }
