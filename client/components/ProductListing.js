@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {addOrderItem} from '../store/singleOrder'
+import {withRouter} from 'react-router'
 
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
@@ -77,4 +78,4 @@ const ProductListing = props => {
   }
 }
 
-export default ProductListing
+export default withRouter(ProductListing)

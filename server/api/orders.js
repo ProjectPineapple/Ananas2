@@ -105,6 +105,16 @@ router.put('/:orderId', async (req, res, next) => {
   }
 })
 
+router.put('/checkout', async (req, res, next) => {
+  const formData = req.body.formData
+  const orderId = req.body.orderId
+  try {
+    const response = User.findOrCreate({where: {email: formData.email}})
+    console.log(response)
+  } catch (error) {
+    next(error)
+  }
+})
 router.put('/cart', async (req, res, next) => {
   console.log(req.body)
 })
