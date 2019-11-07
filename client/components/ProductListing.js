@@ -15,9 +15,12 @@ const ProductListing = props => {
   const productId = +props.match.params.productId
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchSingleProduct(productId))
-  }, [])
+  useEffect(
+    () => {
+      dispatch(fetchSingleProduct(productId))
+    },
+    [productId]
+  )
 
   console.log('product', product)
   if (!product) {
@@ -25,7 +28,6 @@ const ProductListing = props => {
   } else {
     return (
       <Segment basic textAlign="center">
-
         <h1>{product.name}</h1>{' '}
         <Button onClick={() => addOrderItem(product.id, order.id)}>
           Add to Cart
