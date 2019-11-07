@@ -4,10 +4,15 @@ import PropTypes from 'prop-types'
 import {Button, Image, Icon} from 'semantic-ui-react'
 
 const UserHome = props => {
-  // let [isClicked, setIsClicked] = useState(false)
+  let [isShowCart, setIsShowCart] = useState(false)
   const user = useSelector(state => state.user)
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
+
+  const showCart = () => {
+    setIsShowCart(state => ({isShowCart: !state.isShowCart}))
+    return <ViewCart cart={cart} />
+  }
 
   return !isAdminStatus ? (
     <h1>Admin</h1>
@@ -15,7 +20,7 @@ const UserHome = props => {
     <div>
       {/* Figuring out best UI for positioning */}
       <Button.Group floated="right">
-        <Button animated>
+        <Button animated onClick={showCart}>
           <Button.Content visible>
             <Icon name="shopping basket" />
           </Button.Content>
