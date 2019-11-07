@@ -3,71 +3,46 @@ import {useSelector} from 'react-redux'
 import PropTypes from 'prop-types'
 import ViewCart from './view-cart'
 import UserHomeView from './user-home-view'
-import {Button, Image, Icon} from 'semantic-ui-react'
+import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
 
 const UserHome = props => {
-  let [isClickedShowCart, setIsClickedShowCart] = useState(false)
   const user = useSelector(state => state.user)
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
-  function handleClickShowCart() {
-    setIsClickedShowCart(!isClickedShowCart)
-  }
+  const panes = [
+    {
+      menuItem: {key: 'cart', icon: 'shopping basket', content: 'Cart'},
+      render: () => (
+        <Tab.Pane>
+          <ViewCart cart={cart} />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: {key: 'order', icon: 'history', content: 'Orders'},
+      render: () => <Tab.Pane>Your Orders!</Tab.Pane>
+    },
+    {
+      menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
+      render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
+    }
+  ]
 
   return !isAdminStatus ? (
     <h1>Admin</h1>
   ) : (
     <div>
-      <Button.Group floated="right">
-        <Button animated onClick={handleClickShowCart}>
-          <Button.Content visible>
-            <Icon name="shopping basket" />
-          </Button.Content>
-          <Button.Content hidden>Cart</Button.Content>
-        </Button>
-        <Button animated>
-          <Button.Content visible>
-            <Icon name="history" />
-          </Button.Content>
-          <Button.Content hidden> Orders</Button.Content>
-        </Button>
-        <Button animated>
-          <Button.Content visible>
-            <Icon name="edit" />
-          </Button.Content>
-          <Button.Content hidden> Edit Profile</Button.Content>
-        </Button>
-      </Button.Group>
-      <h2>Welcome back, {user.email}!</h2>
-      <Image src="https://picsum.photos/100/100" circular />
+      <div>
+        <h2>Welcome back, {user.email}!</h2>
+        <Image src="https://picsum.photos/100/100" circular />
+        <UserHomeView cart={cart} />
+      </div>
       <br />
       <br />
-      {isClickedShowCart ? (
-        <ViewCart cart={cart} />
-      ) : (
-        <UserHomeView user={user} cart={cart} />
-      )}
+      <Tab panes={panes} />
     </div>
   )
-}
-
-/**
- * CONTAINER
- */
-// const mapState = state => {
-//   return {
-//     email: state.user.email
-//   }
-// }
-
-// export default connect(mapState)(UserHome)
-
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  email: PropTypes.string
 }
 
 export default UserHome
