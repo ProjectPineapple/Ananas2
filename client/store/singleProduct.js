@@ -28,21 +28,10 @@ export const deleteProduct = productId => {
     }
   }
 }
-export const changeProduct = (
-  productId,
-  productName,
-  description,
-  price,
-  photos
-) => {
+export const changeProduct = (product, productId) => {
   return async dispatch => {
     try {
-      const {data} = await axios.put(`/api/products/${productId}`, {
-        productName,
-        description,
-        price,
-        photos
-      })
+      const {data} = await axios.put(`/api/products/${productId}`, product)
       dispatch(updateProduct(data))
     } catch (error) {
       console.log(error)
@@ -50,29 +39,16 @@ export const changeProduct = (
   }
 }
 
-const initialState = {
-  products: [],
-  product: {}
-}
+const initialState = {}
 
 const singleProduct = (state = initialState, action) => {
   switch (action.type) {
     case SET_SINGLE_PRODUCT:
-      return {...state, product: action.product}
+      return action.product
     case REMOVE_PRODUCT:
-      return {
-        ...state,
-        products: state.products.filter(product => {
-          return product.id !== action.productId
-        })
-      }
+      return initialState
     case UPDATE_PRODUCT:
-      const productIndex = state.products.findIndex(
-        product => product.id === action.product.id
-      )
-      const updatedProducts = [...state.products]
-      updatedProducts[productIndex] = action.product
-      return {...state, products: updatedProducts}
+      return action.product
     default:
       return state
   }
