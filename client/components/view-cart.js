@@ -17,7 +17,11 @@ class ViewCart extends React.Component {
   }
   render() {
     const products = this.props.viewCart.products || []
-    const prodOrd = this.props.viewCart.ProductsAndOrders
+    const orderLineItems = this.props.viewCart.OrderLineItems || []
+    const matchingProduct = orderLineItems.filter(
+      lineItem => lineItem.productId === products[0].id
+    )
+    console.log(matchingProduct)
     return products.length === 0 ? (
       <h1>Your cart is empty!</h1>
     ) : (
@@ -35,7 +39,14 @@ class ViewCart extends React.Component {
               {item.stock > 0 ? (
                 <div className="in-stock">
                   <div>Price: ${commaSeparateNumber(item.price / 100)}</div>
-                  <div>Qty: {}</div>
+                  <div>
+                    Qty:{' '}
+                    {
+                      orderLineItems.filter(
+                        lineItem => lineItem.productId === item.id
+                      )[0].quantity
+                    }
+                  </div>
                   <Button onClick={() => console.log('you clicked `edit`')}>
                     Edit
                   </Button>
