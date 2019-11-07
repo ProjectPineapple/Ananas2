@@ -71,7 +71,7 @@ router.put('/:productId', async (req, res, next) => {
   try {
     const productId = Number(req.params.productId)
     if (!await Product.findByPk(productId, {include: [Review]})) {
-      res.sendStatus(204)
+      res.sendStatus(404)
     } else {
       const [updatedRows, update] = await Product.update(
         {

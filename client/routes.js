@@ -31,7 +31,13 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route exact path="/products" component={AllProducts} />
-        <Route exact path="/products/:productId" component={ProductListing} />
+        <Route
+          exact
+          path="/products/:productId"
+          render={() => (
+            <ProductListing key={this.props.match.params.productId} />
+          )}
+        />
         <Route path="/signup" component={Signup} />
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
@@ -40,6 +46,15 @@ class Routes extends Component {
             {/* Routes placed here are only available after logging in */}
             <Route exact path="/home" component={UserHome} />
             <Route path="/" component={UserHome} />
+          </Switch>
+        )}
+        {isAdmin && (
+          <Switch>
+            <Route path="/products/add" component={AddProductForm} />
+            <Route
+              path="/products/:productId/update"
+              component={UpdateProductForm}
+            />
           </Switch>
         )}
         <Route path="/" component={Signup} />

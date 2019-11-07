@@ -15,9 +15,12 @@ const ProductListing = props => {
   const productId = +props.match.params.productId
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(fetchSingleProduct(productId))
-  }, [])
+  useEffect(
+    () => {
+      dispatch(fetchSingleProduct(productId))
+    },
+    [productId]
+  )
 
   console.log('product', product)
   if (!product) {
