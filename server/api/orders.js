@@ -12,6 +12,15 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/:orderId', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId)
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/cart', async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -38,6 +47,14 @@ router.get('/cart', async (req, res, next) => {
     res.json(cart[0])
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/cart', async (req, res, next) => {
+  try {
+    await Order.addLineItem(req.params.orderId, req.params.productId)
+  } catch (error) {
+    next(error)
   }
 })
 
