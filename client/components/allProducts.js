@@ -4,6 +4,14 @@ import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
 import {Grid, Rating, Button, Item} from 'semantic-ui-react'
 
+// from https://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
+const commaSeparateNumber = val => {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+  return val
+}
+
 const AllProducts = props => {
   const [isClicked, setIsClicked] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -32,7 +40,7 @@ const AllProducts = props => {
               <Item.Header>{product.name}</Item.Header>
             </Link>
             <Item.Meta>
-              <span>Price ${product.price}</span>
+              <span>Price ${commaSeparateNumber(product.price / 100)}</span>
             </Item.Meta>
             <Rating
               icon="star"
@@ -45,21 +53,21 @@ const AllProducts = props => {
             </Item.Description>
             {/* AddNewButton (createProduct thunk) works; will use path(?) to determine if isAdmin === true */}
             {/* <Button
-              onClick={() =>
+		onClick={() =>
                 dispatch(
-                  createProduct({
-                    name: 'U.S.S. Testing Add Product Thunk',
-                    description:
-                      "Intrepid. Retrofitted. Perfect for a billionaire's pool.",
-                    stock: 43,
-                    tags: ['Pool-side', 'battleship', 'gently used'],
-                    price: 430000000
-                  })
+                createProduct({
+                name: 'U.S.S. Testing Add Product Thunk',
+                description:
+                "Intrepid. Retrofitted. Perfect for a billionaire's pool.",
+                stock: 43,
+                tags: ['Pool-side', 'battleship', 'gently used'],
+                price: 430000000
+                })
                 )
-              }
-            >
-              Add New Product
-            </Button> */}
+		}
+		>
+		Add New Product
+		</Button> */}
           </Item.Content>
         </Grid.Column>
       ))}
