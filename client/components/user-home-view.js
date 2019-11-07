@@ -2,11 +2,10 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 const UserHomeView = props => {
-  const cart = useSelector(state => state.viewCart)
-
+  const cart = props.cart
   return (
     <div>
-      {cart ? (
+      {!cart ? (
         <h3>
           Your shopping cart looks empty, but that's okay. You can browse our
           vast catalog of battleships <a href="/products">here.</a>
