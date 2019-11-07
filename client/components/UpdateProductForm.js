@@ -1,5 +1,5 @@
 import React from 'react'
-import {updateProduct} from '../store/singleProduct'
+import {changeProduct} from '../store/singleProduct'
 import {connect} from 'react-redux'
 import {Form} from 'semantic-ui-react'
 
@@ -128,7 +128,7 @@ const mapDispatchToProps = dispatch => {
         description: evt.target.value.description
       }
       evt.target.reset()
-      dispatch(updateProduct(product))
+      dispatch(changeProduct(product))
     },
     handleChange(evt) {
       this.setState({
