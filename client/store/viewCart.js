@@ -28,6 +28,15 @@ export const fetchCart = () => async dispatch => {
   }
 }
 
+export const addToCart = productToAdd => async dispatch => {
+  try {
+    const {data} = await axios.put(`/api/orders/cart`, productToAdd)
+    console.log(data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 /**
  * REDUCER
  */
