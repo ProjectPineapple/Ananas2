@@ -19,7 +19,6 @@ const UserHome = props => {
     <h1>Admin</h1>
   ) : (
     <div>
-      {/* Figuring out best UI for positioning */}
       <Button.Group floated="right">
         <Button animated onClick={handleClickShowCart}>
           <Button.Content visible>
