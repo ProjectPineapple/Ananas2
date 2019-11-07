@@ -75,6 +75,7 @@ router.delete('/cart', async (req, res, next) => {
 
 router.post('/cart', async (req, res, next) => {
   try {
+    console.log(req.body)
     await Order.addLineItem(req.params.orderId, req.params.productId)
   } catch (error) {
     next(error)

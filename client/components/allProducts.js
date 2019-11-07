@@ -22,7 +22,7 @@ const AllProducts = props => {
   const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllProducts(), createProduct(), addToCart())
+    dispatch(fetchAllProducts())
   }, [])
 
   //ADD ADDTOCART THUNK HERE!
