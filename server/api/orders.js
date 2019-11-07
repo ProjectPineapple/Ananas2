@@ -12,14 +12,14 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:orderId', async (req, res, next) => {
-  try {
-    const order = await Order.findByPk(req.params.orderId)
-    res.json(order)
-  } catch (err) {
-    next(err)
-  }
-})
+// router.get('/:orderId', async (req, res, next) => {
+//   try {
+//     const order = await Order.findByPk(req.params.orderId)
+//     res.json(order)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 router.get('/cart', async (req, res, next) => {
   try {
@@ -66,7 +66,7 @@ router.delete('/cart', async (req, res, next) => {
     })
     console.log(req.body)
     /*const productToDelete = await Product.findOne({
-       where: { id: req.body.productId} 
+       where: { id: req.body.productId}
        })*/
   } catch (err) {
     next(err)
