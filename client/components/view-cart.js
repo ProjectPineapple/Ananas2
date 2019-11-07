@@ -14,6 +14,11 @@ const ViewCart = props => {
   const products = useSelector(state => state.viewCart.products) || []
   const orderLineItems =
     useSelector(state => state.viewCart.OrderLineItems) || []
+  const subtotal = orderLineItems.reduce(
+    (priceSoFar, nextItem) =>
+      priceSoFar + nextItem.priceAtPurchase * nextItem.quantity,
+    0
+  )
 
   return products.length === 0 ? (
     <h1>Your cart is empty!</h1>
@@ -67,6 +72,9 @@ const ViewCart = props => {
           </Grid.Column>
         </Grid.Row>
       ))}
+      <Grid.Row>
+        <h2 align="right">Subtotal: ${commaSeparateNumber(subtotal / 100)}</h2>
+      </Grid.Row>
     </Grid>
   )
 }
