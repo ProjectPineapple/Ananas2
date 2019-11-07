@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux'
 import PropTypes from 'prop-types'
 
 import ViewCart from './ViewCart'
-import UserHomeView from './user-home-view'
 
 import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
 
