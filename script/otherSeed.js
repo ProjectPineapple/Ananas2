@@ -30,7 +30,7 @@ const dummyProducts = [
   //admin dummy user
   {
     status: false,
-    battleshipName: 'Warspite',
+    name: 'Warspite',
     stock: 0,
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
@@ -41,7 +41,7 @@ const dummyProducts = [
   },
   {
     status: true,
-    battleshipName: 'U.S.S. Maine',
+    name: 'U.S.S. Maine',
     stock: 1,
     description:
       'USS Main (ACR-1) was a U.S. Navy ship that sank in Havana Harbor. It has been recently restored to previous glory.',
@@ -55,7 +55,7 @@ const dummyProducts = [
   // no photo
   {
     status: true,
-    battleshipName: 'U.S.S. Indiana',
+    name: 'U.S.S. Indiana',
     stock: 10,
     description:
       'USS Indiana transported cows and corn for the troops. It still has corn. Yum! And ... a distinct smell.',
@@ -65,7 +65,7 @@ const dummyProducts = [
   // no stock given
   {
     status: false,
-    battleshipName: 'Roma',
+    name: 'Roma',
     description: 'Roma. What a ship. What a battle.',
     price: 10000007,
     photo:
@@ -259,7 +259,7 @@ const smallSeed = async () => {
 
     //   const product = {
     //     status: faker.random.boolean(),
-    //     battleshipName:
+    //     name:
     //       'U.S.S.' + faker.name.firstName() + faker.name.lastName(),
     //     stock: Math.round(Math.random() * 100),
     //     description: faker.lorem.text(),
