@@ -39,7 +39,8 @@ const Product = db.define('product', {
   photos: {
     type: Sequelize.ARRAY(Sequelize.STRING),
     defaultValue: [
-      `http://www.clker.com/cliparts/9/4/0/a/12065710151188118221nicubunu_RPG_map_symbols_Shipwreck.svg.med.png`
+      `https://cdn.dribbble.com/users/149276/screenshots/3017010/sad-pirate-ship.png`
+      //      `http://www.clker.com/cliparts/9/4/0/a/12065710151188118221nicubunu_RPG_map_symbols_Shipwreck.svg.med.png`
     ]
   }
   // include: Review, Order
