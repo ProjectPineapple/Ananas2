@@ -58,26 +58,27 @@ router.post('/cart', async (req, res, next) => {
   }
 })
 
-router.put('/cart', async (req, res, next) => {
-  try {
-    const session = await Session.findOne({
-      where: {
-        sid: req.sessionID
-      }
-    })
-    const whereClause = {}
-    whereClause.status = 'in-cart'
-    if (req.user) whereClause.userId = req.user.id
-    else whereClause.SessionId = session.id
-    const cart = await Order.findOne({
-      where: whereClause
-    })
-    console.log(req.body)
-    /*const productToAdd = await Product.findOne({
-      where: { id: req.body.productId}
-    })*/
+router.put('/:orderId', async (req, res, next) => {
 
-    // cart.addProducts(
+  try {
+    // const session = await Session.findOne({
+    //   where: {
+    //     sid: req.sessionID
+    //   }
+    // })
+
+    const orderId = Number(req.params.orderId)
+    const productId = Number(req.body.productId)
+    const qty = 1
+    const price = 100000000
+    const cart = await Order.findOne({
+      where: {id: orderId}
+    })
+    console.log('Req.body in /:orderId', req.body)
+    //check if order contains product with the same id; if so ...
+    const lineItem = await Order.updateLineItem(orderId, productId, qty, price)
+
+    console.log('lineItem in /:orderId', lineItem)
   } catch (err) {
     next(err)
   }

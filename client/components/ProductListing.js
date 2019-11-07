@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {addOrderItem} from '../store/singleOrder'
+
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
 
@@ -10,6 +11,7 @@ const ProductListing = props => {
   const isAdmin = user.status === 'admin'
   const product = useSelector(state => state.singleProduct)
   const order = useSelector(state => state.viewCart)
+
   const productId = +props.match.params.productId
   const dispatch = useDispatch()
 
@@ -23,6 +25,7 @@ const ProductListing = props => {
   } else {
     return (
       <Segment basic textAlign="center">
+
         <h1>{product.name}</h1>{' '}
         <Button onClick={() => addOrderItem(product.id, order.id)}>
           Add to Cart

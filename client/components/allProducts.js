@@ -1,22 +1,34 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
+import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {Grid, Rating, Button, Item} from 'semantic-ui-react'
+import {addToCart} from '../store/viewCart'
+
+import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
+
+// from https://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
+const commaSeparateNumber = val => {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+  return val
+}
 
 const AllProducts = props => {
   const [isClicked, setIsClicked] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const products = useSelector(state => state.allProducts)
+  const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllProducts(), createProduct())
+    dispatch(fetchAllProducts(), createProduct(), addToCart())
   }, [])
 
-  // const checkIsAdmin = props => {
-  //   console.log(props)
-  //   setIsAdmin(state => ({isActive: !state.isActive}))
-  // }
+  //ADD ADDTOCART THUNK HERE!
+  const handleClickAdd = event => {
+    dispatch(addToCart(+event.target.value, orderLineItems))
+  }
 
   return products === undefined || !products.length ? (
     <h1>No Products</h1>
@@ -31,35 +43,26 @@ const AllProducts = props => {
             <Link to={`/products/${product.id}`}>
               <Item.Header>{product.name}</Item.Header>
             </Link>
-            <Item.Meta>
-              <span>Price ${product.price}</span>
-            </Item.Meta>
             <Rating
               icon="star"
               defaultRating={product.stars}
               maxRating={5}
               disabled
             />
+            <Item.Meta>
+              <span>Price ${commaSeparateNumber(product.price / 100)}</span>
+            </Item.Meta>
             <Item.Description>
               {product.description.slice(0, 80)}
             </Item.Description>
-            {/* AddNewButton (createProduct thunk) works; will use path(?) to determine if isAdmin === true */}
-            {/* <Button
-              onClick={() =>
-                dispatch(
-                  createProduct({
-                    name: 'U.S.S. Testing Add Product Thunk',
-                    description:
-                      "Intrepid. Retrofitted. Perfect for a billionaire's pool.",
-                    stock: 43,
-                    tags: ['Pool-side', 'battleship', 'gently used'],
-                    price: 430000000
-                  })
-                )
-              }
+            <Button
+              icon
+              color="teal"
+              onClick={handleClickAdd}
+              value={product.id}
             >
-              Add New Product
-            </Button> */}
+              <Icon name="cart plus" /> Add to Cart
+            </Button>
           </Item.Content>
         </Grid.Column>
       ))}
@@ -67,4 +70,4 @@ const AllProducts = props => {
   )
 }
 
-export default AllProducts
+export default withRouter(AllProducts)

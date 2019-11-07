@@ -1,84 +1,48 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import PropTypes from 'prop-types'
-import {Button, Image, Icon} from 'semantic-ui-react'
+import ViewCart from './view-cart'
+import UserHomeView from './user-home-view'
+import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
 
 const UserHome = props => {
-  // let [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
+  const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
+
+  const panes = [
+    {
+      menuItem: {key: 'cart', icon: 'shopping basket', content: 'Cart'},
+      render: () => (
+        <Tab.Pane>
+          <ViewCart cart={cart} />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: {key: 'order', icon: 'history', content: 'Orders'},
+      render: () => <Tab.Pane>Your Orders!</Tab.Pane>
+    },
+    {
+      menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
+      render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
+    }
+  ]
 
   return !isAdminStatus ? (
     <h1>Admin</h1>
   ) : (
     <div>
-      {/* Figuring out best UI for positioning */}
-      <Button.Group floated="right">
-        <Button animated>
-          <Button.Content visible>
-            <Icon name="shopping basket" />
-          </Button.Content>
-          <Button.Content hidden>Cart</Button.Content>
-        </Button>
-        <Button animated>
-          <Button.Content visible>
-            <Icon name="history" />
-          </Button.Content>
-          <Button.Content hidden> Orders</Button.Content>
-        </Button>
-        <Button animated>
-          <Button.Content visible>
-            <Icon name="edit" />
-          </Button.Content>
-          <Button.Content hidden> Edit Profile</Button.Content>
-        </Button>
-      </Button.Group>
-      <h2>Welcome back, {user.email}</h2>
-      <Image src="https://picsum.photos/100/100" circular />
-      {/* Prompt customer to browse catalog if cart empty OR make purchase if cart has items */}
-      {/* Need case where user has no orders with "in-cart" status */}
-      {!user.orders ? (
-        <h3>
-          Your shopping cart looks empty, but that's okay. You can browse our
-          vast catalog of battleships <a href="/products">here.</a>
-        </h3>
-      ) : (
-        <h3>
-          You've got some items in your shopping cart. You can keep browsing our
-          vast catalog of battleships
-          <a href="/products">here</a> or <a href="/cart">go to your cart</a>to
-          check out!
-        </h3>
-      )}
-      {/* EDIT PROFILE - BUILD EDIT PROFILE COMPONENT (email, pwd, name, default addresses) */}
-      {/* <Button
-        type="submit"
-        onClick={setIsClicked(state => ({
-          isClicked: !state.isClicked
-        }))}
-      >
-        Edit Profile
-      </Button> */}
+      <div>
+        <h2>Welcome back, {user.email}!</h2>
+        <Image src="https://picsum.photos/100/100" circular />
+        <UserHomeView cart={cart} />
+      </div>
+      <br />
+      <br />
+      <Tab panes={panes} />
     </div>
   )
-}
-
-/**
- * CONTAINER
- */
-// const mapState = state => {
-//   return {
-//     email: state.user.email
-//   }
-// }
-
-// export default connect(mapState)(UserHome)
-
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  email: PropTypes.string
 }
 
 export default UserHome

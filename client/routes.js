@@ -2,7 +2,16 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AllProducts} from './components'
+import {
+  Login,
+  Signup,
+  UserHome,
+  AllProducts,
+  ProductListing,
+  UpdateProductForm,
+  AddProductForm,
+  checkoutForm
+} from './components'
 import ViewCart from './components/view-cart.js'
 import {me} from './store'
 
@@ -15,24 +24,26 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn} = this.props
+    const {isLoggedIn, isAdmin} = this.props
 
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
-        <Route path="/products" component={AllProducts} />
+        <Route exact path="/products" component={AllProducts} />
+        <Route exact path="/products/:productId" component={ProductListing} />
         <Route path="/signup" component={Signup} />
         <Route path="/cart" render={() => <ViewCart />} />
+        <Route path="/cart/checkout" component={checkoutForm} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route exact path="/home" component={UserHome} />
+            <Route path="/" component={UserHome} />
           </Switch>
         )}
-        {/* from boilermaker:
-	      Displays our Login component as a fallback
-              <Route component={Login} /> */}
+        <Route path="/" component={Signup} />
+        {/* add redirect to home on urls that don't exist */}
       </Switch>
     )
   }
@@ -45,7 +56,8 @@ const mapState = state => {
   return {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: state.user.status === 'admin'
   }
 }
 
