@@ -230,8 +230,7 @@ const bigSeed = async () => {
 
       const product = {
         status: faker.random.boolean(),
-        battleshipName:
-          'U.S.S.' + faker.name.firstName() + ' ' + faker.name.lastName(),
+        name: 'U.S.S.' + faker.name.firstName() + ' ' + faker.name.lastName(),
         stock: Math.round(Math.random() * 100),
         description: faker.lorem.text(),
         price: faker.random.number(),
