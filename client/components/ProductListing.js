@@ -9,7 +9,8 @@ import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
-  const [isAdmin, setIsAdmin] = useState(false)
+  const user = useSelector(state => state.user)
+  const isAdmin = user.status === 'admin'
   const product = useSelector(state => state.singleProduct)
   const productId = +props.match.params.productId
   const dispatch = useDispatch()
@@ -25,12 +26,12 @@ const ProductListing = props => {
     return (
       <Segment basic textAlign="center">
         <h1>{product.name}</h1>
-        {isAdmin && (
+        {isAdmin ? (
           <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
-        )}
-        {isAdmin && (
+        ) : null}
+        {isAdmin ? (
           <Button onClick={() => <UpdateProjectForm />}>Update</Button>
-        )}
+        ) : null}
         {product.photos.map(photo => {
           return (
             <Image
@@ -41,7 +42,7 @@ const ProductListing = props => {
             />
           )
         })}
-        <h3>{product.stock}</h3>
+        <h3>Stock: {product.stock}</h3>
         <h3>{product.description}</h3>
         {product.tags.map(tag => {
           return (

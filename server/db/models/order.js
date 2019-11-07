@@ -98,8 +98,6 @@ Order.addLineItem = async (orderId, productId, quantity = 1) => {
     productId: product.id,
     orderId: order.id
   })
-  order.addOrderLineItem(newLineItem)
-  product.addOrderLineItem(newLineItem)
 }
 
 // Method to add a line item to the OrderLineItem table that refers to this order

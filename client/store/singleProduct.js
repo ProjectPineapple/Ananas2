@@ -9,10 +9,8 @@ const removeProduct = productId => ({type: REMOVE_PRODUCT, productId})
 const updateProduct = product => ({type: UPDATE_PRODUCT, product})
 
 export const fetchSingleProduct = productId => {
-  console.log('in the thunkcreator')
   return async dispatch => {
     try {
-      console.log('in the try')
       const {data} = await axios.get(`/api/products/${productId}`)
       dispatch(setSingleProduct(data))
     } catch (err) {

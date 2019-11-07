@@ -38,3 +38,12 @@ form div {
   margin-top: 3rem;
   margin-left: 2rem;
 }
+
+.navbar {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 10vh;
+  background-color: black;
+  padding: 20px;
+}
