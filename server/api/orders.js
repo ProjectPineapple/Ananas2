@@ -12,19 +12,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    const lineItem = await Order.addLineItem(
-      req.params.orderId,
-      req.params.productId
-    )
-    const order = await Order.findByPk(req.params.orderId)
-    res.json(order)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.get('/:orderId', async (req, res, next) => {
   try {
     const order = await Order.findByPk(req.params.orderId)
