@@ -10,9 +10,9 @@ import {
   ProductListing,
   UpdateProductForm,
   AddProductForm,
-  checkoutForm
+  checkoutForm,
+  ViewCart
 } from './components'
-import ViewCart from './components/view-cart.js'
 import {me} from './store'
 
 /**

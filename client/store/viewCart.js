@@ -33,6 +33,20 @@ export const fetchCart = () => async dispatch => {
 
 export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
   try {
+
+    const {data} = await axios.post(`/api/orders/cart`, productToAdd)
+    console.log(data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const removeFromCart = productToDelete => async dispatch => {
+  try {
+    const {data} = await axios.delete(`/api/orders/cart`, productToDelete)
+    console.log(data)
+
+    
     if (orderLineItems.includes(productId)) {
       const {data} = await axios.put(`/api/orders/${orderLineItems.orderId}`, {
         productId: productId
@@ -45,6 +59,8 @@ export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
       dispatch(addToCart(data))
     }
     // await OrderLineItem.find({where: {productId: productId}})
+
+    
   } catch (err) {
     console.log(err)
   }

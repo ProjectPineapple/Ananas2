@@ -12,15 +12,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:orderId', async (req, res, next) => {
-  try {
-    const order = await Order.findByPk(req.params.orderId)
-    res.json(order)
-  } catch (err) {
-    next(err)
-  }
-})
-
 router.get('/cart', async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -50,7 +41,6 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
-
 router.delete('/cart', async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -74,40 +64,27 @@ router.delete('/cart', async (req, res, next) => {
   }
 })
 
-
 router.post('/cart', async (req, res, next) => {
   try {
-    await Order.addLineItem(req.params.orderId, req.params.productId)
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.put('/:orderId', async (req, res, next) => {
-
-  try {
-    // const session = await Session.findOne({
-    //   where: {
-    //     sid: req.sessionID
-    //   }
-    // })
-
-    const orderId = Number(req.params.orderId)
-    const productId = Number(req.body.productId)
-    const qty = 1
-    const price = 100000000
-    const cart = await Order.findOne({
-      where: {id: orderId}
+    const session = await Session.findOne({
+      where: {
+        sid: req.sessionID
+      }
     })
+    const whereClause = {}
+    whereClause.status = 'in-cart'
+    if (req.user) whereClause.userId = req.user.id
+    else whereClause.SessionId = session.id
+    const cart = await Order.findOne({
+      where: whereClause
+    })
+    console.log(req.body)
+    /*const productToAdd = await Product.findOne({
+       where: { id: req.body.productId} 
+       })*/
 
-    const lineItem = await Order.updateLineItem(orderId, productId, qty, price)
-
-    console.log('lineItem in /:orderId', lineItem)
+    // cart.addProducts(
   } catch (err) {
     next(err)
   }
-})
-
-router.put('/cart', async (req, res, next) => {
-  console.log(req.body)
 })
