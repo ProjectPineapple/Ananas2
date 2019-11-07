@@ -228,7 +228,6 @@ const smallSeed = async () => {
     //Associations
     //User has many orders (orders belongsTo user)
     let admin = seededUsers[0]
-    console.log(seededUsers[0])
     await admin.setOrders(seededOrders)
 
     //User has many reviews (reviews belongTo user)
