@@ -8,10 +8,8 @@ export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
 export {default as AllProducts} from './allProducts'
 export {default as ProductListing} from './ProductListing'
-
+export {default as checkoutForm} from './checkoutForm'
 export {default as ViewCart} from './ViewCart'
-
-export {default as AddProductsForm} from './AddProductForm'
-export {default as UpdateProductsForm} from './UpdateProductForm'
+export {default as AddProductForm} from './AddProductForm'
+export {default as UpdateProductForm} from './UpdateProductForm'
 export {default as AllOrders} from './AllOrders'
-

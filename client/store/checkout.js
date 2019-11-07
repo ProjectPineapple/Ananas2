@@ -5,6 +5,8 @@ import {getUser} from './user'
 /**
  * ACTION TYPES
  */
+const SET_FIRSTNAME = 'SET_FIRSTNAME'
+const SET_LASTNAME = 'SET_LASTNAME'
 const SET_EMAIL = 'SET_EMAIL'
 const SET_BILLING_ADDRESS = 'SET_BILLING_ADDRESS'
 const SET_MAILING_ADDRESS = 'SET_MAILING_ADDRESS'
@@ -17,16 +19,19 @@ const RESET_FORM = 'RESET_FORM'
  * INITIAL STATE
  */
 const blankForm = {
+  firstName: '',
+  lastName: '',
   email: '',
   billingAddress: '',
   mailingAddress: '',
-  paymentMethod: ''
+  paymentMethod: 'stripe'
 }
 
 /**
  * ACTION CREATORS
  */
-
+export const setFirstName = firstName => ({type: SET_FIRSTNAME, firstName})
+export const setLastName = lastName => ({type: SET_LASTNAME, lastName})
 export const setEmail = email => ({type: SET_EMAIL, email})
 export const setBillingAddress = billingAddress => ({
   type: SET_BILLING_ADDRESS,
@@ -45,6 +50,12 @@ export const resetForm = () => ({type: RESET_FORM})
 /**
  * THUNK CREATORS
  */
+
+export const checkoutOrder = (formData, orderId, history) => {
+  return async dispatch => {
+    const {data} = await axios.put('/api/orders/checkout', {formData, orderId})
+  }
+}
 
 //save user thunk goes here, for currently unauth users
 //basically takes form data on submit and makes a user
@@ -67,6 +78,10 @@ export const createUser = (formData, history) => {
  */
 export default function(state = blankForm, action) {
   switch (action.type) {
+    case SET_FIRSTNAME:
+      return {...state, firstName: action.firstName}
+    case SET_LASTNAME:
+      return {...state, lastName: action.lastName}
     case SET_EMAIL:
       return {...state, email: action.email}
     case SET_BILLING_ADDRESS:
