@@ -8,14 +8,14 @@ const totalSeeds = 100
 const dummyUsers = [
   //admin dummy user
   {
-    name: faker.name.firstName() + faker.name.lastName(),
+    name: faker.name.firstName() + ' ' + faker.name.lastName(),
     email: 'steve@steve.com',
     password: '12345',
     status: 'admin',
     googleId: faker.random.uuid(),
     facebookId: faker.random.uuid(),
-    defaultBilling: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
-    defaultShipping: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    defaultBillingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    defaultShippingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
     addresses: [this.defaultBilling, this.defaultShipping]
   }
 
@@ -35,8 +35,9 @@ const dummyProducts = [
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
     price: 430000000,
-    photo:
-      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
+    photos: [
+      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg'
+    ],
     tags: ['British', 'battleship', 'gently used']
   },
   {
@@ -46,8 +47,9 @@ const dummyProducts = [
     description:
       'USS Main (ACR-1) was a U.S. Navy ship that sank in Havana Harbor. It has been recently restored to previous glory.',
     price: 4000000,
-    photo:
-      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
+    photos: [
+      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg'
+    ],
     tags: ['U.S.', 'cruiser', 'naval', 'retrofitted']
   },
 
@@ -68,8 +70,9 @@ const dummyProducts = [
     name: 'Roma',
     description: 'Roma. What a ship. What a battle.',
     price: 10000007,
-    photo:
-      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg',
+    photos: [
+      'https://upload.wikimedia.org/wikipedia/commons/c/c0/HMS_Warspite%2C_Indian_Ocean_1942.jpg'
+    ],
     tags: ['Italian', 'cruiser', 'naval', 'retrofitted']
   }
 ]
