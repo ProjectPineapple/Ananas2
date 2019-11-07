@@ -1,28 +1,34 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
+import {
+  fetchSingleProduct,
+  deleteProduct,
+  changeProduct
+} from '../store/singleProduct'
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
   const [isAdmin, setIsAdmin] = useState(false)
   const product = useSelector(state => state.singleProduct)
-  const productId = Number(this.props.match.params.id)
+  const productId = +props.match.params.productId
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(fetchSingleProduct(productId))
   }, [])
 
+  console.log('product', product)
   if (!product) {
     return <div>'No Ship'</div>
   } else {
     return (
       <Segment basic textAlign="center">
         <h1>{product.name}</h1>
-        {this.state.isAdmin && (
+        {isAdmin && (
           <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
         )}
-        {this.state.isAdmin && (
+        {isAdmin && (
           <Button onClick={() => <UpdateProjectForm />}>Update</Button>
         )}
         {product.photos.map(photo => {
@@ -58,7 +64,7 @@ const ProductListing = props => {
           </p>
         ) : (
           <div>No Reviews</div>
-        )})
+        )}
       </Segment>
     )
   }
