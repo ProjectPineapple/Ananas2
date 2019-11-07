@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const {Product, OrderLineItem} = require('./index')
+const OrderLineItem = require('./OrderLineItem')
+const Product = require('./product')
 
 const Order = db.define(
   'order',
@@ -88,19 +89,23 @@ const Order = db.define(
 
 // Method to add a line item to the OrderLineItem table that refers to this order
 // NOTE THAT THIS RETURNS A PROMISE
-Order.prototype.addLineItem = async (productId, quantity = 1) => {
+Order.addLineItem = async (orderId, productId, quantity = 1) => {
   const product = await Product.findByPk(productId)
+  const order = await Order.findByPk(orderId)
   const newLineItem = await OrderLineItem.create({
     quantity,
-    priceAtPurchase: product.price
+    priceAtPurchase: product.price,
+    productId: product.id,
+    orderId: order.id
   })
-  this.addOrderLineItem(newLineItem)
+  order.addOrderLineItem(newLineItem)
   product.addOrderLineItem(newLineItem)
 }
 
 // Method to add a line item to the OrderLineItem table that refers to this order
 // NOTE THAT THIS RETURNS A PROMISE
-Order.prototype.updateLineItem = async (
+Order.updateLineItem = async (
+  orderId,
   productId,
   quantity,
   priceAtPurchase
@@ -109,7 +114,7 @@ Order.prototype.updateLineItem = async (
     const lineItemToUpdate = await OrderLineItem.update(
       {quantity, priceAtPurchase},
       {
-        where: {productId: productId, orderId: this.id}
+        where: {productId: productId, orderId: orderId}
       }
     )
     return lineItemToUpdate
@@ -119,9 +124,9 @@ Order.prototype.updateLineItem = async (
   }
 }
 
-Order.prototype.deleteLineItem = async productId => {
+Order.deleteLineItem = async (orderId, productId) => {
   try {
-    await OrderLineItem.destroy({where: {productId, orderId: this.id}})
+    await OrderLineItem.destroy({where: {productId, orderId}})
   } catch (error) {
     console.error(error)
     return error
