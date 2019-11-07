@@ -4,13 +4,15 @@ const SET_SINGLE_PRODUCT = 'SET_SINGLE_PRODUCT'
 const REMOVE_PRODUCT = 'REMOVE_PRODUCT'
 const UPDATE_PRODUCT = 'UPDATE_PRODUCT'
 
-export const setSingleProduct = product => ({type: SET_SINGLE_PRODUCT, product})
-export const removeProduct = productId => ({type: REMOVE_PRODUCT, productId})
-export const updateProduct = product => ({type: UPDATE_PRODUCT, product})
+const setSingleProduct = product => ({type: SET_SINGLE_PRODUCT, product})
+const removeProduct = productId => ({type: REMOVE_PRODUCT, productId})
+const updateProduct = product => ({type: UPDATE_PRODUCT, product})
 
 export const fetchSingleProduct = productId => {
+  console.log('in the thunkcreator')
   return async dispatch => {
     try {
+      console.log('in the try')
       const {data} = await axios.get(`/api/products/${productId}`)
       dispatch(setSingleProduct(data))
     } catch (err) {
@@ -39,7 +41,7 @@ export const changeProduct = (product, productId) => {
   }
 }
 
-const initialState = {}
+const initialState = null
 
 const singleProduct = (state = initialState, action) => {
   switch (action.type) {
