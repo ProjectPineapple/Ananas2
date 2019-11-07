@@ -41,6 +41,14 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
+router.post('/', async (req, res, next) => {
+  try {
+    await Order.addLineItem(req.params.orderId, req.params.productId)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.put('/cart', async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -57,7 +65,7 @@ router.put('/cart', async (req, res, next) => {
     })
     console.log(req.body)
     /*const productToAdd = await Product.findOne({
-      where: { id: req.body.productId} 
+      where: { id: req.body.productId}
     })*/
 
     // cart.addProducts(
