@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
+import UpdateProjectForm from './UpdateProductForm'
 
 class ProductListing extends React.Component {
   constructor(props) {
@@ -26,9 +27,11 @@ class ProductListing extends React.Component {
           {this.state.isAdmin && (
             <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
           )}
-          {/* {this.state.isAdmin && (
-            <Button onClick={() => <ProjectForm />}>Update</Button>
-          )} */}
+          {this.state.isAdmin && (
+            <Button onClick={() => <UpdateProjectForm product={product} />}>
+              Update
+            </Button>
+          )}
           {product.photos.map(photo => {
             return (
               <Image
@@ -43,7 +46,7 @@ class ProductListing extends React.Component {
           <h3>{product.description}</h3>
           {product.tags.map(tag => {
             return (
-              <Label as="a" key={tag.id} tag>
+              <Label key={tag.id} tag>
                 {tag}
               </Label>
             )
