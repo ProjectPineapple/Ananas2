@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import PropTypes from 'prop-types'
 import ViewCart from './view-cart'
+import UserHomeView from './user-home-view'
 import {Button, Image, Icon} from 'semantic-ui-react'
 
 const UserHome = props => {
@@ -10,21 +11,8 @@ const UserHome = props => {
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
-  const handleClickShowCart = () => {
+  function handleClickShowCart() {
     setIsClickedShowCart(!isClickedShowCart)
-    console.log(isClickedShowCart)
-    return isClickedShowCart ? (
-      <div>
-        <ViewCart cart={cart} />
-      </div>
-    ) : (
-      <div>
-        <h2>
-          "Your shopping cart is empty. Browse for battleships{' '}
-          <a href="/products"> here!</a>"
-        </h2>
-      </div>
-    )
   }
 
   return !isAdminStatus ? (
@@ -52,32 +40,15 @@ const UserHome = props => {
           <Button.Content hidden> Edit Profile</Button.Content>
         </Button>
       </Button.Group>
-      <h2>Welcome back, {user.email}</h2>
+      <h2>Welcome back, {user.email}!</h2>
       <Image src="https://picsum.photos/100/100" circular />
-      {/* Prompt customer to browse catalog if cart empty OR make purchase if cart has items */}
-      {/* Need case where user has no orders with "in-cart" status */}
-      {!cart ? (
-        <h3>
-          Your shopping cart looks empty, but that's okay. You can browse our
-          vast catalog of battleships <a href="/products">here.</a>
-        </h3>
+      <br />
+      <br />
+      {isClickedShowCart ? (
+        <ViewCart cart={cart} />
       ) : (
-        <h3>
-          You've got some items in your shopping cart. You can keep browsing our
-          vast catalog of battleships
-          <a href="/products"> here</a> or <a href="/cart">go to your cart </a>to
-          check out!
-        </h3>
+        <UserHomeView user={user} cart={cart} />
       )}
-      {/* EDIT PROFILE - BUILD EDIT PROFILE COMPONENT (email, pwd, name, default addresses) */}
-      {/* <Button
-        type="submit"
-        onClick={setIsClicked(state => ({
-          isClicked: !state.isClicked
-        }))}
-      >
-        Edit Profile
-      </Button> */}
     </div>
   )
 }
