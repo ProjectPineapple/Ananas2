@@ -1,12 +1,31 @@
 import React, {useState} from 'react'
 import {useSelector} from 'react-redux'
 import PropTypes from 'prop-types'
+import ViewCart from './view-cart'
 import {Button, Image, Icon} from 'semantic-ui-react'
 
 const UserHome = props => {
-  // let [isClicked, setIsClicked] = useState(false)
+  let [isClickedShowCart, setIsClickedShowCart] = useState(false)
   const user = useSelector(state => state.user)
+  const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
+
+  const handleClickShowCart = () => {
+    setIsClickedShowCart(!isClickedShowCart)
+    console.log(isClickedShowCart)
+    return isClickedShowCart ? (
+      <div>
+        <ViewCart cart={cart} />
+      </div>
+    ) : (
+      <div>
+        <h2>
+          "Your shopping cart is empty. Browse for battleships{' '}
+          <a href="/products"> here!</a>"
+        </h2>
+      </div>
+    )
+  }
 
   return !isAdminStatus ? (
     <h1>Admin</h1>
@@ -14,7 +33,7 @@ const UserHome = props => {
     <div>
       {/* Figuring out best UI for positioning */}
       <Button.Group floated="right">
-        <Button animated>
+        <Button animated onClick={handleClickShowCart}>
           <Button.Content visible>
             <Icon name="shopping basket" />
           </Button.Content>
@@ -37,7 +56,7 @@ const UserHome = props => {
       <Image src="https://picsum.photos/100/100" circular />
       {/* Prompt customer to browse catalog if cart empty OR make purchase if cart has items */}
       {/* Need case where user has no orders with "in-cart" status */}
-      {!user.orders ? (
+      {!cart ? (
         <h3>
           Your shopping cart looks empty, but that's okay. You can browse our
           vast catalog of battleships <a href="/products">here.</a>
@@ -46,7 +65,7 @@ const UserHome = props => {
         <h3>
           You've got some items in your shopping cart. You can keep browsing our
           vast catalog of battleships
-          <a href="/products">here</a> or <a href="/cart">go to your cart</a>to
+          <a href="/products"> here</a> or <a href="/cart">go to your cart </a>to
           check out!
         </h3>
       )}
