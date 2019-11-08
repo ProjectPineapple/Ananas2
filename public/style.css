@@ -47,3 +47,11 @@ form div {
   background-color: black;
   padding: 20px;
 }
+
+.greentext {
+  color: green;
+}
+
+.redtext {
+  color: red;
+}

@@ -10,7 +10,6 @@ export const fetchUserOrders = userId => {
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/orders/ownedbyuser/${userId}`)
-      console.log(data)
       dispatch(setUserOrders(data))
     } catch (err) {
       console.error(err)

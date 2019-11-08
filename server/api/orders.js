@@ -5,7 +5,7 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const orders = await Order.findAll({})
+    const orders = await Order.findAll({include: {model: OrderLineItem}})
     res.json(orders)
   } catch (err) {
     next(err)
@@ -52,7 +52,10 @@ router.get('/cart', async (req, res, next) => {
 
 router.get('/ownedbyuser/:userId', async (req, res, next) => {
   try {
-    const orders = await Order.findAll({where: {userId: req.params.userId}})
+    const orders = await Order.findAll({
+      where: {userId: req.params.userId},
+      include: {model: OrderLineItem}
+    })
     res.json(orders)
   } catch (err) {
     next(err)
