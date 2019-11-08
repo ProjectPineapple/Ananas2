@@ -6,7 +6,7 @@ const UPDATE_PRODUCT = 'UPDATE_PRODUCT'
 
 const setSingleProduct = product => ({type: SET_SINGLE_PRODUCT, product})
 const removeProduct = productId => ({type: REMOVE_PRODUCT, productId})
-const updateProduct = product => ({type: UPDATE_PRODUCT, product})
+export const updateProduct = product => ({type: UPDATE_PRODUCT, product})
 
 export const fetchSingleProduct = productId => {
   return async dispatch => {
@@ -30,8 +30,13 @@ export const deleteProduct = productId => {
 }
 export const changeProduct = (product, productId) => {
   return async dispatch => {
+    console.log('intheThunk')
     try {
+      console.log('inthetry')
+      console.log('productId', productId)
+      console.log('product', product)
       const {data} = await axios.put(`/api/products/${productId}`, product)
+      console.log(data)
       dispatch(updateProduct(data))
     } catch (error) {
       console.log(error)

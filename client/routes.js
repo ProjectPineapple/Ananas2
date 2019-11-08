@@ -49,6 +49,7 @@ class Routes extends Component {
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />
             <Route
+              exact
               path="/update/products/:productId"
               component={UpdateProductForm}
             />
