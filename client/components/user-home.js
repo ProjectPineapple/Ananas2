@@ -30,12 +30,10 @@ const UserHome = props => {
     }
   ]
 
-  return !isAdminStatus ? (
-    <h1>Admin</h1>
-  ) : (
+  return (
     <div>
       <div>
-        <h2>Welcome back, {user.email}!</h2>
+        <h2>Welcome {user.email || 'guest'}!</h2>
         <Image src="https://picsum.photos/100/100" circular />
       </div>
       <br />
