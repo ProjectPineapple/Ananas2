@@ -1,26 +1,24 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {fetchAllOrders} from '../store/allOrders'
+import {fetchUserOrders, resetUserOrders} from '../store/userOrders'
 import {Segment, Item} from 'semantic-ui-react'
 
-const AllOrders = props => {
-  const orders = useSelector(state => state.allOrders)
+const UserOrders = () => {
+  const orders = useSelector(state => state.userOrders)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllOrders())
+    dispatch(fetchUserOrders(user.id), [])
+    return () => {
+      dispatch(resetUserOrders())
+    }
   }, [])
 
-  return !orders.length ? (
-    <h1>No Orders</h1>
-  ) : (
+  return orders.length ? (
     <Segment>
       {orders.map(order => (
         <Item key={order.id}>
-          <Item.Header as="a">
-            {' '}
-            Order #: {order.id} User: {order.userId}
-          </Item.Header>
+          <Item.Header> Order #: {order.id}</Item.Header>
           <Item.Meta>
             <span>Status: {order.status}</span>{' '}
             <span>Subtotal: {order.subtotal}</span>
@@ -28,7 +26,9 @@ const AllOrders = props => {
         </Item>
       ))}
     </Segment>
+  ) : (
+    <h1>No Orders</h1>
   )
 }
 
-export default AllOrders
+export default UserOrders

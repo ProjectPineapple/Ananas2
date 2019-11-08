@@ -17,7 +17,7 @@ export const fetchAllOrders = () => {
 
 const initialState = []
 
-export const order = (state = initialState, action) => {
+const allOrders = (state = initialState, action) => {
   switch (action.type) {
     case SET_ORDERS:
       return action.orders
@@ -25,3 +25,5 @@ export const order = (state = initialState, action) => {
       return state
   }
 }
+
+export default allOrders

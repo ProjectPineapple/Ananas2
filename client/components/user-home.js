@@ -1,10 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useSelector} from 'react-redux'
-import PropTypes from 'prop-types'
-
 import ViewCart from './ViewCart'
-
-import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
+import {Image, Tab} from 'semantic-ui-react'
+import UserOrders from './UserOrders'
+import AllOrders from './AllOrders'
 
 const UserHome = props => {
   const user = useSelector(state => state.user)
@@ -27,21 +26,33 @@ const UserHome = props => {
       )
     },
     {
-      menuItem: {key: 'order', icon: 'history', content: `Orders`},
-      render: () => <Tab.Pane>Your Orders!</Tab.Pane>
+      menuItem: {key: 'order', icon: 'history', content: 'Orders'},
+      render: () => (
+        <Tab.Pane>
+          <UserOrders />
+        </Tab.Pane>
+      )
     },
     {
       menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
       render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
     }
   ]
+  if (isAdminStatus) {
+    panes.push({
+      menuItem: {key: 'order', icon: 'history', content: 'All Orders'},
+      render: () => (
+        <Tab.Pane>
+          <AllOrders />
+        </Tab.Pane>
+      )
+    })
+  }
 
-  return !isAdminStatus ? (
-    <h1>Admin</h1>
-  ) : (
+  return (
     <div>
       <div>
-        <h2>Welcome back, {user.email}!</h2>
+        <h2>Welcome {user.email || 'guest'}!</h2>
         <Image src="https://picsum.photos/100/100" circular />
       </div>
       <br />

@@ -34,7 +34,7 @@ router.get('/cart', async (req, res, next) => {
     else whereClause.SessionId = session.id
     const cart = await Order.findOrCreate({
       // where: whereClause,
-      where: {id: 1},
+      where: whereClause,
       include: [
         {
           model: OrderLineItem
@@ -45,6 +45,15 @@ router.get('/cart', async (req, res, next) => {
       ]
     })
     res.json(cart[0])
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/ownedbyuser/:userId', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({where: {userId: req.params.userId}})
+    res.json(orders)
   } catch (err) {
     next(err)
   }

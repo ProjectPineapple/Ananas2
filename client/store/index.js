@@ -9,11 +9,15 @@ import allProducts from './allProducts'
 import singleProduct from './singleProduct'
 import lineItem from './lineItem'
 import addProduct from './addProduct'
+import userOrders from './userOrders'
+import allOrders from './allOrders'
 
 const reducer = combineReducers({
   allProducts,
+  allOrders,
   singleProduct,
   user,
+  userOrders,
   checkout,
   viewCart,
   lineItem,
