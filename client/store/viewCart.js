@@ -5,7 +5,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_CART = 'GET_CART'
-const ADD_TO_CART = 'ADDTO_CART'
+const ADDTO_CART = 'ADDTO_CART'
 
 /**
  * ACTION CREATORS
