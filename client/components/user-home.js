@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import ViewCart from './ViewCart'
 
 import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
+import UserOrders from './UserOrders'
 
 const UserHome = props => {
   const user = useSelector(state => state.user)
@@ -22,7 +23,11 @@ const UserHome = props => {
     },
     {
       menuItem: {key: 'order', icon: 'history', content: 'Orders'},
-      render: () => <Tab.Pane>Your Orders!</Tab.Pane>
+      render: () => (
+        <Tab.Pane>
+          <UserOrders />
+        </Tab.Pane>
+      )
     },
     {
       menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},

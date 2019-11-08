@@ -50,6 +50,15 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
+router.get('/ownedbyuser/:userId', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({where: {userId: req.params.userId}})
+    res.json(orders)
+  } catch (err) {
+    next(err)
+  }
+})
+
 // router.post('/cart', async (req, res, next) => {
 //   try {
 //     console.log(req.body)
