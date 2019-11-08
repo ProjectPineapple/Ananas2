@@ -45,7 +45,6 @@ class Routes extends Component {
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
         <Route exact path="/home" component={UserHome} />
-        {/* Routes placed here are only available after logging in */}
         {isAdmin && (
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />

@@ -94,7 +94,7 @@ router.put('/:productId', async (req, res, next) => {
 router.delete('/:productId', async (req, res, next) => {
   try {
     await Product.destroy({where: {id: req.params.productId}})
-    res.status(204).end()
+    res.status(404).end()
   } catch (error) {
     next(error)
   }

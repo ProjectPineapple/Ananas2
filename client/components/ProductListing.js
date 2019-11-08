@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
-import {addOrderItem} from '../store/singleOrder'
 import {withRouter} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
@@ -25,19 +25,21 @@ const ProductListing = props => {
 
   console.log('product', product)
   if (!product) {
-    return <div>'No Ship'</div>
+    return <div>No Ship</div>
   } else {
     return (
       <Segment basic textAlign="center">
-        <h1>{product.name}</h1>{' '}
-        <Button onClick={() => addOrderItem(product.id, order.id)}>
-          Add to Cart
-        </Button>
+        <h1>{product.name}</h1>
+        {/* <Button onClick={() => }>Add to Cart</Button> */}
         {isAdmin ? (
-          <Button onClick={() => deleteProduct(product.id)}>Delete</Button>
+          <Button onClick={() => dispatch(deleteProduct(product.id))}>
+            Delete
+          </Button>
         ) : null}
         {isAdmin ? (
-          <Button onClick={() => <UpdateProjectForm />}>Update</Button>
+          <Button>
+            <Link to={`/update/products/${product.id}/`} />Update
+          </Button>
         ) : null}
         {product.photos.map(photo => {
           return (
