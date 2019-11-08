@@ -14,6 +14,8 @@ const AllProducts = props => {
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
   const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
+  const orderId = useSelector(state => state.viewCart.id)
+  console.log(orderId)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -21,7 +23,7 @@ const AllProducts = props => {
 
   //ADD ADDTOCART THUNK HERE!
   const handleClickAdd = event => {
-    dispatch(addToCartThunk(+event.target.value, orderLineItems))
+    dispatch(addToCartThunk(+event.target.value, orderId))
   }
 
   return products === undefined || !products.length ? (
