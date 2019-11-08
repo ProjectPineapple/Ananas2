@@ -8,7 +8,7 @@ import {Button, Segment, Image, Label} from 'semantic-ui-react'
 import ProductReviews from './ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
 
-import commaSeparateNumber from '../utilityMethods'
+import {commaSeparateNumber} from '../utilityMethods'
 // import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {

@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import {Grid, Image, Button, Segment, Icon} from 'semantic-ui-react'
 import {fetchCart} from '../store/viewCart'
 import {withRouter} from 'react-router'
-import commaSeparateNumber from '../utilityMethods'
+import {commaSeparateNumber, getActualQuantity} from '../utilityMethods'
 
 const ViewCart = ({history, match}) => {
   const products = useSelector(state => state.viewCart.products) || []
@@ -13,10 +13,8 @@ const ViewCart = ({history, match}) => {
     dispatch(fetchCart())
   }, [])
 
-  products.map(item => {
-    if (item.stock < item.OrderLineItem.quantity)
-      item.OrderLineItem.quantity = item.stock
-    return item
+  products.forEach(item => {
+    item.OrderLineItem.quantity = getActualQuantity(item)
   })
 
   const subtotal = products
