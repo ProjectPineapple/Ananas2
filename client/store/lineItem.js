@@ -10,21 +10,12 @@ const decItem = item => ({type: DECREMENT_ITEM, item})
 
 const defaultItem = {}
 
-export const fetchItem = item => async dispatch => {
-  try {
-    console.log(item)
-    const {data} = await axios.get(`/api/orders/cart`)
-    dispatch(getItem(data || defaultItem))
-  } catch (err) {
-    console.log('ERROR fetching line item', err)
-  }
-}
-
 export const incrementItem = itemToInc => async dispatch => {
   try {
-    const {data} = await axios.put(`/api/orders/cart`, itemToInc)
+    console.log(itemToInc)
+    const {data} = await axios.put(`/api/cart`, {product: itemToInc, op: 'inc'})
     console.log(data)
-    dispatch(incItem(data || defaultItem))
+    dispatch(getItem(data || defaultItem))
   } catch (err) {
     console.log(err)
   }
@@ -32,9 +23,9 @@ export const incrementItem = itemToInc => async dispatch => {
 
 export const decrementItem = itemToDec => async dispatch => {
   try {
-    const {data} = await axios.put(`/api/orders/cart`, itemToDec)
+    const {data} = await axios.put(`/api/cart`, {product: itemToDec, op: 'dec'})
     console.log(data)
-    dispatch(decItem(data || defaultItem))
+    dispatch(getItem(data || defaultItem))
   } catch (err) {
     console.log(err)
   }
@@ -44,10 +35,10 @@ export default (state = defaultItem, action) => {
   switch (action.type) {
     case GET_ITEM:
       return action.item
-    case INCREMENT_ITEM:
+    /*    case INCREMENT_ITEM:
       return action.item
     case DECREMENT_ITEM:
-      return action.item
+      return action.item*/
     default:
       return state
   }

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Grid, Image, Button, Segment, Icon} from 'semantic-ui-react'
 import {fetchCart} from '../store/viewCart'
+import {incrementItem, decrementItem} from '../store/lineItem'
 import {withRouter} from 'react-router'
 import {commaSeparateNumber, getActualQuantity} from '../utilityMethods'
 
@@ -13,9 +14,9 @@ const ViewCart = ({history, match}) => {
     dispatch(fetchCart())
   }, [])
 
-  products.forEach(item => {
-    item.OrderLineItem.quantity = getActualQuantity(item)
-  })
+  /*products.forEach(item => {
+     item.OrderLineItem.quantity = getActualQuantity(item)
+     })*/
 
   const subtotal = products
     ? products.reduce(
@@ -56,7 +57,10 @@ const ViewCart = ({history, match}) => {
                       size="tiny"
                       color="grey"
                       link
-                      onClick={() => console.log('tryna remove? hysterical')}
+                      onClick={() => {
+                        dispatch(decrementItem(item.OrderLineItem))
+                        console.log('tryna remove? hysterical')
+                      }}
                     />
                     {item.OrderLineItem.quantity + ' '}
                     <Icon
@@ -64,9 +68,10 @@ const ViewCart = ({history, match}) => {
                       size="small"
                       color="grey"
                       link
-                      onClick={() =>
+                      onClick={() => {
+                        dispatch(incrementItem(item.OrderLineItem))
                         console.log('you wanna add? you for real??')
-                      }
+                      }}
                     />
                   </div>
                   <Button onClick={() => console.log('TODO: dispatch thunk')}>
