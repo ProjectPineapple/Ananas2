@@ -3,10 +3,13 @@ import {useDispatch, useSelector} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
-import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
+
+import {Button, Segment, Image, Label} from 'semantic-ui-react'
+import ProductReviews from './ProductReviews'
+import UpdateProjectForm from './UpdateProductForm'
 
 import commaSeparateNumber from '../utilityMethods'
-import UpdateProjectForm from './UpdateProductForm'
+// import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
   const user = useSelector(state => state.user)
@@ -54,21 +57,9 @@ const ProductListing = props => {
             </Label>
           )
         })}
+        <br />
         <h2>Reviews</h2>
-        {product.reviews ? (
-          <div>
-            {product.reviews.map(review => {
-              return (
-                <ul key={review.id}>
-                  <Rating icon="star" defaultRating={5} maxRating={5} />
-                  <p>{review.description}</p>
-                </ul>
-              )
-            })}
-          </div>
-        ) : (
-          <div>No Reviews</div>
-        )}
+        <ProductReviews product={product} reviews={product.reviews} />
       </Segment>
     )
   }
