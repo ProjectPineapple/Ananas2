@@ -1,13 +1,16 @@
 import React from 'react'
-import {Segment, Item, Modal, Button, Header, Icon} from 'semantic-ui-react'
+import {
+  Segment,
+  Item,
+  Modal,
+  Button,
+  Header,
+  Icon,
+  List,
+  Divider
+} from 'semantic-ui-react'
 
 const OrderList = function({orders, all}) {
-  // singleOrderClick = () => {
-  //   // add link or thunk to itemized view of order
-
-  //   console.log('Order Single Veiw to Come')
-  // }
-
   return orders.length ? (
     <Segment>
       {orders.map(order => (
@@ -41,15 +44,37 @@ const OrderList = function({orders, all}) {
           <Modal.Content scrolling>
             <Modal.Description>
               <Header>This order is {order.status}</Header>
-              {order.OrderLineItems &&
-                order.OrderLineItems.map(OrderLineItem => 'Line Item')}
+              <List>
+                {order.OrderLineItems &&
+                  order.OrderLineItems.map((OrderLineItem, index) => (
+                    <List.Item key={index}>
+                      <List.Content key="product">
+                        {OrderLineItem.product.name} -- qty{' '}
+                        {OrderLineItem.quantity}
+                      </List.Content>
+                      <List.Content floated="right" key="price">
+                        ${OrderLineItem.priceAtPurchase}
+                      </List.Content>
+                    </List.Item>
+                  ))}
+                <Divider key="Divider" />
+                <List.Item key="Subtotal">
+                  <List.Content floated="right">
+                    Subtotal: {order.subtotal}
+                  </List.Content>
+                </List.Item>
+                <List.Item key="Total">
+                  <List.Content floated="right">
+                    Total: {order.total}
+                  </List.Content>
+                </List.Item>
+              </List>
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
             <Button primary>
               Proceed <Icon name="chevron right" />
             </Button>
-            <Button>Back to Orders</Button>
           </Modal.Actions>
         </Modal>
       ))}
