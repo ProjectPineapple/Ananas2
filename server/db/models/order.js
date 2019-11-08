@@ -90,14 +90,26 @@ const Order = db.define(
 // Method to add a line item to the OrderLineItem table that refers to this order
 // NOTE THAT THIS RETURNS A PROMISE
 Order.addLineItem = async (orderId, productId, quantity = 1) => {
-  const product = await Product.findByPk(productId)
-  const order = await Order.findByPk(orderId)
-  const newLineItem = await OrderLineItem.create({
+  const product = Product.findByPk(productId)
+  const newLineItem = OrderLineItem.create({
     quantity,
     priceAtPurchase: product.price,
-    productId: product.id,
-    orderId: order.id
+    productId,
+    orderId
   })
+}
+
+Order.addItemToOrder = async (orderId, productId) => {
+  const orderLineItemToChange = await OrderLineItem.findOne({
+    where: {orderId, productId}
+  })
+  if (!orderLineItemToChange) {
+    Order.addLineItem(orderId, productId)
+  } else {
+    orderLineItemToChange.update({
+      quantity: orderLineItemToChange.quantity + 1
+    })
+  }
 }
 
 // Method to add a line item to the OrderLineItem table that refers to this order

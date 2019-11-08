@@ -36,11 +36,11 @@ export const addToCartThunk = (productId, orderId) => async dispatch => {
     console.log("Greetings from thunk! Here's what I got: ", productId, orderId)
 
     //    const orderId = orderLineItems[0].orderId
-    const {data} = await axios.put(`/api/orders/${orderId}`, {
-      productId: productId
+    const {data} = await axios.put(`/api/orders/additemtocart/${orderId}`, {
+      productId
     })
     console.log('Thunk sending this back', data)
-    dispatch(addToCart(data))
+    dispatch(getCart(data))
   } catch (err) {
     console.error(err)
   }
@@ -73,6 +73,8 @@ export default (state = blankCart, action) => {
       return action.cart
     case ADDTO_CART:
       return {...state, products: {...action.product}}
+    // return action.cart
+    //should return cart after changes
     default:
       return state
   }

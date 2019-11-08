@@ -73,36 +73,48 @@ router.get('/ownedbyuser/:userId', async (req, res, next) => {
 //   }
 // })
 
-router.put('/:orderId', async (req, res, next) => {
+router.put('/additemtocart/:orderId', async (req, res, next) => {
   try {
     // add validation for user/session (pass in Authorization middleware)
     const orderId = Number(req.params.orderId)
     const productId = req.body.productId
-    const order = await OrderLineItem.findAll({where: {orderId: orderId}})
-    if (!order) {
-      res.sendStatus(404)
-    } else {
-      const matchedProducts = order.filter(
-        lineItem => lineItem.productId === productId
-      )
-      if (!matchedProducts.length) {
-        const addedLineItem = await Order.addLineItem(orderId, productId)
-        res.status(200).json(addedLineItem)
-      } else {
-        const productPrice = matchedProducts[0].priceAtPurchase
-        const productUpdatedQty = matchedProducts.reduce((accum, product) => {
-          accum += product.quantity
-          return accum
-        }, 1)
-        const updatedLineItem = await Order.updateLineItem(
-          orderId,
-          productId,
-          productUpdatedQty,
-          productPrice
-        )
-        res.status(200).json(updatedLineItem)
-      }
-    }
+    //finding
+    await Order.addItemToOrder(orderId, productId)
+    const cart = await Order.findByPk(orderId, {
+      include: [
+        {
+          model: OrderLineItem
+        },
+        {
+          model: Product
+        }
+      ]
+    })
+    res.json(cart)
+    // if (!orderLineItemToChange) {
+    //   res.sendStatus(404)
+    // } else {
+    //   const matchedProducts = order.filter(
+    //     lineItem => lineItem.productId === productId
+    //   )
+    //   if (!matchedProducts.length) {
+    //     const addedLineItem = await Order.addLineItem(orderId, productId)
+    //     res.status(200).json(addedLineItem)
+    //   } else {
+    //     const productPrice = matchedProducts[0].priceAtPurchase
+    //     const productUpdatedQty = matchedProducts.reduce((accum, product) => {
+    //       accum += product.quantity
+    //       return accum
+    //     }, 1)
+    //     const updatedLineItem = await Order.updateLineItem(
+    //       orderId,
+    //       productId,
+    //       productUpdatedQty,
+    //       productPrice
+    //     )
+    //     res.status(200).json(updatedLineItem)
+    //   }
+    // }
   } catch (err) {
     next(err)
   }
