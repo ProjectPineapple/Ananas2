@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {fetchAllOrders} from '../store/allOrders'
-import {Segment, Item} from 'semantic-ui-react'
+import {Tab} from 'semantic-ui-react'
+import OrderList from './OrderList'
 
 const commaSeparateNumber = val => {
   while (/(\d+)(\d{3})/.test(val.toString())) {
@@ -18,23 +19,106 @@ const AllOrders = props => {
     dispatch(fetchAllOrders())
   }, [])
 
-  return !orders.length ? (
-    <h1>No Orders</h1>
-  ) : (
-    <Segment>
-      {orders.map(order => (
-        <Item key={order.id}>
-          <Item.Header as="a">
-            {' '}
-            Order #: {order.id} User: {order.userId}
-          </Item.Header>
-          <Item.Meta>
-            <span>Status: {order.status}</span>{' '}
-            <span>Subtotal: ${commaSeparateNumber(order.subtotal / 100)}</span>
-          </Item.Meta>
-        </Item>
-      ))}
-    </Segment>
+  const panes = [
+    {
+      menuItem: {
+        key: 'allOrders',
+        icon: 'unordered list',
+        content: 'All Orders'
+      },
+      render: () => {
+        return (
+          <Tab.Pane>
+            <OrderList orders={orders} all={true} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'paid',
+        icon: 'money',
+        content: `Paid Orders`
+      },
+      render: () => {
+        const paidOrders = orders.filter(order => order.status === 'paid')
+        return (
+          <Tab.Pane>
+            <OrderList orders={paidOrders} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'shipped',
+        icon: 'shipping fast',
+        content: 'Shipped'
+      },
+      render: () => {
+        const shippedOrders = orders.filter(order => order.status === 'shipped')
+        return (
+          <Tab.Pane>
+            <OrderList orders={shippedOrders} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'delivered',
+        icon: 'zip',
+        content: 'Delivered'
+      },
+      render: () => {
+        const deliveredOrders = orders.filter(
+          order => order.status === 'delivered'
+        )
+        return (
+          <Tab.Pane>
+            <OrderList orders={deliveredOrders} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'cancelled',
+        icon: 'cancel',
+        content: 'cancelled'
+      },
+      render: () => {
+        const cancelledOrders = orders.filter(
+          order => order.status === 'cancelled'
+        )
+        return (
+          <Tab.Pane>
+            <OrderList orders={cancelledOrders} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'in-dispute',
+        icon: 'question circle outline',
+        content: 'Disputed'
+      },
+      render: () => {
+        const inDisputeOrders = orders.filter(
+          order => order.status === 'in-dispute'
+        )
+        return (
+          <Tab.Pane>
+            <OrderList orders={inDisputeOrders} />
+          </Tab.Pane>
+        )
+      }
+    }
+  ]
+
+  return (
+    <Tab menu={{fluid: true, vertical: true, tabular: true}} panes={panes} />
   )
 }
 
