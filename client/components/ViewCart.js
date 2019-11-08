@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Grid, Image, Button, Segment} from 'semantic-ui-react'
+import {fetchCart} from '../store/viewCart'
 import {withRouter} from 'react-router'
 
 // from https://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
@@ -13,8 +14,14 @@ const commaSeparateNumber = val => {
 
 const ViewCart = ({history, match}) => {
   const products = useSelector(state => state.viewCart.products) || []
+  const dispatch = useDispatch()
   const orderLineItems =
     useSelector(state => state.viewCart.OrderLineItems) || []
+
+  useEffect(() => {
+    dispatch(fetchCart())
+  }, [])
+
   const subtotal = products
     ? orderLineItems.reduce((subtotalSoFar, nextItem) => {
         const matchingProduct = products.find(product => {

@@ -50,37 +50,14 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
-router.delete('/cart', async (req, res, next) => {
-  try {
-    const session = await Session.findOne({
-      where: {
-        sid: req.sessionID
-      }
-    })
-    const whereClause = {}
-    whereClause.status = 'in-cart'
-    if (req.user) whereClause.userId = req.user.id
-    else whereClause.SessionId = session.id
-    const cart = await Order.findOne({
-      where: whereClause
-    })
-    console.log(req.body)
-    /*const productToDelete = await Product.findOne({
-       where: { id: req.body.productId}
-       })*/
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.post('/cart', async (req, res, next) => {
-  try {
-    console.log(req.body)
-    await Order.addLineItem(req.params.orderId, req.params.productId)
-  } catch (error) {
-    next(error)
-  }
-})
+// router.post('/cart', async (req, res, next) => {
+//   try {
+//     console.log(req.body)
+//     await Order.addLineItem(req.params.orderId, req.params.productId)
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 router.put('/:orderId', async (req, res, next) => {
   try {
@@ -88,23 +65,76 @@ router.put('/:orderId', async (req, res, next) => {
     //   where: {
     //     sid: req.sessionID
     //   }
-    // })
+    // }
 
     const orderId = Number(req.params.orderId)
-    const productId = Number(req.body.productId)
-    const qty = 1
-    const price = 100000000
-    const cart = await Order.findOne({
-      where: {id: orderId}
-    })
+    const productId = req.body.productId
+    console.log('TCL: productId', typeof productId)
+    // const qty = 1
+    // const price = 100000000
 
-    const lineItem = await Order.updateLineItem(orderId, productId, qty, price)
+    const order = await OrderLineItem.findAll({where: {orderId: orderId}})
+    console.log('TCL: order', order)
 
-    console.log('lineItem in /:orderId', lineItem)
+    if (!order) {
+      res.sendStatus(404)
+    } else {
+      const matchedProducts = order.filter(
+        lineItem => lineItem.productId === productId
+      )
+      if (!matchedProducts.length) {
+        const addedLineItem = await Order.addLineItem(orderId, productId)
+        res.status(200).json(addedLineItem)
+      } else {
+        const productPrice = matchedProducts[0].priceAtPurchase
+        const productUpdatedQty = matchedProducts.reduce((accum, product) => {
+          accum += product.quantity
+          return accum
+        }, 1)
+        const updatedLineItem = await Order.updateLineItem(
+          orderId,
+          productId,
+          productUpdatedQty,
+          productPrice
+        )
+        res.status(200).json(updatedLineItem)
+      }
+    }
+
+    // const cart = await Order.findOne({
+    //   where: {id: orderId}
+    // })
+
+    // const lineItem = await Order.updateLineItem(orderId, productId, qty, price)
+
+    // console.log('lineItem in /:orderId', lineItem)
   } catch (err) {
     next(err)
   }
 })
+
+// router.delete('/cart', async (req, res, next) => {
+//   try {
+//     const session = await Session.findOne({
+//       where: {
+//         sid: req.sessionID
+//       }
+//     })
+//     const whereClause = {}
+//     whereClause.status = 'in-cart'
+//     if (req.user) whereClause.userId = req.user.id
+//     else whereClause.SessionId = session.id
+//     const cart = await Order.findOne({
+//       where: whereClause
+//     })
+//     console.log(req.body)
+//     /*const productToDelete = await Product.findOne({
+//        where: { id: req.body.productId}
+//        })*/
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
 router.put('/checkout', async (req, res, next) => {
   const formData = req.body.formData
