@@ -15,32 +15,23 @@ const commaSeparateNumber = val => {
 const ViewCart = ({history, match}) => {
   const products = useSelector(state => state.viewCart.products) || []
   const dispatch = useDispatch()
-  const orderLineItems =
-    useSelector(state => state.viewCart.OrderLineItems) || []
 
   useEffect(() => {
     dispatch(fetchCart())
   }, [])
 
+  products.map(item => {
+    if (item.stock < item.OrderLineItem.quantity)
+      item.OrderLineItem.quantity = item.stock
+    return item
+  })
+
   const subtotal = products
-    ? orderLineItems.reduce((subtotalSoFar, nextItem) => {
-        const matchingProduct = products.find(product => {
-          return product.id === nextItem.productId
-        })
-        const amountToAdd =
-          matchingProduct.stock >= nextItem.quantity
-            ? nextItem.priceAtPurchase * nextItem.quantity
-            : 0
-        console.log(
-          'product price: ',
-          nextItem.priceAtPurchase,
-          'quantity : ',
-          nextItem.quantity,
-          'to add :',
-          amountToAdd
-        )
-        return subtotalSoFar + amountToAdd
-      }, 0)
+    ? products.reduce(
+        (subtotalSoFar, nextItem) =>
+          subtotalSoFar + nextItem.price * nextItem.OrderLineItem.quantity,
+        0
+      )
     : 0
   return products.length === 0 ? (
     <h1>Your cart is empty!</h1>
@@ -67,25 +58,27 @@ const ViewCart = ({history, match}) => {
               {item.stock > 0 ? (
                 <div className="in-stock">
                   <div>Price: ${commaSeparateNumber(item.price / 100)}</div>
-                  {orderLineItems.find(
-                    lineItem => lineItem.productId === item.id
-                  ).quantity >= item.stock ? (
-                    <div style={{color: 'red'}}>Qty:{' ' + item.stock}</div>
-                  ) : (
-                    <div>
-                      Qty:<Icon name="minus" />
-                      {
-                        orderLineItems.find(
-                          lineItem => lineItem.productId === item.id
-                        ).quantity
+                  <div>
+                    Qty:{' '}
+                    <Icon
+                      name="minus"
+                      size="tiny"
+                      color="grey"
+                      link
+                      onClick={() => console.log('tryna remove? hysterical')}
+                    />
+                    {item.OrderLineItem.quantity + ' '}
+                    <Icon
+                      name="plus"
+                      size="small"
+                      color="grey"
+                      link
+                      onClick={() =>
+                        console.log('you wanna add? you for real??')
                       }
-                      <Icon name="plus" />
-                    </div>
-                  )}
-                  <Button onClick={() => console.log('you clicked `edit`')}>
-                    Edit
-                  </Button>
-                  <Button onClick={() => console.log('you clicked `remove`')}>
+                    />
+                  </div>
+                  <Button onClick={() => console.log('TODO: dispatch thunk')}>
                     Remove
                   </Button>
                 </div>
