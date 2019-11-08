@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {withRouter, Route, Switch} from 'react-router-dom'
+import {withRouter, Route, Switch, Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {
   Login,
@@ -24,12 +24,15 @@ class Routes extends Component {
   }
 
   render() {
-    const {isLoggedIn, isAdmin} = this.props
-
+    const {user} = this.props
+    const isAdmin = user.status === 'admin'
+    const isLoggedIn = !!user.id
+    console.log(isAdmin)
     return (
       <Switch>
-        {/* Routes placed here are available to all visitors */}
+        <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
         <Route exact path="/products" component={AllProducts} />
         <Route
           exact
@@ -41,23 +44,17 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
-        {isLoggedIn && (
+        <Route exact path="/home" component={UserHome} />
+        {isAdmin && (
           <Switch>
-            {/* Routes placed here are only available after logging in */}
-            <Route exact path="/home" component={UserHome} />
-            {isAdmin && (
-              <Switch>
-                <Route path="/add/products/" component={AddProductForm} />
-                <Route
-                  path="/update/products/:productId/"
-                  component={UpdateProductForm}
-                />
-              </Switch>
-            )}
+            <Route exact path="/add/products" component={AddProductForm} />
+            <Route
+              path="/update/products/:productId"
+              component={UpdateProductForm}
+            />
           </Switch>
         )}
-        <Route path="/" component={Signup} />
-        {/* add redirect to home on urls that don't exist */}
+        <Redirect to="/404NotFound" />
       </Switch>
     )
   }
@@ -71,7 +68,8 @@ const mapState = state => {
     // Being 'logged in' for our purposes will be defined has having a state.user that has a truthy id.
     // Otherwise, state.user will be an empty object, and state.user.id will be falsey
     isLoggedIn: !!state.user.id,
-    isAdmin: state.user.status === 'admin'
+    isAdmin: state.user.status === 'admin',
+    user: state.user
   }
 }
 
