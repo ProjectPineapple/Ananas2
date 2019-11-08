@@ -11,6 +11,8 @@ import {
 import _ from 'lodash'
 import faker from 'faker'
 import ViewCart from './ViewCart'
+import axios from 'axios'
+import {toast} from 'react-toastify'
 import {
   setFirstName,
   setLastName,
@@ -21,8 +23,12 @@ import {
   resetForm,
   checkoutOrder
 } from '../store/checkout'
+import StripeCheckout from 'react-stripe-checkout'
+
+toast.configure()
 
 const checkoutForm = function(props) {
+  const order = useSelector(state => state.viewCart)
   const dispatch = useDispatch()
   const {
     firstName,
@@ -32,13 +38,22 @@ const checkoutForm = function(props) {
     mailingAddress,
     paymentMethod
   } = useSelector(state => state.checkout)
-  const order = useSelector(state => state.viewCart)
   const addressDefinitions = faker.definitions.address
   const stateOptions = _.map(addressDefinitions.state, (state, index) => ({
     key: addressDefinitions.state_abbr[index],
     text: state,
     value: addressDefinitions.state_abbr[index]
   }))
+
+  async function handleToken(token) {
+    const {data} = await axios.post('/cart/checkout', {token, order})
+    const {status} = data
+    if (status === 'success') {
+      toast('Success! Check email for details!', {type: 'success'})
+    } else {
+      toast('Something went wrong, sad beans', {type: 'error'})
+    }
+  }
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -131,7 +146,14 @@ const checkoutForm = function(props) {
           />
           <Form.Input fluid label="Zip Code" placeholder="Zip" width={3} /> */}
         </Form.Group>
-        <Button type="submit">Proceed to Payment</Button>
+        <StripeCheckout
+          stripeKey="pk_test_0PmCoNYh2JkqkxmAX3FUAOPD00TQAUBVNb"
+          token={handleToken}
+          billingAddress={billingAddress}
+          shippingAddress={mailingAddress}
+          amount={order.total}
+          orderId={order.id}
+        />
       </Form>
     </div>
   )
