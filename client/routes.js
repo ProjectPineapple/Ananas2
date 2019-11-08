@@ -27,7 +27,7 @@ class Routes extends Component {
     const {user} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
-
+    console.log(isAdmin)
     return (
       <Switch>
         <Route path="/login" component={Login} />
@@ -54,6 +54,7 @@ class Routes extends Component {
             />
           </Switch>
         )}
+        <Redirect to="/404NotFound" />
       </Switch>
     )
   }
