@@ -57,22 +57,9 @@ const ProductListing = props => {
             </Label>
           )
         })}
+        <br />
         <h2>Reviews</h2>
-        {/* {product.reviews ? (
-          <div> */}
-        {/* {product.reviews.map(review => { */}
         <ProductReviews product={product} reviews={product.reviews} />
-        {/* // return (
-              //   <ul key={review.id}>
-              //     <Rating icon="star" defaultRating={5} maxRating={5} />
-              //     <p>{review.description}</p>
-              //   </ul>
-              // )
-            })} */}
-        {/* </div>
-        ) : (
-          <div>No Reviews</div> */}
-        )}
       </Segment>
     )
   }
