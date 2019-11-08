@@ -14,7 +14,6 @@ const commaSeparateNumber = val => {
 
 const ViewCart = ({history, match}) => {
   const products = useSelector(state => state.viewCart.products) || []
-  console.log(products)
   const dispatch = useDispatch()
   const orderLineItems =
     useSelector(state => state.viewCart.OrderLineItems) || []
