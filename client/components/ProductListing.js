@@ -4,7 +4,8 @@ import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 
-import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
+import {Button, Segment, Image, Label} from 'semantic-ui-react'
+import ProductReviews from './ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
 
 const commaSeparateNumber = val => {
@@ -61,19 +62,20 @@ const ProductListing = props => {
           )
         })}
         <h2>Reviews</h2>
-        {product.reviews ? (
-          <div>
-            {product.reviews.map(review => {
-              return (
-                <ul key={review.id}>
-                  <Rating icon="star" defaultRating={5} maxRating={5} />
-                  <p>{review.description}</p>
-                </ul>
-              )
-            })}
-          </div>
+        {/* {product.reviews ? (
+          <div> */}
+        {/* {product.reviews.map(review => { */}
+        <ProductReviews product={product} reviews={product.reviews} />
+        {/* // return (
+              //   <ul key={review.id}>
+              //     <Rating icon="star" defaultRating={5} maxRating={5} />
+              //     <p>{review.description}</p>
+              //   </ul>
+              // )
+            })} */}
+        {/* </div>
         ) : (
-          <div>No Reviews</div>
+          <div>No Reviews</div> */}
         )}
       </Segment>
     )
