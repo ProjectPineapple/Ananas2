@@ -33,12 +33,19 @@ export const fetchCart = () => async dispatch => {
 
 export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
   try {
-    const orderId = orderLineItems.orderId
-    const {data} = await axios.post(`/api/orders/${orderId}`, +productId)
-
-    console.log(data)
+    console.log(
+      "Greetings from thunk! Here's what I got: ",
+      productId,
+      orderLineItems
+    )
+    const orderId = orderLineItems[0].orderId
+    const {data} = await axios.put(`/api/orders/${orderId}`, {
+      productId: productId
+    })
+    console.log('Thunk sending this back', data)
+    dispatch(addToCart(data))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
@@ -72,7 +79,7 @@ export default (state = blankCart, action) => {
     case GET_CART:
       return action.cart
     case ADDTO_CART:
-      return {...state, products: action.product}
+      return {...state, products: {...action.product}}
     default:
       return state
   }

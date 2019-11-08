@@ -68,12 +68,14 @@ router.put('/:orderId', async (req, res, next) => {
     // }
 
     const orderId = Number(req.params.orderId)
-    const productId = Number(req.body.productId)
-    console.log('TCL: productId', productId)
-    const qty = 1
-    const price = 100000000
+    const productId = req.body.productId
+    console.log('TCL: productId', typeof productId)
+    // const qty = 1
+    // const price = 100000000
 
     const order = await OrderLineItem.findAll({where: {orderId: orderId}})
+    console.log('TCL: order', order)
+
     if (!order) {
       res.sendStatus(404)
     } else {
@@ -81,22 +83,21 @@ router.put('/:orderId', async (req, res, next) => {
         lineItem => lineItem.productId === productId
       )
       if (!matchedProducts.length) {
-        Order.addLineItem(orderId, productId)
-        res.sendStatus(200)
+        const addedLineItem = await Order.addLineItem(orderId, productId)
+        res.status(200).json(addedLineItem)
       } else {
         const productPrice = matchedProducts[0].priceAtPurchase
         const productUpdatedQty = matchedProducts.reduce((accum, product) => {
           accum += product.quantity
-          console.log('TCL: accum', accum)
           return accum
         }, 1)
-        await Order.updateLineItem(
+        const updatedLineItem = await Order.updateLineItem(
           orderId,
           productId,
           productUpdatedQty,
           productPrice
         )
-        res.sendStatus(200)
+        res.status(200).json(updatedLineItem)
       }
     }
 
