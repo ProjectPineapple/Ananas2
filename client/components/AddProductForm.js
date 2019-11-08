@@ -2,7 +2,6 @@ import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Form, Header} from 'semantic-ui-react'
 import {
-  addAProduct,
   setName,
   setPrice,
   setDescription,
@@ -12,7 +11,8 @@ import {
   setStock,
   setTag1,
   setTag2,
-  setTag3
+  setTag3,
+  addAProduct
 } from '../store/addProduct'
 
 const savedTags = [
@@ -37,12 +37,24 @@ const savedTags = [
 
 const AddProductForm = function(props) {
   const dispatch = useDispatch()
-  const {name, price, stock, tags, photos, description} = useSelector(
-    state => state.addProduct
-  )
+  const {
+    name,
+    price,
+    stock,
+    tag1,
+    tag2,
+    tag3,
+    photo1,
+    photo2,
+    photo3,
+    description
+  } = useSelector(state => state.addProduct)
 
   const handleSubmit = e => {
     e.preventDefault()
+    console.log('in handle submit')
+    const tags = [tag1, tag2, tag3]
+    const photos = [photo1, photo2, photo3]
     const productData = {
       name,
       price,
@@ -51,6 +63,7 @@ const AddProductForm = function(props) {
       photos,
       description
     }
+    console.log(productData)
     dispatch(addAProduct(productData))
   }
 
@@ -85,28 +98,25 @@ const AddProductForm = function(props) {
         />
       </Form.Group>
       <Form.Group widths="equal">
-        <Form.Select
+        <Form.Input
           fluid
           label="Tag 1"
-          options={savedTags}
-          placeholder="Select Tags"
-          value={tags[0]}
+          placeholder="Input Tags"
+          value={tag1}
           onChange={e => dispatch(setTag1(e.target.value))}
         />
-        <Form.Select
+        <Form.Input
           fluid
           label="Tag 2"
-          options={savedTags}
-          placeholder="Select Tags"
-          value={tags[1]}
+          placeholder="Input Tags"
+          value={tag2}
           onChange={e => dispatch(setTag2(e.target.value))}
         />
-        <Form.Select
+        <Form.Input
           fluid
           label="Tag 3"
-          options={savedTags}
-          placeholder="Select Tags"
-          value={tags[2]}
+          placeholder="Input Tags"
+          value={tag3}
           onChange={e => dispatch(setTag3(e.target.value))}
         />
       </Form.Group>
@@ -115,21 +125,21 @@ const AddProductForm = function(props) {
           fluid
           label="Photo 1"
           placeholder="Input Photo URL"
-          value={photos[0]}
+          value={photo1}
           onChange={e => dispatch(setPhoto1(e.target.value))}
         />
         <Form.Input
           fluid
           label="Photo 2"
           placeholder="Input Photo URL"
-          value={photos[1]}
+          value={photo2}
           onChange={e => dispatch(setPhoto2(e.target.value))}
         />
         <Form.Input
           fluid
           label="Photo 3"
           placeholder="Input Photo URL"
-          value={photos[2]}
+          value={photo3}
           onChange={e => dispatch(setPhoto3(e.target.value))}
         />
       </Form.Group>

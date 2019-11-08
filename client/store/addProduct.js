@@ -40,9 +40,16 @@ export const setDescription = description => ({
 export const resetForm = () => ({type: RESET_FORM})
 
 export const addAProduct = formData => {
+  console.log('intheThunk')
   return async dispatch => {
-    const {data} = await axios.post('/api/products', {formData})
-    dispatch(addProduct(data))
+    try {
+      const {data} = await axios.post('/api/products', formData)
+      console.log('formData', formData)
+      console.log('data', data)
+      dispatch(addProduct(data))
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
@@ -58,21 +65,21 @@ export default function(state = blankProduct, action) {
     case SET_NAME:
       return {...state, name: action.name}
     case SET_PRICE:
-      return {...state, price: action.price}
+      return {...state, price: Number(action.price)}
     case SET_STOCK:
-      return {...state, stock: action.stock}
+      return {...state, stock: Number(action.stock)}
     case SET_TAG1:
-      return {...state, tags: [...state.tags, action.tag1]}
+      return {...state, tag1: action.tag1}
     case SET_TAG2:
-      return {...state, tags: [...state.tags, action.tag2]}
+      return {...state, tag2: action.tag2}
     case SET_TAG3:
-      return {...state, tags: [...state.tags, action.tag3]}
+      return {...state, tag3: action.tag3}
     case SET_PHOTO1:
-      return {...state, photos: [...state.photos, action.photo1]}
+      return {...state, photo1: action.photo1}
     case SET_PHOTO2:
-      return {...state, photos: [...state.photos, action.photo2]}
+      return {...state, photo2: action.photo2}
     case SET_PHOTO3:
-      return {...state, photos: [...state.photos, action.photo3]}
+      return {...state, photos3: action.photo3}
     case SET_DESCRIPTION:
       return {...state, description: action.description}
     case resetForm:
