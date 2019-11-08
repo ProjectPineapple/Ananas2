@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {fetchAllOrders} from '../store/allOrders'
 import {Tab} from 'semantic-ui-react'
 import OrderList from './OrderList'
-import commaSeparateNumber from '../utilityMethods'
+import {commaSeparateNumber} from '../utilityMethods'
 
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)
