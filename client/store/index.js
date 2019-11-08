@@ -8,6 +8,7 @@ import viewCart from './viewCart'
 import allProducts from './allProducts'
 import singleProduct from './singleProduct'
 import lineItem from './lineItem'
+import addProduct from './addProduct'
 
 const reducer = combineReducers({
   allProducts,
@@ -15,7 +16,8 @@ const reducer = combineReducers({
   user,
   checkout,
   viewCart,
-  lineItem
+  lineItem,
+  addProduct
 })
 
 const middleware = composeWithDevTools(
