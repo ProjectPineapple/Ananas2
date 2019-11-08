@@ -48,7 +48,7 @@ const ProductListing = props => {
           </Button>
         ) : null}
         {product.photos.map((photo, index) => (
-          <Image src={product.photos} size="small" floated="left" key={index} />
+          <Image src={photo} size="small" floated="left" key={index} />
         ))}
         <h3>Stock: {product.stock}</h3>
         <h3>Price: ${commaSeparateNumber(product.price)}</h3>

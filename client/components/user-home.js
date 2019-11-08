@@ -40,7 +40,7 @@ const UserHome = props => {
   ]
   if (isAdminStatus) {
     panes.push({
-      menuItem: {key: 'order', icon: 'history', content: 'All Orders'},
+      menuItem: {key: 'allorders', icon: 'history', content: 'All Orders'},
       render: () => (
         <Tab.Pane>
           <AllOrders />

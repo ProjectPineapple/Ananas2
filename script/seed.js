@@ -140,11 +140,11 @@ const dummyOrders = [
 const dummyReviews = [
   {
     description: 'Very Fetching.',
-    rating: 1
+    stars: 1
   },
   {
     description: 'Best Boat Bar None.',
-    rating: 5
+    stars: 5
   }
 ]
 
@@ -256,7 +256,7 @@ const bigSeed = async () => {
 
       const review = {
         description: faker.lorem.text(),
-        rating: [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
+        stars: [1, 2, 3, 4, 5][Math.ceil(Math.random() * 5)]
       }
 
       await Promise.all([
