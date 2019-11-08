@@ -23,7 +23,6 @@ const ProductListing = props => {
     [productId]
   )
 
-  console.log('product', product)
   if (!product) {
     return <div>No Ship</div>
   } else {
@@ -41,28 +40,21 @@ const ProductListing = props => {
             <Link to={`/update/products/${product.id}/`} />Update
           </Button>
         ) : null}
-        {product.photos.map(photo => {
-          return (
-            <Image
-              src={product.photos}
-              size="small"
-              floated="left"
-              key={photo.id}
-            />
-          )
-        })}
+        {product.photos.map((photo, index) => (
+          <Image src={product.photos} size="small" floated="left" key={index} />
+        ))}
         <h3>Stock: {product.stock}</h3>
         <h3>{product.description}</h3>
-        {product.tags.map(tag => {
+        {product.tags.map((tag, index) => {
           return (
-            <Label as="a" key={tag.id} tag>
+            <Label as="a" key={index} tag>
               {tag}
             </Label>
           )
         })}
         <h2>Reviews</h2>
         {product.reviews ? (
-          <p>
+          <div>
             {product.reviews.map(review => {
               return (
                 <ul key={review.id}>
@@ -71,7 +63,7 @@ const ProductListing = props => {
                 </ul>
               )
             })}
-          </p>
+          </div>
         ) : (
           <div>No Reviews</div>
         )}
