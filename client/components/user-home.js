@@ -1,11 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useSelector} from 'react-redux'
-import PropTypes from 'prop-types'
-
 import ViewCart from './ViewCart'
-
-import {Button, Image, Icon, Label, Menu, Tab} from 'semantic-ui-react'
+import {Image, Tab} from 'semantic-ui-react'
 import UserOrders from './UserOrders'
+import AllOrders from './AllOrders'
 
 const UserHome = props => {
   const user = useSelector(state => state.user)
@@ -40,6 +38,16 @@ const UserHome = props => {
       render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
     }
   ]
+  if (isAdminStatus) {
+    panes.push({
+      menuItem: {key: 'order', icon: 'history', content: 'All Orders'},
+      render: () => (
+        <Tab.Pane>
+          <AllOrders />
+        </Tab.Pane>
+      )
+    })
+  }
 
   return (
     <div>

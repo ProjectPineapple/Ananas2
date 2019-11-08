@@ -18,10 +18,7 @@ const UserOrders = () => {
     <Segment>
       {orders.map(order => (
         <Item key={order.id}>
-          <Item.Header as="a">
-            {' '}
-            Order #: {order.id} User: {user.email}
-          </Item.Header>
+          <Item.Header> Order #: {order.id}</Item.Header>
           <Item.Meta>
             <span>Status: {order.status}</span>{' '}
             <span>Subtotal: {order.subtotal}</span>

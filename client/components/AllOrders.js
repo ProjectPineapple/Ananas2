@@ -8,10 +8,10 @@ const AllOrders = props => {
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllOrders(), [])
-  })
+    dispatch(fetchAllOrders())
+  }, [])
 
-  return !orders || !orders.length ? (
+  return !orders.length ? (
     <h1>No Orders</h1>
   ) : (
     <Segment>
@@ -19,7 +19,7 @@ const AllOrders = props => {
         <Item key={order.id}>
           <Item.Header as="a">
             {' '}
-            Order #: {order.id} User: {user.email}
+            Order #: {order.id} User: {order.userId}
           </Item.Header>
           <Item.Meta>
             <span>Status: {order.status}</span>{' '}
