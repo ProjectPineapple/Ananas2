@@ -30,6 +30,7 @@ class Routes extends Component {
     console.log(isAdmin)
     return (
       <Switch>
+        <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route exact path="/products" component={AllProducts} />
