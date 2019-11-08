@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {addToCart} from '../store/viewCart'
+import {addToCartThunk} from '../store/viewCart'
 
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
 
@@ -27,7 +27,7 @@ const AllProducts = props => {
 
   //ADD ADDTOCART THUNK HERE!
   const handleClickAdd = event => {
-    dispatch(addToCart(+event.target.value, orderLineItems))
+    dispatch(addToCartThunk(+event.target.value, orderLineItems))
   }
 
   return products === undefined || !products.length ? (
