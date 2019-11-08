@@ -11,9 +11,15 @@ const UserHome = props => {
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
+  const cartSize = !cart.products ? 0 : cart.products.length
+
   const panes = [
     {
-      menuItem: {key: 'cart', icon: 'shopping basket', content: 'Cart'},
+      menuItem: {
+        key: 'cart',
+        icon: 'shopping basket',
+        content: `Cart ${cartSize}`
+      },
       render: () => (
         <Tab.Pane>
           <ViewCart cart={cart} />
@@ -21,7 +27,7 @@ const UserHome = props => {
       )
     },
     {
-      menuItem: {key: 'order', icon: 'history', content: 'Orders'},
+      menuItem: {key: 'order', icon: 'history', content: `Orders`},
       render: () => <Tab.Pane>Your Orders!</Tab.Pane>
     },
     {
