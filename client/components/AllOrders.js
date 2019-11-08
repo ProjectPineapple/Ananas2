@@ -3,13 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {fetchAllOrders} from '../store/allOrders'
 import {Tab} from 'semantic-ui-react'
 import OrderList from './OrderList'
-
-const commaSeparateNumber = val => {
-  while (/(\d+)(\d{3})/.test(val.toString())) {
-    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
-  }
-  return val
-}
+import commaSeparateNumber from '../utilityMethods'
 
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)

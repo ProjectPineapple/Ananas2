@@ -8,12 +8,8 @@ import {Button, Segment, Image, Label} from 'semantic-ui-react'
 import ProductReviews from './ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
 
-const commaSeparateNumber = val => {
-  while (/(\d+)(\d{3})/.test(val.toString())) {
-    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
-  }
-  return val
-}
+import commaSeparateNumber from '../utilityMethods'
+// import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
   const user = useSelector(state => state.user)
