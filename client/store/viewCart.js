@@ -31,14 +31,11 @@ export const fetchCart = () => async dispatch => {
   }
 }
 
-export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
+export const addToCartThunk = (productId, orderId) => async dispatch => {
   try {
-    console.log(
-      "Greetings from thunk! Here's what I got: ",
-      productId,
-      orderLineItems
-    )
-    const orderId = orderLineItems[0].orderId
+    console.log("Greetings from thunk! Here's what I got: ", productId, orderId)
+
+    //    const orderId = orderLineItems[0].orderId
     const {data} = await axios.put(`/api/orders/${orderId}`, {
       productId: productId
     })
