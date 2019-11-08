@@ -31,12 +31,16 @@ class Routes extends Component {
 
     return (
       <Switch>
-        <Route exact path="/add/products" component={AddProductForm} />
+        {isAdmin ? (
+          <Switch>
+            <Route exact path="/add/products" component={AddProductForm} />
+            <Route
+              path="/update/products/:productId"
+              component={UpdateProductForm}
+            />
+          </Switch>
+        ) : null}
         <Route path="/login" component={Login} />
-        <Route
-          path="/update/products/:productId"
-          component={UpdateProductForm}
-        />
         <Route exact path="/products" component={AllProducts} />
         <Route
           exact
@@ -54,7 +58,6 @@ class Routes extends Component {
             <Route exact path="/home" component={UserHome} />
           </Switch>
         )}
-        {isAdmin ? <Switch /> : null}
       </Switch>
     )
   }
