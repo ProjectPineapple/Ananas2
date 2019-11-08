@@ -3,14 +3,16 @@ import {Segment, Item} from 'semantic-ui-react'
 
 const OrderList = function({orders, all}) {
   return orders.length ? (
-    <Segment
-      onClick={() => {
-        // add link or thunk to itemized view of order
-        console.log('Order Single Veiw to Come')
-      }}
-    >
+    <Segment>
       {orders.map(order => (
-        <Item key={order.id}>
+        <Item
+          key={order.id}
+          onClick={() => {
+            // add link or thunk to itemized view of order
+
+            console.log('Order Single Veiw to Come')
+          }}
+        >
           <Item.Header>
             {' '}
             Order #: {order.id} -- {order.OrderLineItems.length} items
@@ -24,10 +26,10 @@ const OrderList = function({orders, all}) {
                     : 'greentext'
                 }
               >
-                Status: ${order.status}{' '}
+                Status: {order.status}{' '}
               </span>
             ) : null}
-            <span>Subtotal: {order.subtotal}</span>
+            <span>Subtotal: ${order.subtotal}</span>
           </Item.Meta>
         </Item>
       ))}
