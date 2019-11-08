@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Grid, Image, Button, Segment} from 'semantic-ui-react'
+import {Grid, Image, Button, Segment, Icon} from 'semantic-ui-react'
 import {fetchCart} from '../store/viewCart'
 import {withRouter} from 'react-router'
 
@@ -32,6 +32,14 @@ const ViewCart = ({history, match}) => {
           matchingProduct.stock >= nextItem.quantity
             ? nextItem.priceAtPurchase * nextItem.quantity
             : 0
+        console.log(
+          'product price: ',
+          nextItem.priceAtPurchase,
+          'quantity : ',
+          nextItem.quantity,
+          'to add :',
+          amountToAdd
+        )
         return subtotalSoFar + amountToAdd
       }, 0)
     : 0
@@ -66,10 +74,13 @@ const ViewCart = ({history, match}) => {
                     <div style={{color: 'red'}}>Qty:{' ' + item.stock}</div>
                   ) : (
                     <div>
-                      Qty:{' ' +
+                      Qty:<Icon name="minus" />
+                      {
                         orderLineItems.find(
                           lineItem => lineItem.productId === item.id
-                        ).quantity}
+                        ).quantity
+                      }
+                      <Icon name="plus" />
                     </div>
                   )}
                   <Button onClick={() => console.log('you clicked `edit`')}>
@@ -82,7 +93,7 @@ const ViewCart = ({history, match}) => {
               ) : (
                 <div className="out-of-stock">
                   <div style={{color: 'red'}}>
-                    Sorry, this item is out of stock.
+                    {`Sorry, this item is out of stock.`}
                   </div>
                   <Button
                     onClick={() =>
