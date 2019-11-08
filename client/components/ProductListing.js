@@ -7,6 +7,13 @@ import {Link} from 'react-router-dom'
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
 import UpdateProjectForm from './UpdateProductForm'
 
+const commaSeparateNumber = val => {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+  return val
+}
+
 const ProductListing = props => {
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
@@ -44,6 +51,7 @@ const ProductListing = props => {
           <Image src={product.photos} size="small" floated="left" key={index} />
         ))}
         <h3>Stock: {product.stock}</h3>
+        <h3>Price: ${commaSeparateNumber(product.price)}</h3>
         <h3>{product.description}</h3>
         {product.tags.map((tag, index) => {
           return (

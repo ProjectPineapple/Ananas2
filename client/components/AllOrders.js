@@ -3,6 +3,13 @@ import {useDispatch, useSelector} from 'react-redux'
 import {fetchAllOrders} from '../store/allOrders'
 import {Segment, Item} from 'semantic-ui-react'
 
+const commaSeparateNumber = val => {
+  while (/(\d+)(\d{3})/.test(val.toString())) {
+    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
+  }
+  return val
+}
+
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)
   const user = useSelector(state => state.user)
@@ -23,7 +30,7 @@ const AllOrders = props => {
           </Item.Header>
           <Item.Meta>
             <span>Status: {order.status}</span>{' '}
-            <span>Subtotal: {order.subtotal}</span>
+            <span>Subtotal: ${commaSeparateNumber(order.subtotal / 100)}</span>
           </Item.Meta>
         </Item>
       ))}

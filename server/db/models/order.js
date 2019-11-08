@@ -10,10 +10,10 @@ const Order = db.define(
       type: Sequelize.ENUM([
         'in-cart',
         'payment-in-progress',
-        'cancelled',
         'paid',
         'shipped',
         'delivered',
+        'cancelled',
         'in-dispute',
         'completed'
       ]),
