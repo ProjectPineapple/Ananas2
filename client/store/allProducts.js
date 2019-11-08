@@ -4,7 +4,7 @@ const SET_PRODUCTS = 'SET_PRODUCTS'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 
 const setProducts = products => ({type: SET_PRODUCTS, products})
-const addProduct = product => ({type: ADD_PRODUCT, product})
+export const addProduct = product => ({type: ADD_PRODUCT, product})
 
 const initialState = []
 

@@ -73,21 +73,10 @@ router.get('/ownedbyuser/:userId', async (req, res, next) => {
 
 router.put('/:orderId', async (req, res, next) => {
   try {
-    // const session = await Session.findOne({
-    //   where: {
-    //     sid: req.sessionID
-    //   }
-    // }
-
+    // add validation for user/session (pass in Authorization middleware)
     const orderId = Number(req.params.orderId)
     const productId = req.body.productId
-    console.log('TCL: productId', typeof productId)
-    // const qty = 1
-    // const price = 100000000
-
     const order = await OrderLineItem.findAll({where: {orderId: orderId}})
-    console.log('TCL: order', order)
-
     if (!order) {
       res.sendStatus(404)
     } else {
@@ -112,14 +101,6 @@ router.put('/:orderId', async (req, res, next) => {
         res.status(200).json(updatedLineItem)
       }
     }
-
-    // const cart = await Order.findOne({
-    //   where: {id: orderId}
-    // })
-
-    // const lineItem = await Order.updateLineItem(orderId, productId, qty, price)
-
-    // console.log('lineItem in /:orderId', lineItem)
   } catch (err) {
     next(err)
   }
