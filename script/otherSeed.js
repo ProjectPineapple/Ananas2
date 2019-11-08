@@ -141,11 +141,11 @@ const dummyOrders = [
 const dummyReviews = [
   {
     description: faker.lorem.text(),
-    rating: 1
+    stars: 1
   },
   {
     description: faker.lorem.text(),
-    rating: 5
+    stars: 5
   }
 ]
 

@@ -51,23 +51,19 @@ export const addToCartThunk = (productId, orderLineItems) => async dispatch => {
 
 export const removeFromCart = productToDelete => async dispatch => {
   try {
-    const {data} = await axios.delete(`/api/orders/cart`, productToDelete)
-    console.log(data)
-
-    if (orderLineItems.includes(productId)) {
-      const {data} = await axios.put(`/api/orders/${orderLineItems.orderId}`, {
-        productId: productId
-      })
-      dispatch(addToCart(data))
-    } else {
-      const {data} = await axios.post(`/api/orders/${orderLineItems.orderId}`, {
-        productId: productId
-      })
-      dispatch(addToCart(data))
-    }
-    // await OrderLineItem.find({where: {productId: productId}})
+    console.log(
+      "Greetings from thunk! Here's what I got: ",
+      productId,
+      orderLineItems
+    )
+    const orderId = orderLineItems[0].orderId
+    const {data} = await axios.put(`/api/orders/${orderId}`, {
+      productId: productId
+    })
+    console.log('Thunk sending this back', data)
+    dispatch(addToCart(data))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 

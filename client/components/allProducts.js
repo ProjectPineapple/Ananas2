@@ -4,16 +4,9 @@ import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
 import {addToCartThunk} from '../store/viewCart'
+import commaSeparateNumber from '../utilityMethods'
 
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
-
-// from https://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
-const commaSeparateNumber = val => {
-  while (/(\d+)(\d{3})/.test(val.toString())) {
-    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
-  }
-  return val
-}
 
 const AllProducts = props => {
   const [isClicked, setIsClicked] = useState(false)

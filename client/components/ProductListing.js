@@ -3,16 +3,10 @@ import {useDispatch, useSelector} from 'react-redux'
 import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
-
 import {Rating, Button, Segment, Image, Label} from 'semantic-ui-react'
-import UpdateProjectForm from './UpdateProductForm'
 
-const commaSeparateNumber = val => {
-  while (/(\d+)(\d{3})/.test(val.toString())) {
-    val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2')
-  }
-  return val
-}
+import commaSeparateNumber from '../utilityMethods'
+import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
   const user = useSelector(state => state.user)
@@ -48,7 +42,7 @@ const ProductListing = props => {
           </Button>
         ) : null}
         {product.photos.map((photo, index) => (
-          <Image src={product.photos} size="small" floated="left" key={index} />
+          <Image src={photo} size="small" floated="left" key={index} />
         ))}
         <h3>Stock: {product.stock}</h3>
         <h3>Price: ${commaSeparateNumber(product.price)}</h3>
