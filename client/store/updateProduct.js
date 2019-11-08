@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 import axios from 'axios'
-import {addProduct} from './allProducts'
 import {updateProduct} from './singleProduct'
 
 const SET_NAME = 'SET_NAME'
@@ -38,20 +37,6 @@ export const setDescription = description => ({
   description
 })
 export const resetForm = () => ({type: RESET_FORM})
-
-export const addAProduct = formData => {
-  console.log('intheThunk')
-  return async dispatch => {
-    try {
-      const {data} = await axios.post('/api/products', formData)
-      console.log('formData', formData)
-      console.log('data', data)
-      dispatch(addProduct(data))
-    } catch (err) {
-      console.log(err)
-    }
-  }
-}
 
 export const changeAProduct = (formData, productId) => {
   return async dispatch => {

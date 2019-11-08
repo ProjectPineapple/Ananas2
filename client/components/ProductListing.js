@@ -40,9 +40,9 @@ const ProductListing = props => {
           </Button>
         ) : null}
         {isAdmin ? (
-          <Button>
-            <Link to={`/update/products/${product.id}/`} />Update
-          </Button>
+          <Link to={`/update/products/${product.id}/`}>
+            <Button>Update</Button>
+          </Link>
         ) : null}
         {product.photos.map((photo, index) => (
           <Image src={photo} size="small" floated="left" key={index} />
