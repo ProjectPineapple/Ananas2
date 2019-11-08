@@ -20,6 +20,7 @@ Order.belongsToMany(Product, {through: OrderLineItem})
 Order.hasMany(OrderLineItem)
 OrderLineItem.belongsTo(Order)
 Product.hasMany(OrderLineItem)
+OrderLineItem.belongsTo(Product)
 
 Order.belongsTo(Session)
 Session.hasOne(Order)
