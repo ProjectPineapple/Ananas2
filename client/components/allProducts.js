@@ -4,7 +4,7 @@ import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
 import {addToCartThunk} from '../store/viewCart'
-import commaSeparateNumber from '../utilityMethods'
+import {commaSeparateNumber} from '../utilityMethods'
 
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
 
