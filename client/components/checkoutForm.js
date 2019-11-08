@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react'
 import _ from 'lodash'
 import faker from 'faker'
-import ViewCart from './view-cart'
+import ViewCart from './ViewCart'
 import {
   setFirstName,
   setLastName,
