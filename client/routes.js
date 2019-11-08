@@ -45,16 +45,15 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route exact path="/home" component={UserHome} />
-            <Route path="/" component={UserHome} />
-          </Switch>
-        )}
-        {isAdmin && (
-          <Switch>
-            <Route path="/products/add" component={AddProductForm} />
-            <Route
-              path="/products/:productId/update"
-              component={UpdateProductForm}
-            />
+            {isAdmin && (
+              <Switch>
+                <Route path="/add/products/" component={AddProductForm} />
+                <Route
+                  path="/update/products/:productId/"
+                  component={UpdateProductForm}
+                />
+              </Switch>
+            )}
           </Switch>
         )}
         <Route path="/" component={Signup} />
