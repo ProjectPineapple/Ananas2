@@ -3,6 +3,7 @@ const {Order, Session, Product, OrderLineItem} = require('../db/models')
 
 module.exports = router
 
+//Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   try {
     const orders = await Order.findAll({
@@ -14,15 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// router.get('/:orderId', async (req, res, next) => {
-//   try {
-//     const order = await Order.findByPk(req.params.orderId)
-//     res.json(order)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
-
+// Finds or creates a cart if no cart exists for the user
 router.get('/cart', async (req, res, next) => {
   try {
     const session = await Session.findOne({
@@ -78,7 +71,6 @@ router.put('/additemtocart/:orderId', async (req, res, next) => {
     // add validation for user/session (pass in Authorization middleware)
     const orderId = Number(req.params.orderId)
     const productId = req.body.productId
-    //finding
     await Order.addItemToOrder(orderId, productId)
     const cart = await Order.findByPk(orderId, {
       include: [
@@ -92,31 +84,10 @@ router.put('/additemtocart/:orderId', async (req, res, next) => {
       ]
     })
     res.json(cart)
-    // if (!orderLineItemToChange) {
-    //   res.sendStatus(404)
-    // } else {
-    //   const matchedProducts = order.filter(
-    //     lineItem => lineItem.productId === productId
-    //   )
-    //   if (!matchedProducts.length) {
-    //     const addedLineItem = await Order.addLineItem(orderId, productId)
-    //     res.status(200).json(addedLineItem)
-    //   } else {
-    //     const productPrice = matchedProducts[0].priceAtPurchase
-    //     const productUpdatedQty = matchedProducts.reduce((accum, product) => {
-    //       accum += product.quantity
-    //       return accum
-    //     }, 1)
-    //     const updatedLineItem = await Order.updateLineItem(
-    //       orderId,
-    //       productId,
-    //       productUpdatedQty,
-    //       productPrice
-    //     )
-    //     res.status(200).json(updatedLineItem)
-    //   }
-    // }
   } catch (err) {
+    if (err.message === 'Not enough stock to add to cart') {
+      res.status(409) // Conflict
+    }
     next(err)
   }
 })

@@ -9,13 +9,12 @@ import {commaSeparateNumber} from '../utilityMethods'
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
 
 const AllProducts = props => {
-  const [isClicked, setIsClicked] = useState(false)
+  // const [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
-  const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
+  // const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
   const orderId = useSelector(state => state.viewCart.id)
-  console.log(orderId)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
