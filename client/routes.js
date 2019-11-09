@@ -36,7 +36,7 @@ class Routes extends Component {
         <Route path="/products" component={AllProducts} />
         <Route
           exact
-          path="/products/view/:productId"
+          path="/view/product/:productId"
           render={() => (
             <ProductListing key={this.props.match.params.productId} />
           )}
