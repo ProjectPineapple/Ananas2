@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Segment,
   Item,
@@ -11,11 +11,29 @@ import {
 } from 'semantic-ui-react'
 
 const OrderList = function({orders, all}) {
+  const [open, setOpen] = useState(false)
+  const [dimmer, setDimmer] = useState(true)
+
+  const handleClickOpen = () => {
+    setDimmer(!dimmer)
+    setOpen(!open)
+    setIsClickedAddReview(!isClickedAddReview)
+  }
+
+  const handleClickClose = () => {
+    setDimmer(!dimmer)
+    setOpen(!open)
+  }
+
   return orders.length ? (
     <Segment>
       {orders.map(order => (
         <Modal
           key={order.id}
+          onOpen={handleClickOpen}
+          dimmer={dimmer}
+          open={open}
+          onClose={handleClickClose}
           trigger={
             <Item key={order.id}>
               <Item.Header>
@@ -40,6 +58,9 @@ const OrderList = function({orders, all}) {
             </Item>
           }
         >
+          <Button type="icon" onClick={handleClickClose}>
+            <Icon name="window close" />
+          </Button>
           <Modal.Header>Order # {order.id}</Modal.Header>
           <Modal.Content scrolling>
             <Modal.Description>
@@ -83,4 +104,5 @@ const OrderList = function({orders, all}) {
     <h1>No Orders</h1>
   )
 }
+
 export default OrderList
