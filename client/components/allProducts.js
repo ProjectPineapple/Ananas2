@@ -6,39 +6,55 @@ import {fetchAllProducts, createProduct} from '../store/allProducts'
 import {addToCart} from '../store/viewCart'
 import {commaSeparateNumber} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
+import querystring from 'query-string'
 
-import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
+import {Grid, Rating, Button, Icon, Item, Form, Input} from 'semantic-ui-react'
 
-const AllProducts = props => {
+const AllProducts = ({history, location}) => {
   // const [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
   const orderId = useSelector(state => state.viewCart.id)
   const dispatch = useDispatch()
+  // cDm
   useEffect(() => {
-    dispatch(fetchAllProducts())
+    console.log(location.search)
+    // const params = querystring.parse(location.search)
+    // const urlQueryString =
+    // console.log('QuerystringParams: ', params)
+    dispatch(fetchAllProducts(location.search))
   }, [])
+
+  const handleSearchSubmit = event => {
+    if (event.keyCode === 13) {
+      const form = event.target.value
+      console.log(form)
+      const searchParam = event.target.value
+      dispatch(fetchAllProducts(`?search=${searchParam}`))
+      history.push(`/products?search=${searchParam}`)
+    }
+  }
 
   return products === undefined || !products.length ? (
     <h1>
       <Button.Group floated="left">
         {isAdmin ? (
-          <Button>
-            <Link to="/add/products">Add Product</Link>
+          <Button onClick={() => history.push('/add/products')}>
+            Add Product
           </Button>
         ) : null}
       </Button.Group>No Products
     </h1>
   ) : (
     <div>
-      <Button.Group floated="left">
-        {isAdmin ? (
-          <Button>
-            <Link to="/add/products">Add Product</Link>
-          </Button>
-        ) : null}
-      </Button.Group>
+      <Input placeholder="Search..." onKeyDown={handleSearchSubmit} />
+      {/*COLLIN WHYYYYY BUTTON HAVE TO BE IN FORM TO WORK} */}
+      {isAdmin ? (
+        <Button onClick={() => history.push('/add/products')}>
+          Add Product
+        </Button>
+      ) : null}
       <Grid textAlign="center" columns="three" stackable padded>
         {products.map(product => (
           <Grid.Column key={product.id}>

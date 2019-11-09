@@ -24,7 +24,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {user} = this.props
+    const {user, location} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
     console.log(isAdmin)
@@ -33,7 +33,11 @@ class Routes extends Component {
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/products" component={AllProducts} />
+        <Route
+          path="/products"
+          render={() => <AllProducts key={location.search} />}
+        />
+
         <Route
           exact
           path="/view/product/:productId"

@@ -8,10 +8,10 @@ export const addProduct = product => ({type: ADD_PRODUCT, product})
 
 const initialState = []
 
-export const fetchAllProducts = () => {
+export const fetchAllProducts = urlQueryString => {
   return async dispatch => {
     try {
-      const {data} = await axios.get('/api/products')
+      const {data} = await axios.get(`/api/products${urlQueryString}`)
       dispatch(setProducts(data))
     } catch (err) {
       console.error(err)
