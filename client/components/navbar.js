@@ -17,8 +17,8 @@ const Navbar = ({history}) => {
     : 0
   return (
     <div className="navbar">
-      <Container>
-        <Header as="h1" color="teal">
+      <Container onClick={() => history.push('/')}>
+        <Header as="h1" color="teal" className="navbar-logo">
           seaBay
         </Header>
       </Container>
