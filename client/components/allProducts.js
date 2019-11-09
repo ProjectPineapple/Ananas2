@@ -71,9 +71,19 @@ const AllProducts = props => {
                 color="teal"
                 onClick={handleClickAdd}
                 value={product.id}
+                disabled={product.stock <= 0}
               >
                 <Icon name="cart plus" /> Add to Cart
               </Button>
+              {product.stock ? (
+                product.stock <= 5 ? (
+                  <i style={{color: 'orangered'}}>Only a few left!</i>
+                ) : (
+                  ' '
+                )
+              ) : (
+                <i style={{color: 'red'}}>Out of stock</i>
+              )}
             </Item.Content>
           </Grid.Column>
         ))}
