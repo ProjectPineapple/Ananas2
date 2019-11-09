@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
 import {addToCart} from '../store/viewCart'
 import {commaSeparateNumber} from '../utilityMethods'
+import AddToCartButton from './AddToCartButton'
 
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
 
@@ -13,17 +14,11 @@ const AllProducts = props => {
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
-  // const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
   const orderId = useSelector(state => state.viewCart.id)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
   }, [])
-
-  //ADD ADDTOCART THUNK HERE!
-  const handleClickAdd = event => {
-    dispatch(addToCart(+event.target.value, orderId))
-  }
 
   return products === undefined || !products.length ? (
     <h1>
@@ -64,26 +59,9 @@ const AllProducts = props => {
                 <span>Price ${commaSeparateNumber(product.price / 100)}</span>
               </Item.Meta>
               <Item.Description>
-                {product.description.slice(0, 80)}
+                {product.description.slice(0, 80) + '...'}
               </Item.Description>
-              <Button
-                icon
-                color="teal"
-                onClick={handleClickAdd}
-                value={product.id}
-                disabled={product.stock <= 0}
-              >
-                <Icon name="cart plus" /> Add to Cart
-              </Button>
-              {product.stock ? (
-                product.stock <= 5 ? (
-                  <i style={{color: 'orangered'}}>Only a few left!</i>
-                ) : (
-                  ' '
-                )
-              ) : (
-                <i style={{color: 'red'}}>Out of stock</i>
-              )}
+              <AddToCartButton productToAdd={product} />
             </Item.Content>
           </Grid.Column>
         ))}
