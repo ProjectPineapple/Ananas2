@@ -36,6 +36,10 @@ const UserHome = props => {
     {
       menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
       render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
+    },
+    {
+      menuItem: {key: 'reviews', icon: 'star', content: 'Reviews'},
+      render: () => <Tab.Pane>Reviews</Tab.Pane>
     }
   ]
   if (isAdminStatus) {
