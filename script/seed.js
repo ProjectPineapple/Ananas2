@@ -205,10 +205,13 @@ const bigSeed = async () => {
     nonAdmin.setReviews(seededReviews)
 
     //Order has many products (products belongTo order)
-    await Order.addLineItem(1, 1, 3)
-    await Order.addLineItem(1, 2, 5)
-    await Order.addLineItem(1, 4, 1)
-    await Order.addLineItem(1, 3, 6)
+    await Order.addItemToOrder(3, 1)
+    await Order.addItemToOrder(3, 2)
+    await Order.addItemToOrder(3, 4)
+    await Order.addItemToOrder(3, 3)
+    await Order.addItemToOrder(3, 3)
+    await Order.addItemToOrder(3, 3)
+    await Order.addItemToOrder(3, 3)
 
     //Products have many reviews (review belongsTo product)
     let product1 = seededProducts[1]
