@@ -1,6 +1,8 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Form, Header} from 'semantic-ui-react'
+import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router'
 import {
   setName,
   setPrice,
@@ -36,6 +38,7 @@ const savedTags = [
 ]
 
 const UpdateProductForm = function(props) {
+  console.log('props:', props)
   const dispatch = useDispatch()
   const {
     name,
@@ -53,8 +56,14 @@ const UpdateProductForm = function(props) {
   const product = useSelector(state => state.singleProduct)
 
   const handleSubmit = e => {
-    const tags = [tag1, tag2, tag3]
-    const photos = [photo1, photo2, photo3]
+    let tags
+    if (tag1) {
+      tags = [tag1, tag2, tag3]
+    }
+    let photos
+    if (photo1) {
+      photos = [photo1, photo2, photo3]
+    }
     const productId = Number(product.id)
     e.preventDefault()
     const productData = {
@@ -68,6 +77,7 @@ const UpdateProductForm = function(props) {
     }
     console.log(productData)
     dispatch(changeAProduct(productData, productId))
+    props.history.push(`/products/${productId}`)
   }
 
   return (
@@ -283,4 +293,4 @@ const UpdateProductForm = function(props) {
 //   }
 // }
 
-export default UpdateProductForm
+export default withRouter(UpdateProductForm)
