@@ -29,7 +29,7 @@ export const addAReview = (review, productId) => {
         productId,
         ')'
       )
-      const {data} = await axios.post('api/reviews', {
+      const {data} = await axios.post('/api/reviews', {
         review: review,
         productId: productId
       })

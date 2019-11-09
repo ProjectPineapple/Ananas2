@@ -30,27 +30,28 @@ const AddReview = props => {
   }
 
   const handleClickClose = () => {
-    // setDimmer(!dimmer)
     setOpen(!open)
     setIsClickedClose(!isClickedClose)
   }
 
+  let stars
   ///NEED TO SEND RATING + DESCRIPTION TO DB
   const handleRate = (e, {rating}) => {
-    stars = Number(rating.toFixed(2))
+    ///need to update state somehow, I think
+    stars = rating
   }
 
   const handleSubmit = e => {
     e.preventDefault()
     // const photos = [photo1, photo2, photo3]
-
+    stars = stars.toFixed(2) //string with 2 decimal places (ex: 4.00)
     const reviewData = {
-      stars: stars,
-      description: description
+      stars,
+      description: 'This is a hard-coded description ;)'
     }
     dispatch(addAReview(reviewData, product.id))
     //reroute to productId
-    props.history.push(`/products/${product.id}`)
+    // props.history.push(`/products/${product.id}`)
   }
 
   return (
