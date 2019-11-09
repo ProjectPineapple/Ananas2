@@ -5,13 +5,11 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_CART = 'GET_CART'
-const ADDTO_CART = 'ADDTO_CART'
 
 /**
  * ACTION CREATORS
  */
 const getCart = cart => ({type: GET_CART, cart})
-const addToCart = product => ({type: ADDTO_CART, product})
 
 /**
  * INITIAL STATE
@@ -31,34 +29,37 @@ export const fetchCart = () => async dispatch => {
   }
 }
 
-export const addToCartThunk = (productId, orderId) => async dispatch => {
+export const addToCart = (productId, orderId) => async dispatch => {
   try {
-    console.log("Greetings from thunk! Here's what I got: ", productId, orderId)
-
-    //    const orderId = orderLineItems[0].orderId
-    const {data} = await axios.put(`/api/orders/${orderId}`, {
-      productId: productId
+    const {data} = await axios.put(`/api/orders/additemtocart/${orderId}`, {
+      productId
     })
-    console.log('Thunk sending this back', data)
-    dispatch(addToCart(data))
+    dispatch(getCart(data))
   } catch (err) {
     console.error(err)
   }
 }
 
-export const removeFromCart = productToDelete => async dispatch => {
+export const removeFromCart = (productId, orderId) => async dispatch => {
   try {
-    console.log(
-      "Greetings from thunk! Here's what I got: ",
+    const {data} = await axios.put(`/api/orders/removeitemfromcart`, {
       productId,
-      orderLineItems
-    )
-    const orderId = orderLineItems[0].orderId
-    const {data} = await axios.put(`/api/orders/${orderId}`, {
-      productId: productId
+      orderId
     })
     console.log('Thunk sending this back', data)
-    dispatch(addToCart(data))
+    dispatch(getCart(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const removeLineItem = (productId, orderId) => async dispatch => {
+  try {
+    const {data} = await axios.put('api/orders/removeLineItemFromCart', {
+      productId,
+      orderId
+    })
+    dispatch(getCart(data))
   } catch (err) {
     console.error(err)
   }
@@ -71,8 +72,6 @@ export default (state = blankCart, action) => {
   switch (action.type) {
     case GET_CART:
       return action.cart
-    case ADDTO_CART:
-      return {...state, products: {...action.product}}
     default:
       return state
   }

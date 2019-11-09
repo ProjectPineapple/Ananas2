@@ -3,135 +3,123 @@ const db = require('../db')
 const OrderLineItem = require('./OrderLineItem')
 const Product = require('./product')
 
-const Order = db.define(
-  'order',
-  {
-    status: {
-      type: Sequelize.ENUM([
-        'in-cart',
-        'payment-in-progress',
-        'paid',
-        'shipped',
-        'delivered',
-        'cancelled',
-        'in-dispute',
-        'completed'
-      ]),
-      defaultValue: 'in-cart'
-    },
-    subtotal: {
-      type: Sequelize.INTEGER, // in cents; X0000 <--> `$X00.00`
-      defaultValue: 0,
-      validate: {
-        min: 0
-      }
-    },
-    total: {
-      // after tax & shipping & discount code, etc
-      type: Sequelize.INTEGER,
-      validate: {
-        min: 0
-      }
-    },
-    address: {
-      // populate from user's shipping address during checkout
-      type: Sequelize.STRING
-    },
-    cartTime: {
-      // to delete
-      // first item in the cart
-      type: Sequelize.DATE,
-      defaultValue: Date.now()
-    },
-    submittedTime: {
-      // user submits order
-      type: Sequelize.DATE
-    },
-    paymentTime: {
-      // user's payment goes through
-      type: Sequelize.DATE
-    },
-    cancelTime: {
-      // if order is cancelled
-      type: Sequelize.DATE
-    },
-    shipTime: {
-      // when order ships
-      type: Sequelize.DATE
-    },
-    deliveryTime: {
-      // when order is delivered
-      type: Sequelize.DATE
-    },
-    disputeTime: {
-      // if order is disputed
-      type: Sequelize.DATE
-    },
-    completedTime: {
-      // when order is ALL DONE
-      type: Sequelize.DATE
+const Order = db.define('order', {
+  status: {
+    type: Sequelize.ENUM([
+      'in-cart',
+      'payment-in-progress',
+      'paid',
+      'shipped',
+      'delivered',
+      'cancelled',
+      'in-dispute',
+      'completed'
+    ]),
+    defaultValue: 'in-cart'
+  },
+  subtotal: {
+    type: Sequelize.INTEGER, // in cents; X0000 <--> `$X00.00`
+    defaultValue: 0,
+    validate: {
+      min: 0
     }
-    // include Product as lineItems ({ price: (at the time!), productId, qty }) , fk: userId
+  },
+  total: {
+    // after tax & shipping & discount code, etc
+    type: Sequelize.INTEGER,
+    validate: {
+      min: 0
+    }
+  },
+  address: {
+    // populate from user's shipping address during checkout
+    type: Sequelize.STRING
+  },
+  cartTime: {
+    // to delete
+    // first item in the cart
+    type: Sequelize.DATE,
+    defaultValue: Date.now()
+  },
+  submittedTime: {
+    // user submits order
+    type: Sequelize.DATE
+  },
+  paymentTime: {
+    // user's payment goes through
+    type: Sequelize.DATE
+  },
+  cancelTime: {
+    // if order is cancelled
+    type: Sequelize.DATE
+  },
+  shipTime: {
+    // when order ships
+    type: Sequelize.DATE
+  },
+  deliveryTime: {
+    // when order is delivered
+    type: Sequelize.DATE
+  },
+  disputeTime: {
+    // if order is disputed
+    type: Sequelize.DATE
+  },
+  completedTime: {
+    // when order is ALL DONE
+    type: Sequelize.DATE
   }
-  // {
-  //   defaultScope: {
-  //     include: [
-  //       {
-  //         model: OrderLineItem
-  //       },
-  //       {
-  //         model: Product
-  //       }
-  //     ]
-  //   }
-  // }
-)
+})
 
-// Method to add a line item to the OrderLineItem table that refers to this order
-// NOTE THAT THIS RETURNS A PROMISE
-Order.addLineItem = async (orderId, productId, quantity = 1) => {
-  const product = await Product.findByPk(productId)
-  const order = await Order.findByPk(orderId)
-  const newLineItem = await OrderLineItem.create({
-    quantity,
-    priceAtPurchase: product.price,
-    productId: product.id,
-    orderId: order.id
+// Adds item to cart by either creating a line item if none exists,
+// or adding a quantity if one does exist
+// async operation
+Order.addItemToOrder = async (orderId, productId) => {
+  const orderLineItemToChange = await OrderLineItem.findOne({
+    where: {orderId, productId},
+    include: [{model: Product}]
   })
-}
-
-// Method to add a line item to the OrderLineItem table that refers to this order
-// NOTE THAT THIS RETURNS A PROMISE
-Order.updateLineItem = async (
-  orderId,
-  productId,
-  quantity,
-  priceAtPurchase
-) => {
-  // try {
-  const lineItemToUpdate = await OrderLineItem.update(
-    {quantity, priceAtPurchase},
-    {
-      returning: true,
-      where: {productId: productId, orderId: orderId}
+  if (!orderLineItemToChange) {
+    const product = await Product.findByPk(productId)
+    console.log(product)
+    if (product.stock > 0) {
+      return OrderLineItem.create({
+        quantity: 1,
+        priceAtPurchase: product.price,
+        productId,
+        orderId
+      })
+    } else {
+      throw new Error(`Not enough stock to add to cart:${product.name}`)
     }
-  )
-  // )(function([rowsUpdated, [updatedLineItem]]) {
-  //   return updatedLineItem
-  // } catch (err) {
-  //   // console.log('TCL: lineItemToUpdate', lineItemToUpdate)
-  //   // return lineItemToUpdate
-  //   console.error(err)
-  //   return err
-  // }
+  }
+  if (orderLineItemToChange.quantity >= orderLineItemToChange.product.stock) {
+    throw new Error(
+      `Not enough stock to add to cart:${orderLineItemToChange.product.name}`
+    )
+  } else {
+    return orderLineItemToChange.update({
+      quantity: orderLineItemToChange.quantity + 1
+    })
+  }
 }
 
-Order.deleteLineItem = async (orderId, productId) => {
-  try {
-    await OrderLineItem.destroy({where: {productId, orderId}})
-  } catch (error) {
-    console.error(error)
-    return error
+//async operation
+Order.removeItemFromOrder = async (orderId, productId) => {
+  const orderLineItemToChange = await OrderLineItem.findOne({
+    where: {orderId, productId}
+  })
+
+  if (!orderLineItemToChange) {
+    throw new Error('No line item matching that cart')
+  }
+
+  if (orderLineItemToChange.quantity === 1) {
+    return OrderLineItem.destroy({where: {productId, orderId}})
+  } else {
+    return orderLineItemToChange.update({
+      quantity: orderLineItemToChange.quantity - 1
+    })
   }
 }
 

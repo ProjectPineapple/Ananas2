@@ -3,19 +3,18 @@ import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {addToCartThunk} from '../store/viewCart'
+import {addToCart} from '../store/viewCart'
 import {commaSeparateNumber} from '../utilityMethods'
 
 import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
 
 const AllProducts = props => {
-  const [isClicked, setIsClicked] = useState(false)
+  // const [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
-  const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
+  // const orderLineItems = useSelector(state => state.viewCart.OrderLineItems)
   const orderId = useSelector(state => state.viewCart.id)
-  console.log(orderId)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -23,7 +22,7 @@ const AllProducts = props => {
 
   //ADD ADDTOCART THUNK HERE!
   const handleClickAdd = event => {
-    dispatch(addToCartThunk(+event.target.value, orderId))
+    dispatch(addToCart(+event.target.value, orderId))
   }
 
   return products === undefined || !products.length ? (

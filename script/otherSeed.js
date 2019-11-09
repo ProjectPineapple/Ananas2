@@ -31,7 +31,7 @@ const dummyProducts = [
   {
     status: false,
     name: 'Warspite',
-    stock: 0,
+    stock: 5,
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
     price: 430000000,
@@ -176,10 +176,10 @@ const smallSeed = async () => {
 
     //Order has many products (products belongTo order)
     let order1 = seededOrders[0]
-    await Order.addLineItem(1, 1, 3)
-    await Order.addLineItem(1, 2, 5)
-    await Order.addLineItem(1, 4, 1)
-    await Order.addLineItem(1, 3, 6)
+    await Order.addItemToOrder(1, 1)
+    await Order.addItemToOrder(1, 2)
+    await Order.addItemToOrder(1, 3)
+    await Order.addItemToOrder(1, 3)
 
     //Products have many reviews (review belongsTo product)
     let product1 = seededProducts[1]
