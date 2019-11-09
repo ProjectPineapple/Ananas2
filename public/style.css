@@ -55,3 +55,12 @@ form div {
 .redtext {
   color: red;
 }
+.add-to-cart {
+  display: flex;
+  justify-content: center;
+}
+.cart-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
