@@ -16,7 +16,7 @@ const ProductListing = props => {
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const product = useSelector(state => state.singleProduct)
-  const cart = useSelector(state => state.viewCart)
+  const lineItems = useSelector(state => state.viewCart.OrderLineItems) || []
 
   const productId = +props.match.params.productId
   const dispatch = useDispatch()
@@ -35,7 +35,12 @@ const ProductListing = props => {
       <div>
         <Segment basic>
           <Header as="h1">{product.name}</Header>
-          <AddToCartButton productToAdd={product} />
+          <AddToCartButton
+            productToAdd={product}
+            productInCart={
+              lineItems.find(item => item.productId === product.id) || {}
+            }
+          />
           {isAdmin ? (
             <Button onClick={() => dispatch(deleteProduct(product.id))}>
               Delete

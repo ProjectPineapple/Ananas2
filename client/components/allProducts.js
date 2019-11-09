@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {addToCart} from '../store/viewCart'
 import {commaSeparateNumber} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
@@ -15,7 +14,7 @@ const AllProducts = ({history, location}) => {
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
-  const orderId = useSelector(state => state.viewCart.id)
+  const lineItems = useSelector(state => state.viewCart.OrderLineItems) || []
   const dispatch = useDispatch()
   // cDm
   useEffect(() => {
@@ -77,7 +76,12 @@ const AllProducts = ({history, location}) => {
               <Item.Description>
                 {product.description.slice(0, 80) + '...'}
               </Item.Description>
-              <AddToCartButton productToAdd={product} />
+              <AddToCartButton
+                productToAdd={product}
+                productInCart={
+                  lineItems.find(item => item.productId === product.id) || {}
+                }
+              />
             </Item.Content>
           </Grid.Column>
         ))}
