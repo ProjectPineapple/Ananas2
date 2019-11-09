@@ -1,32 +1,28 @@
 import React from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-// import {fetchReviews} from '../store/reviews'
 import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
+import AddReview from './AddReview'
 
-///fetchReviews
-///need to set product's reviews on state [api routes, probs]
-
-///PATH WILL PROBABLY BE .... /:productId?
+//NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const ProductReviews = props => {
-  const {reviews} = props
-  // const user = useSelector(state => state.user)
-  // console.log('TCL: user', user)
-  //NEED LINK TO ADD REVIEW ROUTE (around "be the first")
+  const {product, reviews} = props
+
   return !reviews.length ? (
     <div>
       <p>
-        No customer reviews yet. <Icon name="frown outline" />{' '}
+        No customer reviews yet. <Icon name="frown outline" />
       </p>
       <p>
         Have you purchased this battleship? Be the first to share your thoughts!
       </p>
+      <AddReview product={product} />
     </div>
   ) : (
-    ///Review has: user, stars, description, created date
     <div>
       <List>
         {reviews.map(review => {
           let stars = Number(review.stars)
+          let reviewDate = review.updatedAt.toString().slice(0, 10)
+
           return (
             <Segment textAlign="left" key={review.id}>
               <List.Item>
@@ -38,6 +34,7 @@ const ProductReviews = props => {
                   <h5>Admiral Akbar</h5>
                 </List.Header>
                 <List.Content>
+                  <p>{reviewDate}</p>
                   <Rating defaultRating={stars} maxRating={5} disabled />
                   <p>{review.description}</p>
                 </List.Content>
@@ -49,6 +46,7 @@ const ProductReviews = props => {
       <p>
         Have you purchased this battleship? Share your thoughts with others!
       </p>
+      <AddReview product={product} />
     </div>
   )
 }
