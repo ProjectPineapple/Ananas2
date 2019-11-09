@@ -3,11 +3,46 @@ const {Product, Review} = require('../db/models')
 const {Op} = require('sequelize')
 module.exports = router
 
-//api/products route
+// //api/products route
+// router.get('/', async (req, res, next) => {
+//   try {
+//     const products = await Product.findAll()
+//     console.log('Got to Route')
+//     res.json(products)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
+
+//pagination
+const PER_PAGE = 10
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll({include: [Review]})
-    console.log('Got to Route')
+    // req.query example
+    // {
+    //   page:4,
+    //   category:"russian",
+    //   searchParameters:"byName",
+    //   searchValue: "Roma",
+    //   orderBy: "id" or "price" or "number of reviews"
+    //   direction: "asc" or "desc"
+    // }
+    const whereclause = {}
+    const page = req.query.page || 1
+    if (req.query.category) {
+      whereclause.category = req.query.category
+    }
+    if (req.query.search) {
+      whereclause.name = {[Op.substring]: req.query.search}
+      // whereclause.name = req.query.search
+    }
+    console.log('WhereClause', whereclause)
+    const products = await Product.findAll({
+      where: whereclause,
+      limit: PER_PAGE,
+      offset: (page - 1) * 25,
+      orderBy: [['id', 'asc']]
+    })
     res.json(products)
   } catch (err) {
     next(err)
