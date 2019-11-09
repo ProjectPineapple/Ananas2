@@ -6,7 +6,7 @@ module.exports = router
 //api/products route
 router.get('/', async (req, res, next) => {
   try {
-    const products = await Product.findAll()
+    const products = await Product.findAll({include: [Review]})
     console.log('Got to Route')
     res.json(products)
   } catch (err) {
