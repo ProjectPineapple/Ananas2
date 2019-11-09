@@ -1,6 +1,7 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Form, Header} from 'semantic-ui-react'
+import {withRouter} from 'react-router'
 import {
   setName,
   setPrice,
@@ -53,8 +54,14 @@ const AddProductForm = function(props) {
   const handleSubmit = e => {
     e.preventDefault()
     console.log('in handle submit')
-    const tags = [tag1, tag2, tag3]
-    const photos = [photo1, photo2, photo3]
+    let tags
+    if (tag1) {
+      tags = [tag1, tag2, tag3]
+    }
+    let photos
+    if (photo1) {
+      photos = [photo1, photo2, photo3]
+    }
     const productData = {
       name,
       price,
@@ -65,6 +72,7 @@ const AddProductForm = function(props) {
     }
     console.log(productData)
     dispatch(addAProduct(productData))
+    props.history.push('/products')
   }
 
   return (
@@ -269,4 +277,4 @@ const AddProductForm = function(props) {
 //     }
 //   }
 // }
-export default AddProductForm
+export default withRouter(AddProductForm)
