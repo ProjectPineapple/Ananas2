@@ -13,44 +13,44 @@ import {
 
 const AddReview = props => {
   const {product} = props
-
   const [isClickedClose, setIsClickedClose] = useState(false)
   const [isClickedAddReview, setIsClickedAddReview] = useState(false)
   const [open, setOpen] = useState(false)
-  const [dimmer, setDimmer] = useState(false)
+  const [dimmer, setDimmer] = useState(true)
 
-  // const {stars, description, photo1, photo2, photo3} = useSelector(
-  //   state => state.newReview
-  // )
+  //photo logic TK (photo1, photo2, photo)
+  // const {stars, description} = useSelector(state => state.newReview)
+
   const dispatch = useDispatch()
 
   const handleClickAddReview = () => {
-    console.log('handledClick for Add Review! dimmer = ', dimmer)
-    setDimmer(!dimmer)
+    setDimmer(true)
     setOpen(!open)
     setIsClickedAddReview(!isClickedAddReview)
   }
 
   const handleClickClose = () => {
-    setDimmer(!dimmer)
+    // setDimmer(!dimmer)
     setOpen(!open)
     setIsClickedClose(!isClickedClose)
   }
 
   ///NEED TO SEND RATING + DESCRIPTION TO DB
   const handleRate = (e, {rating}) => {
-    stars = rating
-    return stars
+    stars = Number(rating.toFixed(2))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = e => {
+    e.preventDefault()
     // const photos = [photo1, photo2, photo3]
 
     const reviewData = {
-      stars,
-      description: 'SJLMSKDL'
+      stars: stars,
+      description: description
     }
-    dispatch(addAReview(reviewData))
+    dispatch(addAReview(reviewData, product.id))
+    //reroute to productId
+    props.history.push(`/products/${product.id}`)
   }
 
   return (
@@ -127,34 +127,5 @@ const AddReview = props => {
     </Modal>
   )
 }
-// const ModalExampleScrollingContent = () => (
-//   <Modal trigger={<Button>Scrolling Content Modal</Button>}>
-//     <Modal.Header>Profile Picture</Modal.Header>
-//     <Modal.Content image scrolling>
-//       <Image size='medium' src='https://react.semantic-ui.com/images/wireframe/image.png' wrapped />
 
-//       <Modal.Description>
-//         <Header>Modal Header</Header>
-//         <p>
-//           This is an example of expanded content that will cause the modal's
-//           dimmer to scroll
-//         </p>
-
-//         {_.times(8, (i) => (
-//           <Image
-//             key={i}
-//             src='https://react.semantic-ui.com/images/wireframe/paragraph.png'
-//             style={{ paddingBottom: 5 }}
-//           />
-//         ))}
-//       </Modal.Description>
-//     </Modal.Content>
-//     <Modal.Actions>
-//       {<Button primary>
-//         Submit <Icon name='chevron right' />
-//       </Button>}
-//     </Modal.Actions>
-//   </Modal>
-
-console.log(AddReview)
 export default AddReview
