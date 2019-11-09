@@ -71,35 +71,37 @@ const Order = db.define('order', {
   }
 })
 
-// Method to add a line item to the OrderLineItem table that refers to this order
-// NOTE THAT THIS RETURNS A PROMISE
-
-//async operation
+// Adds item to cart by either creating a line item if none exists,
+// or adding a quantity if one does exist
+// async operation
 Order.addItemToOrder = async (orderId, productId) => {
   const orderLineItemToChange = await OrderLineItem.findOne({
     where: {orderId, productId},
     include: [{model: Product}]
   })
   if (!orderLineItemToChange) {
-    return Order.addLineItem(orderId, productId)
+    const product = await Product.findByPk(productId)
+    console.log(product)
+    if (product.stock > 0) {
+      return OrderLineItem.create({
+        quantity: 1,
+        priceAtPurchase: product.price,
+        productId,
+        orderId
+      })
+    } else {
+      throw new Error(`Not enough stock to add to cart:${product.name}`)
+    }
   }
   if (orderLineItemToChange.quantity >= orderLineItemToChange.product.stock) {
-    throw new Error('Not enough stock to add to cart')
+    throw new Error(
+      `Not enough stock to add to cart:${orderLineItemToChange.product.name}`
+    )
   } else {
     return orderLineItemToChange.update({
       quantity: orderLineItemToChange.quantity + 1
     })
   }
-}
-
-Order.addLineItem = async (orderId, productId, quantity = 1) => {
-  const product = Product.findByPk(productId)
-  return OrderLineItem.create({
-    quantity,
-    priceAtPurchase: product.price,
-    productId,
-    orderId
-  })
 }
 
 //async operation
@@ -109,7 +111,7 @@ Order.removeItemFromOrder = async (orderId, productId) => {
   })
 
   if (!orderLineItemToChange) {
-    throw new Error('Line Item not found, something went wrong')
+    throw new Error('No line item matching that cart')
   }
 
   if (orderLineItemToChange.quantity === 1) {
@@ -118,43 +120,6 @@ Order.removeItemFromOrder = async (orderId, productId) => {
     return orderLineItemToChange.update({
       quantity: orderLineItemToChange.quantity - 1
     })
-  }
-}
-
-// Method to add a line item to the OrderLineItem table that refers to this order
-// NOTE THAT THIS RETURNS A PROMISE
-// DEPRECATED ?? -_-
-Order.updateLineItem = async (
-  orderId,
-  productId,
-  quantity,
-  priceAtPurchase
-) => {
-  // try {
-  const lineItemToUpdate = await OrderLineItem.update(
-    {quantity, priceAtPurchase},
-    {
-      returning: true,
-      where: {productId: productId, orderId: orderId}
-    }
-  )
-  // )(function([rowsUpdated, [updatedLineItem]]) {
-  //   return updatedLineItem
-  // } catch (err) {
-  //   // console.log('TCL: lineItemToUpdate', lineItemToUpdate)
-  //   // return lineItemToUpdate
-  //   console.error(err)
-  //   return err
-  // }
-}
-
-// Deprecated, just use OrderLineItem.destroy
-Order.deleteLineItem = async (orderId, productId) => {
-  try {
-    await OrderLineItem.destroy({where: {productId, orderId}})
-  } catch (error) {
-    console.error(error)
-    return error
   }
 }
 

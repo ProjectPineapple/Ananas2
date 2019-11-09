@@ -1,35 +1,35 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Grid, Image, Button, Segment, Icon} from 'semantic-ui-react'
-import {fetchCart} from '../store/viewCart'
+import {
+  fetchCart,
+  removeFromCart,
+  removeLineItem,
+  addToCart
+} from '../store/viewCart'
 import {incrementItem, decrementItem} from '../store/lineItem'
 import {withRouter} from 'react-router'
 import {commaSeparateNumber, getActualQuantity} from '../utilityMethods'
 
 const ViewCart = ({history, match}) => {
-  const products = useSelector(state => state.viewCart.products) || []
+  const cart = useSelector(state => state.viewCart)
+  let lineItems = cart.OrderLineItems
+    ? cart.OrderLineItems.sort((a, b) => a.productId - b.productId)
+    : []
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchCart())
   }, [])
 
-  /*products.forEach(item => {
-     item.OrderLineItem.quantity = getActualQuantity(item)
-     })*/
+  const subtotal = lineItems.reduce(
+    (acc, item) => acc + item.priceAtPurchase * item.quantity,
+    0
+  )
 
-  const subtotal = products
-    ? products.reduce(
-        (subtotalSoFar, nextItem) =>
-          subtotalSoFar + nextItem.price * nextItem.OrderLineItem.quantity,
-        0
-      )
-    : 0
-  return products.length === 0 ? (
-    <h1>Your cart is empty!</h1>
-  ) : (
+  return lineItems.length ? (
     <div>
-      {match.path === '/cart' ? (
+      {match.path === '/cart' || match.path === '/home' ? (
         <Segment padded>
           <Button onClick={() => history.push('/cart/checkout')}>
             Proceed to checkout
@@ -37,19 +37,22 @@ const ViewCart = ({history, match}) => {
         </Segment>
       ) : null}
       <Grid padded="horizontally">
-        {products.map(item => (
-          <Grid.Row key={item.id}>
+        {lineItems.map(item => (
+          <Grid.Row key={item.product.id}>
             <Grid.Column width={4}>
-              <Image src={item.photos[0]} />
+              <Image src={item.product.photos[0]} size="small" />
             </Grid.Column>
             <Grid.Column width={9} />
             <Grid.Column width={3}>
               <div>
-                <b>{item.name}</b>
+                <b>{item.product.name}</b>
               </div>
-              {item.stock > 0 ? (
+              {item.product.stock > 0 ? (
                 <div className="in-stock">
-                  <div>Price: ${commaSeparateNumber(item.price / 100)}</div>
+                  <div>
+                    Price: ${commaSeparateNumber(item.priceAtPurchase / 100)}
+                  </div>
+                  <div>{item.product.stock} remaining</div>
                   <div>
                     Qty:{' '}
                     <Icon
@@ -58,23 +61,25 @@ const ViewCart = ({history, match}) => {
                       color="grey"
                       link
                       onClick={() => {
-                        dispatch(decrementItem(item.OrderLineItem))
-                        console.log('tryna remove? hysterical')
+                        dispatch(removeFromCart(item.productId, item.orderId))
                       }}
                     />
-                    {item.OrderLineItem.quantity + ' '}
+                    {item.quantity + ' '}
                     <Icon
                       name="plus"
                       size="small"
                       color="grey"
                       link
                       onClick={() => {
-                        dispatch(incrementItem(item.OrderLineItem))
-                        console.log('you wanna add? you for real??')
+                        dispatch(addToCart(item.productId, item.orderId))
                       }}
                     />
                   </div>
-                  <Button onClick={() => console.log('TODO: dispatch thunk')}>
+                  <Button
+                    onClick={() =>
+                      dispatch(removeLineItem(item.productId, item.orderId))
+                    }
+                  >
                     Remove
                   </Button>
                 </div>
@@ -90,7 +95,11 @@ const ViewCart = ({history, match}) => {
                   >
                     Add to Wishlist
                   </Button>
-                  <Button onClick={() => console.log('you clicked `remove`')}>
+                  <Button
+                    onClick={() =>
+                      dispatch(removeLineItem(item.productId, item.orderId))
+                    }
+                  >
                     Remove
                   </Button>
                 </div>
@@ -105,6 +114,8 @@ const ViewCart = ({history, match}) => {
         </Grid.Row>
       </Grid>
     </div>
+  ) : (
+    <h1>Your cart is empty!</h1>
   )
 }
 
