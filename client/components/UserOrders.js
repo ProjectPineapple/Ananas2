@@ -23,6 +23,7 @@ const UserOrders = () => {
         content: 'All Orders'
       },
       render: () => {
+        const allOrders = orders.filter(order => order.status !== 'in-cart')
         return (
           <Tab.Pane>
             <OrderList orders={orders} all={true} />
@@ -81,7 +82,7 @@ const UserOrders = () => {
       menuItem: {
         key: 'cancelled',
         icon: 'cancel',
-        content: 'cancelled'
+        content: 'Cancelled'
       },
       render: () => {
         const cancelledOrders = orders.filter(
@@ -110,28 +111,29 @@ const UserOrders = () => {
           </Tab.Pane>
         )
       }
+    },
+    {
+      menuItem: {
+        key: 'completed',
+        icon: 'check',
+        content: 'Completed'
+      },
+      render: () => {
+        const completedOrders = orders.filter(
+          order => order.status === 'completed'
+        )
+        return (
+          <Tab.Pane>
+            <OrderList orders={completedOrders} />
+          </Tab.Pane>
+        )
+      }
     }
   ]
 
   return (
     <Tab menu={{fluid: true, vertical: true, tabular: true}} panes={panes} />
   )
-
-  // orders.length ? (
-  //   <Segment>
-  //     {orders.map(order => (
-  //       <Item key={order.id}>
-  //         <Item.Header> Order #: {order.id}</Item.Header>
-  //         <Item.Meta>
-  //           <span>Status: {order.status}</span>{' '}
-  //           <span>Subtotal: {order.subtotal}</span>
-  //         </Item.Meta>
-  //       </Item>
-  //     ))}
-  //   </Segment>
-  // ) : (
-  //   <h1>No Orders</h1>
-  // )
 }
 
 export default UserOrders
