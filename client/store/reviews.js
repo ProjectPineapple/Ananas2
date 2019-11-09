@@ -13,7 +13,6 @@ export const fetchAllReviews = () => {
     try {
       const {data} = await axios.get('/api/reviews')
       dispatch(setReviews(data))
-      console.log('Greetings from thunk: ', data)
     } catch (err) {
       console.error(err)
     }
@@ -23,11 +22,19 @@ export const fetchAllReviews = () => {
 export const addAReview = (review, productId) => {
   return async dispatch => {
     try {
+      console.log(
+        "Hey-o! It's your thunk! You sent me a review (",
+        review,
+        ') and productId (',
+        productId,
+        ')'
+      )
       const {data} = await axios.post('api/reviews', {
         review: review,
         productId: productId
       })
       dispatch(addReview(data))
+      console.log('Yo! Thunk again. Sending this back: ', data)
     } catch (err) {
       console.error(err)
     }
