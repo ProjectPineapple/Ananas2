@@ -31,7 +31,7 @@ const dummyProducts = [
   {
     status: false,
     name: 'Warspite',
-    stock: 0,
+    stock: 5,
     description:
       'This ship has SEEN BATTLE ACTION and has real missiles that may go off at ANY MOMENT. NOT for the faint of heart.',
     price: 430000000,
@@ -207,7 +207,7 @@ const bigSeed = async () => {
     //Order has many products (products belongTo order)
     await Order.addItemToOrder(3, 1)
     await Order.addItemToOrder(3, 2)
-    await Order.addItemToOrder(3, 4)
+    await Order.addItemToOrder(3, 3)
     await Order.addItemToOrder(3, 3)
     await Order.addItemToOrder(3, 3)
     await Order.addItemToOrder(3, 3)
