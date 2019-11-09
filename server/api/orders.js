@@ -83,7 +83,8 @@ router.put('/additemtocart/:orderId', async (req, res, next) => {
     const cart = await Order.findByPk(orderId, {
       include: [
         {
-          model: OrderLineItem
+          model: OrderLineItem,
+          include: [{model: Product}]
         },
         {
           model: Product
