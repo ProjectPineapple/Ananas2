@@ -1,20 +1,18 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {addToCart} from '../store/viewCart'
 import {commaSeparateNumber} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 
-import {Grid, Rating, Button, Icon, Item} from 'semantic-ui-react'
+import {Grid, Rating, Button, Item} from 'semantic-ui-react'
 
 const AllProducts = props => {
   // const [isClicked, setIsClicked] = useState(false)
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
-  const orderId = useSelector(state => state.viewCart.id)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
