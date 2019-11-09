@@ -17,7 +17,7 @@ const AddToCartButton = props => {
   if (Object.keys(productInCart).length) inCart = true
 
   return (
-    <div>
+    <div className="add-to-cart">
       <Button
         icon
         color="teal"
@@ -29,15 +29,30 @@ const AddToCartButton = props => {
       >
         <Icon name="cart plus" /> Add to Cart
       </Button>
-      {stock ? (
-        stock <= 5 ? (
-          <i style={{color: 'orangered'}}>Only a few left!</i>
+      <div className="cart-text">
+        {stock ? (
+          stock <= 5 ? (
+            <div>
+              <i style={{color: 'orangered'}}>Only a few left!</i>
+            </div>
+          ) : (
+            <div />
+          )
         ) : (
-          ' '
-        )
-      ) : (
-        <i style={{color: 'red'}}>Out of stock</i>
-      )}
+          <div>
+            <i style={{color: 'red'}}>Out of stock</i>
+          </div>
+        )}
+        {inCart ? (
+          <div>
+            <i style={{color: 'green'}}>
+              {productInCart.quantity + ' '} in cart
+            </i>
+          </div>
+        ) : (
+          <div />
+        )}
+      </div>
     </div>
   )
 }
