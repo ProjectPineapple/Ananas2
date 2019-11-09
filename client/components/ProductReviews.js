@@ -1,22 +1,11 @@
-import React, {useState} from 'react'
-import {Button, Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
+import React from 'react'
+import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
 import AddReview from './AddReview'
 
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const ProductReviews = props => {
   const {product, reviews} = props
-  const [isClickedNoReviews, setIsClickedNoReviews] = useState(false)
-  const [isClickedReviewsExist, setIsClickedReviewsExist] = useState(false)
 
-  const handleClickNoReviews = () => {
-    setIsClickedNoReviews(!isClickedNoReviews)
-  }
-
-  const handleClickReviewsExist = () => {
-    setIsClickedReviewsExist(!isClickedReviewsExist)
-  }
-
-  //NEED LINK TO ADDREVIEW ROUTE (around "be the first")
   return !reviews.length ? (
     <div>
       <p>
@@ -25,9 +14,7 @@ const ProductReviews = props => {
       <p>
         Have you purchased this battleship? Be the first to share your thoughts!
       </p>
-      <Button onClick={handleClickNoReviews}>
-        <Icon name="write" />Write a Review!
-      </Button>
+      <AddReview product={product} />
     </div>
   ) : (
     <div>
@@ -59,10 +46,7 @@ const ProductReviews = props => {
       <p>
         Have you purchased this battleship? Share your thoughts with others!
       </p>
-      <Button onClick={handleClickReviewsExist}>
-        <Icon name="write" />Write a Review!
-      </Button>
-      {isClickedReviewsExist ? <AddReview product={product} /> : <span />}
+      <AddReview product={product} />
     </div>
   )
 }
