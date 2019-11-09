@@ -81,7 +81,6 @@ Order.addItemToOrder = async (orderId, productId) => {
   })
   if (!orderLineItemToChange) {
     const product = await Product.findByPk(productId)
-    console.log(product)
     if (product.stock > 0) {
       return OrderLineItem.create({
         quantity: 1,
