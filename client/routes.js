@@ -33,10 +33,10 @@ class Routes extends Component {
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route exact path="/products" component={AllProducts} />
+        <Route path="/products" component={AllProducts} />
         <Route
           exact
-          path="/products/:productId"
+          path="/products/view/:productId"
           render={() => (
             <ProductListing key={this.props.match.params.productId} />
           )}

@@ -47,11 +47,11 @@ const AllProducts = props => {
       <Grid textAlign="center" columns="three" stackable padded>
         {products.map(product => (
           <Grid.Column key={product.id}>
-            <Link to={`/products/${product.id}`}>
+            <Link to={`/products/view/${product.id}`}>
               <Item.Image size="small" src={product.photos[0]} />
             </Link>
             <Item.Content>
-              <Link to={`/products/${product.id}`}>
+              <Link to={`/products/view/${product.id}`}>
                 <Item.Header>{product.name}</Item.Header>
               </Link>
               <Rating
