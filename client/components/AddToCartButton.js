@@ -5,7 +5,8 @@ import {Button, Icon} from 'semantic-ui-react'
 import {addToCart} from '../store/viewCart.js'
 
 const AddToCartButton = props => {
-  const {productToAdd, productInCart} = props
+  const {productToAdd} = props
+  const productInCart = props.productInCart || {}
   const {id, stock} = productToAdd
   let inCart = false
   const orderId = useSelector(state => state.viewCart.id)
