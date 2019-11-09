@@ -69,16 +69,34 @@ export default function(state = blankProduct, action) {
     case SET_STOCK:
       return {...state, stock: Number(action.stock)}
     case SET_TAG1:
+      if (!action.tag1) {
+        action.tag1 = ''
+      }
       return {...state, tag1: action.tag1}
     case SET_TAG2:
+      if (!action.tag2) {
+        action.tag2 = ''
+      }
       return {...state, tag2: action.tag2}
     case SET_TAG3:
+      if (!action.tag3) {
+        action.tag3 = ''
+      }
       return {...state, tag3: action.tag3}
     case SET_PHOTO1:
+      if (!action.photo1) {
+        action.photo1 = ''
+      }
       return {...state, photo1: action.photo1}
     case SET_PHOTO2:
+      if (!action.photo2) {
+        action.photo2 = ''
+      }
       return {...state, photo2: action.photo2}
     case SET_PHOTO3:
+      if (!action.photo3) {
+        action.photo3 = ''
+      }
       return {...state, photos3: action.photo3}
     case SET_DESCRIPTION:
       return {...state, description: action.description}
