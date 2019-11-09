@@ -7,9 +7,9 @@ import {Link} from 'react-router-dom'
 import {Button, Segment, Image, Label, Header} from 'semantic-ui-react'
 import ProductReviews from './ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
+import AddToCartButton from './AddToCartButton'
 
 import {commaSeparateNumber} from '../utilityMethods'
-import {addToCart} from '../store/viewCart'
 // import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
@@ -35,13 +35,7 @@ const ProductListing = props => {
       <div>
         <Segment basic>
           <Header as="h1">{product.name}</Header>
-          <Button
-            onClick={() => {
-              dispatch(addToCart(productId, cart.id))
-            }}
-          >
-            Add to Cart
-          </Button>
+          <AddToCartButton productToAdd={product} />
           {isAdmin ? (
             <Button onClick={() => dispatch(deleteProduct(product.id))}>
               Delete

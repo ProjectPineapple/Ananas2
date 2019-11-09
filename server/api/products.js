@@ -73,7 +73,7 @@ router.put('/:productId', async (req, res, next) => {
     if (!await Product.findByPk(productId, {include: [Review]})) {
       res.sendStatus(404)
     } else {
-      const [updatedRows, update] = await Product.update(
+      await Product.update(
         {
           name: req.body.name,
           description: req.body.description,
@@ -84,7 +84,8 @@ router.put('/:productId', async (req, res, next) => {
         },
         {where: {id: productId}}
       )
-      res.status(200).json(update)
+      const updatedProduct = await Product.findbyPk(productId)
+      res.status(200).json(updatedProduct)
     }
   } catch (error) {
     next(error)
@@ -94,7 +95,7 @@ router.put('/:productId', async (req, res, next) => {
 router.delete('/:productId', async (req, res, next) => {
   try {
     await Product.destroy({where: {id: req.params.productId}})
-    res.status(404).end()
+    res.status(204).end()
   } catch (error) {
     next(error)
   }
