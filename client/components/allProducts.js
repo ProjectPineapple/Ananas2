@@ -13,6 +13,7 @@ const AllProducts = props => {
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
+  const lineItems = useSelector(state => state.viewCart.OrderLineItems) || []
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchAllProducts())
@@ -59,7 +60,12 @@ const AllProducts = props => {
               <Item.Description>
                 {product.description.slice(0, 80) + '...'}
               </Item.Description>
-              <AddToCartButton productToAdd={product} />
+              <AddToCartButton
+                productToAdd={product}
+                productInCart={
+                  lineItems.find(item => item.productId === product.id) || {}
+                }
+              />
             </Item.Content>
           </Grid.Column>
         ))}
