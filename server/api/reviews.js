@@ -16,9 +16,9 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     ///NEED TO SANITIZE REVIEWS [NPM SANITIZE?]
-    const {stars, description} = req.body.review
+    const {stars, description, photos} = req.body.review
     const productId = Number(req.body.productId)
-    const review = await Review.create({stars, description})
+    const review = await Review.create({stars, description, photos})
     review.setProduct(productId)
     res.status(200).json(review)
   } catch (err) {
