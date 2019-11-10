@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {setTotalItems} from './totalItems'
 
 const SET_PRODUCTS = 'SET_PRODUCTS'
 const ADD_PRODUCT = 'ADD_PRODUCT'
@@ -12,7 +13,8 @@ export const fetchAllProducts = urlQueryString => {
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/products${urlQueryString}`)
-      dispatch(setProducts(data))
+      dispatch(setProducts(data.rows))
+      dispatch(setTotalItems(data.count))
     } catch (err) {
       console.error(err)
     }

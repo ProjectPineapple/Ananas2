@@ -7,10 +7,20 @@ import {commaSeparateNumber} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
 
-import {Grid, Rating, Button, Icon, Item, Form, Input} from 'semantic-ui-react'
+import {
+  Grid,
+  Rating,
+  Button,
+  Icon,
+  Item,
+  Form,
+  Input,
+  Pagination,
+  Header
+} from 'semantic-ui-react'
 
 const AllProducts = ({history, location}) => {
-  // const [isClicked, setIsClicked] = useState(false)
+  const totalResults = useSelector(state => state.totalItems)
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
   const products = useSelector(state => state.allProducts)
@@ -30,24 +40,47 @@ const AllProducts = ({history, location}) => {
       const form = event.target.value
       console.log(form)
       const searchParam = event.target.value
-      dispatch(fetchAllProducts(`?search=${searchParam}`))
       history.push(`/products?search=${searchParam}`)
     }
   }
 
+  const handlePageChange = (event, {activePage}) => {
+    const queryObject = querystring.parse(location.search)
+    queryObject.page = activePage
+    const queryParams = querystring.stringify(queryObject)
+    history.push(`/products?${queryParams}`)
+  }
+
+  const currentPage = querystring.parse(location.search).page
+    ? querystring.parse(location.search).page
+    : 1
+
   return products === undefined || !products.length ? (
-    <h1>
+    <div>
+      <Input placeholder="Search..." onKeyDown={handleSearchSubmit} />
+      <Pagination
+        defaultActivePage={currentPage}
+        totalPages={Math.ceil(totalResults / 24)}
+        onPageChange={handlePageChange}
+      />
+      <Header as="h3">Total Results : {totalResults}</Header>
       <Button.Group floated="left">
         {isAdmin ? (
           <Button onClick={() => history.push('/add/products')}>
             Add Product
           </Button>
         ) : null}
-      </Button.Group>No Products
-    </h1>
+      </Button.Group>
+    </div>
   ) : (
     <div>
       <Input placeholder="Search..." onKeyDown={handleSearchSubmit} />
+      <Pagination
+        defaultActivePage={currentPage}
+        totalPages={Math.ceil(totalResults / 24)}
+        onPageChange={handlePageChange}
+      />
+      <Header as="h3">Total Results : {totalResults}</Header>
       {/*COLLIN WHYYYYY BUTTON HAVE TO BE IN FORM TO WORK} */}
       {isAdmin ? (
         <Button onClick={() => history.push('/add/products')}>
