@@ -1,11 +1,13 @@
-import React, {useSelector, useState} from 'react'
-import {useDispatch} from 'react-redux'
-import {addAReview} from '../store/reviews'
+import React, {useState} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
+import {withRouter} from 'react-router'
+import {addReviewThunk} from '../store/addReview'
 import {
   Button,
   Form,
   Icon,
   Image,
+  Message,
   Modal,
   Rating,
   TextArea
@@ -17,10 +19,9 @@ const AddReview = props => {
   const [isClickedAddReview, setIsClickedAddReview] = useState(false)
   const [open, setOpen] = useState(false)
   const [dimmer, setDimmer] = useState(true)
-
+  const [error, setError] = useState(false)
   //photo logic TK (photo1, photo2, photo)
-  // const {stars, description} = useSelector(state => state.newReview)
-
+  let {stars, description} = useSelector(state => state.addedReview) || {}
   const dispatch = useDispatch()
 
   const handleClickAddReview = () => {
@@ -30,27 +31,37 @@ const AddReview = props => {
   }
 
   const handleClickClose = () => {
-    // setDimmer(!dimmer)
     setOpen(!open)
     setIsClickedClose(!isClickedClose)
   }
 
+  // let stars
   ///NEED TO SEND RATING + DESCRIPTION TO DB
   const handleRate = (e, {rating}) => {
-    stars = Number(rating.toFixed(2))
+    stars = rating
+  }
+
+  const handleChange = (e, {name, value}) => {
+    description = value
   }
 
   const handleSubmit = e => {
     e.preventDefault()
     // const photos = [photo1, photo2, photo3]
-
-    const reviewData = {
-      stars: stars,
-      description: description
+    if (!description) {
+      setError(!error)
+      console.log('Error: ', error)
+    } else {
+      stars = stars.toFixed(2) //string with 2 decimal places (ex: 4.00)
+      console.log("Here's the description: ", description)
+      const reviewData = {
+        stars,
+        description
+      }
+      dispatch(addReviewThunk(reviewData, product.id))
+      //NOTE: Currently reroutes to user's home page
+      props.history.push(`/home`)
     }
-    dispatch(addAReview(reviewData, product.id))
-    //reroute to productId
-    props.history.push(`/products/${product.id}`)
   }
 
   return (
@@ -84,14 +95,16 @@ const AddReview = props => {
           size="massive"
           onRate={handleRate}
         />
-        <Form>
+        <Form error={error}>
           <Form.Field
             style={{minHeight: 100}}
             width={12}
-            required
             control={TextArea}
+            value={description}
+            onChange={handleChange}
             label="Add a written review"
             placeholder="What did you like or dislike about your battleship? How did you use it?"
+            required={true}
           />
           {/* <Form.Group widths="equal">
           <Form.Input
@@ -116,6 +129,12 @@ const AddReview = props => {
           />
         </Form.Group> */}
           <br />
+          <Message
+            width={12}
+            error
+            header="Rude!"
+            content="Review description cannot be blank. Please provide a written review."
+          />
           <Form.Field
             control={Button}
             color="green"
@@ -128,4 +147,4 @@ const AddReview = props => {
   )
 }
 
-export default AddReview
+export default withRouter(AddReview)

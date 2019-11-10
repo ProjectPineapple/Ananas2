@@ -32,7 +32,7 @@ const AllOrders = props => {
       menuItem: {
         key: 'paid',
         icon: 'money',
-        content: `Paid Orders`
+        content: `Paid`
       },
       render: () => {
         const paidOrders = orders.filter(order => order.status === 'paid')
@@ -79,7 +79,7 @@ const AllOrders = props => {
       menuItem: {
         key: 'cancelled',
         icon: 'cancel',
-        content: 'cancelled'
+        content: 'Cancelled'
       },
       render: () => {
         const cancelledOrders = orders.filter(
@@ -105,6 +105,23 @@ const AllOrders = props => {
         return (
           <Tab.Pane>
             <OrderList orders={inDisputeOrders} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'completed',
+        icon: 'check',
+        content: 'Completed'
+      },
+      render: () => {
+        const completedOrders = orders.filter(
+          order => order.status === 'completed'
+        )
+        return (
+          <Tab.Pane>
+            <OrderList orders={completedOrders} />
           </Tab.Pane>
         )
       }
