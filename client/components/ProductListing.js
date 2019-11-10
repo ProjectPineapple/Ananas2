@@ -9,7 +9,7 @@ import ProductReviews from './ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
 import AddToCartButton from './AddToCartButton'
 
-import {PriceToCents} from '../utilityMethods'
+import {centsToPrice} from '../utilityMethods'
 // import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
@@ -58,7 +58,7 @@ const ProductListing = props => {
             Stock: {product.stock}{' '}
             {product.stock < 10 ? ' -- Running low get yours now!' : null}
           </h3>
-          <h3>Price: {PriceToCents(product.price)}</h3>
+          <h3>Price: {centsToPrice(product.price)}</h3>
           <h3>{product.description}</h3>
           {product.tags.map((tag, index) => {
             return (

@@ -9,7 +9,7 @@ import {
 } from '../store/viewCart'
 import {incrementItem, decrementItem} from '../store/lineItem'
 import {withRouter} from 'react-router'
-import {PriceToCents, getActualQuantity} from '../utilityMethods'
+import {centsToPrice, getActualQuantity} from '../utilityMethods'
 
 const ViewCart = ({history, match}) => {
   const cart = useSelector(state => state.viewCart)
@@ -49,7 +49,7 @@ const ViewCart = ({history, match}) => {
               </div>
               {item.product.stock > 0 ? (
                 <div className="in-stock">
-                  <div>Price: {PriceToCents(item.priceAtPurchase)}</div>
+                  <div>Price: {centsToPrice(item.priceAtPurchase)}</div>
                   <div>{item.product.stock} remaining</div>
                   <div>
                     Qty:{' '}
@@ -106,7 +106,7 @@ const ViewCart = ({history, match}) => {
           </Grid.Row>
         ))}
         <Grid.Row>
-          <h2 align="right">Subtotal: {PriceToCents(subtotal)}</h2>
+          <h2 align="right">Subtotal: {centsToPrice(subtotal)}</h2>
         </Grid.Row>
       </Grid>
     </div>
