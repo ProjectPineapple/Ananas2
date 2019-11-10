@@ -44,6 +44,7 @@ router.get('/', async (req, res, next) => {
     }
     console.log('WhereClause', whereclause)
     const results = await Product.findAndCountAll({
+      include: [Review],
       where: whereclause,
       limit: PER_PAGE,
       offset: (page - 1) * 24,
