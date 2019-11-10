@@ -46,7 +46,7 @@ const checkoutForm = function(props) {
   }))
 
   async function handleToken(token) {
-    const response = await axios.post('/cart/checkout', {token, order})
+    const response = await axios.post('/api/cart/checkout', {token, order})
     const {status} = data
     console.log('In HandleToken', data)
     if (status === 'success') {
@@ -84,8 +84,9 @@ const checkoutForm = function(props) {
       <StripeCheckout
         stripeKey="pk_test_0PmCoNYh2JkqkxmAX3FUAOPD00TQAUBVNb"
         token={handleToken}
-        billingAddress={billingAddress}
-        shippingAddress={mailingAddress}
+        billingAddress={true}
+        shippingAddress={true}
+        state={true}
         amount={order.total}
         orderId={order.id}
       />
