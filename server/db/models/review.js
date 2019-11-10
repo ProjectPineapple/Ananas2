@@ -14,7 +14,8 @@ const Review = db.define('review', {
     }
   },
   photos: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    defaultValue: []
   }
   // foreign keys: userId, productId
 })
