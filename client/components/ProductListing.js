@@ -62,7 +62,13 @@ const ProductListing = props => {
           <h3>{product.description}</h3>
           {product.tags.map((tag, index) => {
             return (
-              <Label as="a" key={index} tag>
+              <Label
+                key={index}
+                onClick={() =>
+                  props.history.push(`/products/?categories=${tag}`)
+                }
+                tag
+              >
                 {tag}
               </Label>
             )

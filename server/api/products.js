@@ -15,7 +15,7 @@ module.exports = router
 // })
 
 //pagination
-const PER_PAGE = 10
+const PER_PAGE = 24
 router.get('/', async (req, res, next) => {
   try {
     // req.query example
@@ -29,21 +29,27 @@ router.get('/', async (req, res, next) => {
     // }
     const whereclause = {}
     const page = req.query.page || 1
-    if (req.query.category) {
-      whereclause.category = req.query.category
+    console.log(req.query.categories)
+    if (req.query.categories) {
+      whereclause.tags = {[Op.contains]: [req.query.categories]}
     }
     if (req.query.search) {
-      whereclause.name = {[Op.substring]: req.query.search}
+      whereclause[Op.or] = {
+        name: {[Op.substring]: req.query.search},
+        description: {[Op.substring]: req.query.search}
+      }
+      // whereclause.name = {[Op.substring]: req.query.search}
+      // whereclause.description = {[Op.substring]: req.query.search}
       // whereclause.name = req.query.search
     }
     console.log('WhereClause', whereclause)
-    const products = await Product.findAll({
+    const results = await Product.findAndCountAll({
       where: whereclause,
       limit: PER_PAGE,
-      offset: (page - 1) * 25,
+      offset: (page - 1) * 24,
       orderBy: [['id', 'asc']]
     })
-    res.json(products)
+    res.json(results) // Object with products and total count as count
   } catch (err) {
     next(err)
   }
