@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {withRouter} from 'react-router'
-import {addReviewThunk} from '../store/addReview'
+import {addReviewThunk} from '../../store/addReview'
 import {
   Button,
   Divider,

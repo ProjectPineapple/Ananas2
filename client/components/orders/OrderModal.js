@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {Table, Modal, Button, Icon, Divider} from 'semantic-ui-react'
 import {withRouter} from 'react-router'
-import {centsToPrice} from '../utilityMethods'
+import {centsToPrice} from '../../utilityMethods'
 
 const OrderModal = ({order}) => {
   const lineItems = order.OrderLineItems
