@@ -16,3 +16,16 @@ export const getActualQuantity = product => {
     ? product.stock
     : product.OrderLineItem.quantity
 }
+
+export const getAverageRating = product => {
+  if (!product.reviews.length || !product.reviews) {
+    return 0
+  } else {
+    let allRatings = product.reviews
+      .map(review => review.ratings)
+      .reduce((accum, rating) => {
+        accum += rating
+      }, 0)
+    return allRatings / product.reviews.length
+  }
+}

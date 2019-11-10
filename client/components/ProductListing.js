@@ -10,7 +10,6 @@ import UpdateProjectForm from './UpdateProductForm'
 import AddToCartButton from './AddToCartButton'
 
 import {commaSeparateNumber} from '../utilityMethods'
-// import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
   const user = useSelector(state => state.user)

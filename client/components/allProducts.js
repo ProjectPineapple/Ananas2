@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {commaSeparateNumber} from '../utilityMethods'
+import {commaSeparateNumber, getAverageRating} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
 
@@ -26,6 +26,7 @@ const AllProducts = ({history, location}) => {
   const products = useSelector(state => state.allProducts)
   const lineItems = useSelector(state => state.viewCart.OrderLineItems) || []
   const dispatch = useDispatch()
+
   // cDm
   useEffect(() => {
     console.log(location.search)
@@ -98,8 +99,7 @@ const AllProducts = ({history, location}) => {
                 <Item.Header>{product.name}</Item.Header>
               </Link>
               <Rating
-                icon="star"
-                defaultRating={product.stars}
+                defaultRating={getAverageRating(product)}
                 maxRating={5}
                 disabled
               />
