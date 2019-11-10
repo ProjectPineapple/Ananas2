@@ -19,3 +19,13 @@ router.put('/', async (req, res, next) => {
     console.log('gonna decrement')
   } else res.status(404).json(req.body.product)
 })
+
+router.post('/checkout', async (req, res, next) => {
+  try {
+    console.log(req.body)
+
+    res.send({status: 'success'})
+  } catch (error) {
+    next(error)
+  }
+})

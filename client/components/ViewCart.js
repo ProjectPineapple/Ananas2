@@ -9,7 +9,7 @@ import {
 } from '../store/viewCart'
 import {incrementItem, decrementItem} from '../store/lineItem'
 import {withRouter} from 'react-router'
-import {commaSeparateNumber, getActualQuantity} from '../utilityMethods'
+import {PriceToCents, getActualQuantity} from '../utilityMethods'
 
 const ViewCart = ({history, match}) => {
   const cart = useSelector(state => state.viewCart)
@@ -49,9 +49,7 @@ const ViewCart = ({history, match}) => {
               </div>
               {item.product.stock > 0 ? (
                 <div className="in-stock">
-                  <div>
-                    Price: ${commaSeparateNumber(item.priceAtPurchase / 100)}
-                  </div>
+                  <div>Price: {PriceToCents(item.priceAtPurchase)}</div>
                   <div>{item.product.stock} remaining</div>
                   <div>
                     Qty:{' '}
@@ -108,9 +106,7 @@ const ViewCart = ({history, match}) => {
           </Grid.Row>
         ))}
         <Grid.Row>
-          <h2 align="right">
-            Subtotal: ${commaSeparateNumber(subtotal / 100)}
-          </h2>
+          <h2 align="right">Subtotal: {PriceToCents(subtotal)}</h2>
         </Grid.Row>
       </Grid>
     </div>
