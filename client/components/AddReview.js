@@ -4,9 +4,9 @@ import {withRouter} from 'react-router'
 import {addReviewThunk} from '../store/addReview'
 import {
   Button,
+  Divider,
   Form,
   Icon,
-  Image,
   Message,
   Modal,
   Rating,
@@ -21,7 +21,8 @@ const AddReview = props => {
   const [dimmer, setDimmer] = useState(true)
   const [error, setError] = useState(false)
   //photo logic TK (photo1, photo2, photo)
-  let {stars, description} = useSelector(state => state.addedReview) || {}
+  let {stars, description, photo1, photo2, photo3} =
+    useSelector(state => state.addedReview) || {}
   const dispatch = useDispatch()
 
   const handleClickAddReview = () => {
@@ -45,18 +46,30 @@ const AddReview = props => {
     description = value
   }
 
+  const handleChangePhoto1 = (e, {name, value}) => {
+    photo1 = value
+  }
+
+  const handleChangePhoto2 = (e, {name, value}) => {
+    photo2 = value
+  }
+
+  const handleChangePhoto3 = (e, {name, value}) => {
+    photo3 = value
+  }
+
   const handleSubmit = e => {
     e.preventDefault()
-    // const photos = [photo1, photo2, photo3]
     if (!description) {
       setError(!error)
-      console.log('Error: ', error)
     } else {
       stars = stars.toFixed(2) //string with 2 decimal places (ex: 4.00)
-      console.log("Here's the description: ", description)
+      const photos = [photo1, photo2, photo3]
+      console.log('Photos!', photos)
       const reviewData = {
         stars,
-        description
+        description,
+        photos
       }
       dispatch(addReviewThunk(reviewData, product.id))
       //NOTE: Currently reroutes to user's home page
@@ -79,15 +92,10 @@ const AddReview = props => {
         <Icon name="window close" />
       </Button>
       <Modal.Header>Review your purchase</Modal.Header>
-      <Modal.Content image scrolling>
-        <div className="productDetails">
-          <h3>
-            <strong>{product.name}</strong>
-          </h3>
-          <p>{product.description}</p>
-        </div>
-        <Image src={product.photos[0]} size="small" className="productImg" />
-        <h3>Rate your purchase</h3>
+      <Modal.Content>
+        <p>
+          <strong>Rate your purchase</strong>
+        </p>
         <Rating
           clearable
           defaultRating={0}
@@ -95,6 +103,7 @@ const AddReview = props => {
           size="massive"
           onRate={handleRate}
         />
+        <Divider hidden />
         <Form error={error}>
           <Form.Field
             style={{minHeight: 100}}
@@ -106,35 +115,38 @@ const AddReview = props => {
             placeholder="What did you like or dislike about your battleship? How did you use it?"
             required={true}
           />
-          {/* <Form.Group widths="equal">
-          <Form.Input
-            label="Photo 1"
-            placeholder="Insert your photo URL"
-            value={photo1}
-            onChange={e => dispatch(setPhoto1(e.target.value))}
-          />
-          <Form.Input
-            fluid
-            label="Photo 2"
-            placeholder="Input Photo URL"
-            value={photo2}
-            onChange={e => dispatch(setPhoto2(e.target.value))}
-          />
-          <Form.Input
-            fluid
-            label="Photo 3"
-            placeholder="Input Photo URL"
-            value={photo3}
-            onChange={e => dispatch(setPhoto3(e.target.value))}
-          />
-        </Form.Group> */}
-          <br />
           <Message
-            width={12}
+            icon="exclamation triangle"
+            width={8}
             error
             header="Rude!"
-            content="Review description cannot be blank. Please provide a written review."
+            content="Review description cannot be blank."
           />
+          <Divider hidden />
+          <Form.Group widths="equal">
+            <Form.Input
+              fluid
+              label="Photo 1"
+              placeholder="Photo url (optional)"
+              value={photo1}
+              onChange={handleChangePhoto1}
+            />
+            <Form.Input
+              fluid
+              label="Photo 2"
+              placeholder="Photo url (optional)"
+              value={photo2}
+              onChange={handleChangePhoto2}
+            />
+            <Form.Input
+              fluid
+              label="Photo 3"
+              placeholder="Photo url (optional)"
+              value={photo3}
+              onChange={handleChangePhoto3}
+            />
+          </Form.Group>
+          <Divider hidden />
           <Form.Field
             control={Button}
             color="green"

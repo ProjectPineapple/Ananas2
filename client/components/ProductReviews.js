@@ -37,6 +37,14 @@ const ProductReviews = props => {
                   <p>{reviewDate}</p>
                   <Rating defaultRating={stars} maxRating={5} disabled />
                   <p>{review.description}</p>
+                  {/* INCLUDE ANY REVIEW PHOTOS! NOT SURE OF FORMATTING; maybe MODAL? with NEXT BUTTON? And separate COMPONENT?*/}
+                  {!review.photos || !review.photos.length ? (
+                    <span />
+                  ) : (
+                    review.photos.map(photoUrl => (
+                      <img key={review.id} src={photoUrl} />
+                    ))
+                  )}
                 </List.Content>
               </List.Item>
             </Segment>
