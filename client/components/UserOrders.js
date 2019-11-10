@@ -26,7 +26,7 @@ const UserOrders = () => {
         const allOrders = orders.filter(order => order.status !== 'in-cart')
         return (
           <Tab.Pane>
-            <OrderList orders={orders} all={true} />
+            <OrderList orders={allOrders} all={true} />
           </Tab.Pane>
         )
       }
