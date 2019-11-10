@@ -1,7 +1,6 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Form, Header} from 'semantic-ui-react'
-import {Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
 import {
   setName,
@@ -14,8 +13,8 @@ import {
   setTag1,
   setTag2,
   setTag3,
-  changeAProduct
-} from '../store/addProduct'
+  addAProduct
+} from '../../store/addProduct'
 
 const savedTags = [
   {key: '0', text: 'WWI', value: 'WWI'},
@@ -37,8 +36,7 @@ const savedTags = [
   {key: '16', text: 'fixer upper', value: 'fixer upper'}
 ]
 
-const UpdateProductForm = function(props) {
-  console.log('props:', props)
+const AddProductForm = function(props) {
   const dispatch = useDispatch()
   const {
     name,
@@ -53,9 +51,9 @@ const UpdateProductForm = function(props) {
     description
   } = useSelector(state => state.addProduct)
 
-  const product = useSelector(state => state.singleProduct)
-
   const handleSubmit = e => {
+    e.preventDefault()
+    console.log('in handle submit')
     let tags
     if (tag1) {
       tags = [tag1, tag2, tag3]
@@ -64,10 +62,7 @@ const UpdateProductForm = function(props) {
     if (photo1) {
       photos = [photo1, photo2, photo3]
     }
-    const productId = Number(product.id)
-    e.preventDefault()
     const productData = {
-      productId,
       name,
       price,
       stock,
@@ -76,13 +71,13 @@ const UpdateProductForm = function(props) {
       description
     }
     console.log(productData)
-    dispatch(changeAProduct(productData, productId))
-    props.history.push(`/products/${productId}`)
+    dispatch(addAProduct(productData))
+    props.history.push('/products')
   }
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Header>Update Product</Header>
+      <Header>Add a Product</Header>
       <Form.Group widths="equal">
         <Form.Input
           fluid
@@ -169,7 +164,7 @@ const UpdateProductForm = function(props) {
   )
 }
 
-// class UpdateProductForm extends React.Component {
+// class AddProductForm extends React.Component {
 //   constructor(props) {
 //     super(props)
 
@@ -185,64 +180,50 @@ const UpdateProductForm = function(props) {
 
 //     return (
 //       <Form>
+//         <Header>Add a Product</Header>
 //         <Form.Group widths="equal">
-//           <Form.Input
-//             fluid
-//             label="Name"
-//             placeholder={this.state.name}
-//             value="name"
-//           />
-//           <Form.Input
-//             fluid
-//             label="Price"
-//             placeholder={this.state.price}
-//             value="price"
-//           />
-//           <Form.Input
-//             fluid
-//             label="Stock"
-//             placeholder={this.state.stock}
-//             value="stock"
-//           />
+//           <Form.Input fluid label="Name" placeholder="Name" value="name" />
+//           <Form.Input fluid label="Price" placeholder="Price" value="price" />
+//           <Form.Input fluid label="Stock" placeholder="Stock" value="stock" />
 //           <label>Tags</label>
 //           <Form.Select
 //             fluid
 //             label="Tag 1"
 //             options={tags}
-//             placeholder={this.state.tags[0]}
+//             placeholder="Select Tags"
 //             value="tags1"
 //           />
 //           <Form.Select
 //             fluid
 //             label="Tag 2"
 //             options={tags}
-//             placeholder={this.state.tags[1]}
+//             placeholder="Select Tags"
 //             value="tags2"
 //           />
 //           <Form.Select
 //             fluid
 //             label="Tag 3"
 //             options={tags}
-//             placeholder={this.state.tags[2]}
+//             placeholder="Select Tags"
 //             value="tags3"
 //           />
 //           <label>Photos</label>
 //           <Form.Input
 //             fluid
 //             label="Photo 1"
-//             placeholder={this.state.photos[0]}
+//             placeholder="Input Photo URL"
 //             value="photo1"
 //           />
 //           <Form.Input
 //             fluid
 //             label="Photo 2"
-//             placeholder={this.state.photos[1]}
+//             placeholder="Input Photo URL"
 //             value="photo2"
 //           />
 //           <Form.Input
 //             fluid
 //             label="Photo 3"
-//             placeholder={this.state.photos[2]}
+//             placeholder="Input Photo URL"
 //             value="photo3"
 //           />
 //         </Form.Group>
@@ -265,7 +246,11 @@ const UpdateProductForm = function(props) {
 //         name: evt.target.value.name,
 //         price: evt.target.value.price,
 //         stock: evt.target.value.stock,
-//         tags: evt.target.value.tags,
+//         tags: [
+//           evt.target.value.tags1,
+//           evt.target.value.tags2,
+//           evt.target.value.tags3
+//         ],
 //         photos: [
 //           evt.target.value.photo1,
 //           evt.target.value.photo2,
@@ -274,7 +259,7 @@ const UpdateProductForm = function(props) {
 //         description: evt.target.value.description
 //       }
 //       evt.target.reset()
-//       dispatch(changeProduct(product))
+//       dispatch(setProduct(product))
 //     },
 //     handleChange(evt) {
 //       this.setState({
@@ -292,5 +277,4 @@ const UpdateProductForm = function(props) {
 //     }
 //   }
 // }
-
-export default withRouter(UpdateProductForm)
+export default withRouter(AddProductForm)

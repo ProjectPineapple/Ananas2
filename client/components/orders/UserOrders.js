@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {fetchUserOrders, resetUserOrders} from '../store/userOrders'
+import {fetchUserOrders, resetUserOrders} from '../../store/userOrders'
 import {Segment, Item, Tab} from 'semantic-ui-react'
 import OrderList from './OrderList'
 
