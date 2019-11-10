@@ -90,35 +90,35 @@ const AllProducts = ({history, location}) => {
         </Button>
       ) : null}
       <Grid textAlign="center" columns="three" stackable padded>
-        {products.map(product => (
-          <Grid.Column key={product.id}>
-            <Link to={`/view/product/${product.id}`}>
-              <Item.Image size="small" src={product.photos[0]} />
-            </Link>
-            <Item.Content>
+        {products.map(product => {
+          let avgRating = getAverageRating(product.reviews)
+
+          return (
+            <Grid.Column key={product.id}>
               <Link to={`/view/product/${product.id}`}>
-                <Item.Header>{product.name}</Item.Header>
+                <Item.Image size="small" src={product.photos[0]} />
               </Link>
-              <Rating
-                defaultRating={getAverageRating(product)}
-                maxRating={5}
-                disabled
-              />
-              <Item.Meta>
-                <span>Price {centsToPrice(product.price)}</span>
-              </Item.Meta>
-              <Item.Description>
-                {product.description.slice(0, 80) + '...'}
-              </Item.Description>
-              <AddToCartButton
-                productToAdd={product}
-                productInCart={
-                  lineItems.find(item => item.productId === product.id) || {}
-                }
-              />
-            </Item.Content>
-          </Grid.Column>
-        ))}
+              <Item.Content>
+                <Link to={`/view/product/${product.id}`}>
+                  <Item.Header>{product.name}</Item.Header>
+                </Link>
+                <Rating defaultRating={avgRating} maxRating={5} disabled />
+                <Item.Meta>
+                  <span>Price {centsToPrice(product.price)}</span>
+                </Item.Meta>
+                <Item.Description>
+                  {product.description.slice(0, 80) + '...'}
+                </Item.Description>
+                <AddToCartButton
+                  productToAdd={product}
+                  productInCart={
+                    lineItems.find(item => item.productId === product.id) || {}
+                  }
+                />
+              </Item.Content>
+            </Grid.Column>
+          )
+        })}
       </Grid>
     </div>
   )
