@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
 import {Button, Icon} from 'semantic-ui-react'
-import {addToCart} from '../store/viewCart.js'
+import {addToCart} from '../../store/viewCart.js'
 
 const AddToCartButton = props => {
   const {productToAdd} = props

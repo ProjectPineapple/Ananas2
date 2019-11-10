@@ -2,9 +2,9 @@ import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
-import {fetchAllProducts, createProduct} from '../store/allProducts'
+import {fetchAllProducts, createProduct} from '../../store/allProducts'
 
-import {centsToPrice, getAverageRating} from '../utilityMethods'
+import {centsToPrice, getAverageRating} from '../../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
 
