@@ -49,9 +49,7 @@ const ViewCart = ({history, match}) => {
               </div>
               {item.product.stock > 0 ? (
                 <div className="in-stock">
-                  <div>
-                    Price: ${commaSeparateNumber(item.priceAtPurchase / 100)}
-                  </div>
+                  <div>Price: {centsToPrice(item.priceAtPurchase)}</div>
                   <div>{item.product.stock} remaining</div>
                   <div>
                     Qty:{' '}

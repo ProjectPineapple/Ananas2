@@ -46,8 +46,9 @@ const checkoutForm = function(props) {
   }))
 
   async function handleToken(token) {
-    const {data} = await axios.post('/cart/checkout', {token, order})
+    const response = await axios.post('/cart/checkout', {token, order})
     const {status} = data
+    console.log('In HandleToken', data)
     if (status === 'success') {
       toast('Success! Check email for details!', {type: 'success'})
     } else {
@@ -80,81 +81,14 @@ const checkoutForm = function(props) {
       </Segment>
       <ViewCart />
       <Divider />
-      <Form onSubmit={handleSubmit}>
-        <Header as="h3">Add Contact Info</Header>
-        <Form.Group widths="equal">
-          <Form.Input
-            fluid
-            label="First name"
-            placeholder="First name"
-            value={firstName}
-            onChange={e => dispatch(setFirstName(e.target.value))}
-          />
-          <Form.Input
-            fluid
-            label="Last name"
-            placeholder="Last name"
-            value={lastName}
-            onChange={e => dispatch(setLastName(e.target.value))}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Input
-            width="5"
-            fluid
-            label="Email"
-            placeholder="Email"
-            value={email}
-            onChange={e => dispatch(setEmail(e.target.value))}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Input
-            fluid
-            label="Shipping address"
-            placeholder="Street address"
-            width={10}
-            value={mailingAddress}
-            onChange={e => dispatch(setMailingAddress(e.target.value))}
-          />
-          {/* <Form.Input fluid label="City" placeholder="City" width={4} />
-          <Dropdown
-            placeholder="State"
-            search
-            selection
-            options={stateOptions}
-            width={2}
-          />
-          <Form.Input fluid label="Zip Code" placeholder="Zip" width={3} /> */}
-        </Form.Group>
-        <Form.Group>
-          <Form.Input
-            fluid
-            label="Billing address"
-            placeholder="Street address"
-            width={10}
-            value={billingAddress}
-            onChange={e => dispatch(setBillingAddress(e.target.value))}
-          />
-          {/* <Form.Input fluid label="City" placeholder="City" width={4} />
-          <Dropdown
-            placeholder="State"
-            search
-            selection
-            options={stateOptions}
-            width={2}
-          />
-          <Form.Input fluid label="Zip Code" placeholder="Zip" width={3} /> */}
-        </Form.Group>
-        <StripeCheckout
-          stripeKey="pk_test_0PmCoNYh2JkqkxmAX3FUAOPD00TQAUBVNb"
-          token={handleToken}
-          billingAddress={billingAddress}
-          shippingAddress={mailingAddress}
-          amount={order.total}
-          orderId={order.id}
-        />
-      </Form>
+      <StripeCheckout
+        stripeKey="pk_test_0PmCoNYh2JkqkxmAX3FUAOPD00TQAUBVNb"
+        token={handleToken}
+        billingAddress={billingAddress}
+        shippingAddress={mailingAddress}
+        amount={order.total}
+        orderId={order.id}
+      />
     </div>
   )
 }
