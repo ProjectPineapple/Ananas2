@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../store/allProducts'
-import {commaSeparateNumber} from '../utilityMethods'
+import {centsToPrice} from '../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
 
@@ -104,7 +104,7 @@ const AllProducts = ({history, location}) => {
                 disabled
               />
               <Item.Meta>
-                <span>Price ${commaSeparateNumber(product.price / 100)}</span>
+                <span>Price {centsToPrice(product.price)}</span>
               </Item.Meta>
               <Item.Description>
                 {product.description.slice(0, 80) + '...'}

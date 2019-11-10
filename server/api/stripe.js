@@ -38,6 +38,16 @@ app.post('/checkout', async (req, res, next) => {
             country: token.card.address_country,
             postal_code: token.card.address.zip
           }
+        },
+        billing: {
+          name: token.card.name,
+          address: {
+            line1: token.card.address_line1,
+            line2: token.card.address_line2,
+            city: token.card.address_city,
+            country: token.card.address_country,
+            postal_code: token.card.address.zip
+          }
         }
       },
       {idempotency_key}
@@ -48,5 +58,7 @@ app.post('/checkout', async (req, res, next) => {
     console.error('Error', error)
     status = 'failure'
   }
+  const userProfile = {}
+  console.log(token)
   res.json({error, status})
 })
