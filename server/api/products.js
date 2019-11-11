@@ -29,7 +29,6 @@ router.get('/', async (req, res, next) => {
     // }
     const whereclause = {}
     const page = req.query.page || 1
-    console.log(req.query.categories)
     if (req.query.categories) {
       whereclause.tags = {[Op.contains]: [req.query.categories]}
     }
@@ -42,7 +41,7 @@ router.get('/', async (req, res, next) => {
       // whereclause.description = {[Op.substring]: req.query.search}
       // whereclause.name = req.query.search
     }
-    console.log('WhereClause', whereclause)
+
     const results = await Product.findAndCountAll({
       include: [Review],
       where: whereclause,
