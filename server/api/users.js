@@ -27,6 +27,31 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
+router.get('/:userId/orders', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {userId: +req.params.userId}
+    })
+    res.status(200).json(orders)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/:userId/cart', async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      where: {
+        userId: +req.params.userId,
+        status: 'in-cart'
+      }
+    })
+    res.status(200).json(cart)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.put('/:userId', async (req, res, next) => {
   try {
     const userId = Number(req.params.userId)

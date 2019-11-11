@@ -31,7 +31,7 @@ const ConfirmationPage = props => {
       <h2>Success! Your order has been placed.</h2>
       <h3>
         Your order confirmation number is ON THE ORDER INSTANCE. An email will
-        be sent to {user.email} shortly with your order info.
+        be sent to {user.email} with your order info shortly.
       </h3>
     </div>
   )
