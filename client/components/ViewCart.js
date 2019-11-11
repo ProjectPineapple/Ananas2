@@ -7,7 +7,6 @@ import {
   removeLineItem,
   addToCart
 } from '../store/viewCart'
-import {incrementItem, decrementItem} from '../store/lineItem'
 import {withRouter} from 'react-router'
 import {centsToPrice, getActualQuantity} from '../utilityMethods'
 

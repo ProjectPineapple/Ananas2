@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const {Order, Session, Product, OrderLineItem} = require('../db/models')
+const {Order, Session, Product, OrderLineItem, User} = require('../db/models')
+const customId = require('custom-id')
 
 module.exports = router
 
@@ -176,12 +177,13 @@ router.put('/checkout', async (req, res, next) => {
   const formData = req.body.formData
   const orderId = req.body.orderId
   try {
-    const response = User.findOrCreate({where: {email: formData.email}})
-    console.log(response)
+    const userOnOrder = User.findOrCreate({where: {email: formData.email}})
+    const orderWithConfCode = await Order.update(
+      {confirmationCode: customId({email: userOnOrder.email})},
+      {returning: true, where: {id: orderId}}
+    )
+    res.json({orderWithConfCode, userOnOrder})
   } catch (error) {
     next(error)
   }
-})
-router.put('/cart', async (req, res, next) => {
-  console.log(req.body)
 })

@@ -2,28 +2,12 @@ const router = require('express').Router()
 const stripe = require('stripe')('sk_test_wwuKxIwA53kDbI8akkAS5RLu00TV9cjmTN')
 const uuid = require('uuid/v4')
 const cors = require('cors')
+const customId = require('custom-id')
 const {Order, Session, Product, OrderLineItem} = require('../db/models')
 
 module.exports = router
 
 router.use(cors())
-
-// router.put('/', async (req, res, next) => {
-//   console.log(req.body)
-//   const lineItemToChange = req.body.product
-//   const operation = req.body.op
-
-//   const session = await Session.findOne({
-//     where: {
-//       sid: req.sessionID
-//     }
-//   })
-//   if (operation === 'inc') {
-//     console.log('gonna increment')
-//   } else if (operation === 'dec') {
-//     console.log('gonna decrement')
-//   } else res.status(404).json(req.body.product)
-// })
 
 router.post('/checkout', async (req, res, next) => {
   console.log('STRIPE:', stripe)
@@ -37,6 +21,10 @@ router.post('/checkout', async (req, res, next) => {
       email: token.email,
       source: token.id
     })
+    const orderWithConfCode = await Order.update(
+      {confirmationCode: customId({email: customer.email})},
+      {returning: true, where: {id: order.id}}
+    )
 
     const idempotency_key = uuid()
     const charge = await stripe.charges.create(
@@ -71,6 +59,7 @@ router.post('/checkout', async (req, res, next) => {
     )
     console.log('Charge', {charge})
     status = 'success'
+    res.json(orderWithConfCode)
   } catch (error) {
     console.error('Error', error)
     status = 'failure'

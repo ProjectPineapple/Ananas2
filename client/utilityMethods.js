@@ -1,3 +1,5 @@
+const customId = require('custom-id')
+
 // from https://stackoverflow.com/questions/3883342/add-commas-to-a-number-in-jquery
 export const centsToPrice = val => {
   val = val / 100
@@ -22,7 +24,7 @@ export const getAverageRating = productReviews => {
     return 0
   } else {
     let all = productReviews.reduce((accum, review) => {
-      return (accum += Number(review.stars))
+      return accum + Number(review.stars)
     }, 0)
     return all / productReviews.length
   }
