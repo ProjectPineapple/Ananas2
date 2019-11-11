@@ -1,64 +1,116 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
+import {Tab} from 'semantic-ui-react'
 import {fetchAllReviews} from '../../store/reviews'
+import ReviewList from './ReviewList'
 
-//NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const AllReviews = props => {
-  const allReviews = useSelector(state => state.allReviews)
+  const reviews = useSelector(state => state.allReviews)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchAllReviews())
   })
+  const panes = [
+    {
+      menuItem: {
+        key: 'allReviews',
+        icon: 'unordered list',
+        content: 'All Reviews'
+      },
+      render: () => {
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={reviews} all={true} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'oneStar',
+        icon: 'star',
+        content: `1-Star Reviews`
+      },
+      render: () => {
+        const oneStarReviews = reviews.filter(review => review.stars === '1.00')
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={oneStarReviews} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'twoStar',
+        icon: 'star',
+        content: `2-Star Reviews`
+      },
+      render: () => {
+        const twoStarReviews = reviews.filter(review => review.stars === '2.00')
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={twoStarReviews} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'threeStar',
+        icon: 'star',
+        content: `3-Star Reviews`
+      },
+      render: () => {
+        const threeStarReviews = reviews.filter(
+          review => review.stars === '3.00'
+        )
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={threeStarReviews} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'fourStar',
+        icon: 'star',
+        content: `4-Star Reviews`
+      },
+      render: () => {
+        const fourStarReviews = reviews.filter(
+          review => review.stars === '4.00'
+        )
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={fourStarReviews} />
+          </Tab.Pane>
+        )
+      }
+    },
+    {
+      menuItem: {
+        key: 'fiveStar',
+        icon: 'star',
+        content: `5-Star Reviews`
+      },
+      render: () => {
+        const fiveStarReviews = reviews.filter(
+          review => review.stars === '5.00'
+        )
+        return (
+          <Tab.Pane>
+            <ReviewList reviews={fiveStarReviews} />
+          </Tab.Pane>
+        )
+      }
+    }
+  ]
 
-  return !allReviews.length ? (
-    <div>
-      <p>
-        No customers have written reviews yet. <Icon name="frown outline" />
-      </p>
-    </div>
-  ) : (
-    <div>
-      <List>
-        {allReviews.map(review => {
-          let stars = Number(review.stars)
-          let reviewDate = review.updatedAt.toString().slice(0, 10)
-          console.log(review)
-          let productName = review.product.name
-          let productPhoto = review.photos[0]
-
-          return (
-            <Segment textAlign="left" key={review.id}>
-              <List.Item>
-                <Image
-                  avatar
-                  src="https://upload.wikimedia.org/wikipedia/commons/d/de/John_Hoppner_-_Portrait_of_Lord_Nelson.jpg"
-                />
-                <List.Header>
-                  <h5>Admiral Akbar</h5>
-                </List.Header>
-                <List.Content>
-                  <p>{reviewDate}</p>
-                  <h3>{productName}</h3>
-                  <Image src={productPhoto} />
-                  <Rating defaultRating={stars} maxRating={5} disabled />
-                  <p>{review.description}</p>
-                  {/* INCLUDE ANY REVIEW PHOTOS! NOT SURE OF FORMATTING; maybe MODAL? with NEXT BUTTON? And separate COMPONENT?*/}
-                  {!review.photos || !review.photos.length ? (
-                    <span />
-                  ) : (
-                    review.photos.map(photoUrl => (
-                      <img key={review.id} src={photoUrl} />
-                    ))
-                  )}
-                </List.Content>
-              </List.Item>
-            </Segment>
-          )
-        })}
-      </List>
-    </div>
+  return (
+    <Tab menu={{fluid: true, vertical: true, tabular: true}} panes={panes} />
   )
 }
 
