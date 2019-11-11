@@ -34,12 +34,15 @@ router.get('/cart', async (req, res, next) => {
         sid: req.sessionID
       }
     })
+
     const whereClause = {}
     whereClause.status = 'in-cart'
-    if (req.user) whereClause.userId = req.user.id
-    else whereClause.SessionId = session.id
-    const [cart, created] = await Order.findOrCreate({
-      // where: whereClause,
+    if (req.user) {
+      whereClause.userId = req.user.id
+    } else {
+      whereClause.SessionId = session.id
+    }
+    const [cart, cartCreated] = await Order.findOrCreate({
       where: whereClause,
       include: [
         {model: OrderLineItem, include: [{model: Product}]},
@@ -48,10 +51,12 @@ router.get('/cart', async (req, res, next) => {
         }
       ]
     })
-    const subtotal = cart.OrderLineItems.reduce(
-      (acc, lineItem) => acc + lineItem.priceAtPurchase,
-      0
-    )
+    const subtotal = cart.OrderLineItems
+      ? cart.OrderLineItems.reduce(
+          (acc, lineItem) => acc + lineItem.priceAtPurchase,
+          0
+        )
+      : 0
     const shipping = SHIPPING_PRICE
     const taxes = 0.09
     const total = subtotal + shipping + Math.round(subtotal * taxes)
@@ -206,7 +211,77 @@ router.put('/checkout', async (req, res, next) => {
   }
 })
 
+//merge cart
+router.put('/mergecarts', async (req, res, next) => {
+  const session = await Session.findOne({
+    where: {
+      sid: req.sessionID
+    }
+  })
+  console.log(`SESSION ID ${session.id}`)
+  console.log(req.user ? `USER ID (STEVE IS 1) ${req.user.id}` : 'NO USER')
+  const sessionCart = await Order.findOne({
+    where: {
+      status: 'in-cart',
+      SessionId: session.id
+    },
+    include: [
+      {model: OrderLineItem, include: [{model: Product}]},
+      {
+        model: Product
+      }
+    ]
+  })
+  let userCart
+  if (req.user) {
+    userCart = await Order.findOne({
+      where: {
+        status: 'in-cart',
+        userId: req.user.id
+      },
+      include: [
+        {model: OrderLineItem, include: [{model: Product}]},
+        {
+          model: Product
+        }
+      ]
+    })
+  }
+
+  console.log(
+    'SESSION CART ITEMS',
+    sessionCart.OrderLineItems ? sessionCart.OrderLineItems.length : 'NONE'
+  )
+
+  console.log(
+    'USER CART ITEMS',
+    userCart ? userCart.OrderLineItems.length : 'NONE'
+  )
+
+  if (sessionCart.OrderLineItems.length === 0) {
+    res.json(userCart)
+  } else if (userCart.OrderLineItems.length === 0) {
+    await sessionCart.setUser(req.user.id)
+    res.json(sessionCart)
+  } else {
+    //case where both carts have items
+    const PromiseArray = []
+    for (const lineItem of sessionCart.OrderLineItems) {
+      for (let i; i < lineItem.quantity; i++) {
+        PromiseArray.push(Order.addItemToOrder(userCart.id, lineItem.productId))
+      }
+    }
+    await Promise.all(PromiseArray)
+    res.json(userCart)
+  }
+
+  // IF userCart
+  // take sessionCart OrderLine Items and add OrderLineItems to userCart
+  // destroy sessionCart
+})
+
 router.put('/order/:orderId', requireLoggedIn, async (req, res, next) => {
+
   try {
     const orderId = Number(req.params.orderId)
     if (!await Order.findByPk(orderId)) {
