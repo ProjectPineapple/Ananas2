@@ -156,7 +156,7 @@ const UserHome = props => {
   const defaultActiveIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
-      exact: false
+      exact: true
     })
   })
   return (
