@@ -29,6 +29,18 @@ export const fetchSingleOrder = orderId => {
   }
 }
 
+export const fetchOrderByUser = (orderId, userId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.get(
+        `/api/orders/ownedbyuser/${userId}/${orderId}`
+      )
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
 export const changeOrder = (order, orderId) => {
   return async dispatch => {
     try {
