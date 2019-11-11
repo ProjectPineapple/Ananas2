@@ -95,7 +95,7 @@ Order.addItemToOrder = async (orderId, productId) => {
       throw new Error(`Not enough stock to add to cart:${product.name}`)
     }
   }
-  if (orderLineItemToChange.quantity > orderLineItemToChange.product.stock) {
+  if (orderLineItemToChange.quantity >= orderLineItemToChange.product.stock) {
     throw new Error(
       `Not enough stock to add to cart:${orderLineItemToChange.product.name}`
     )

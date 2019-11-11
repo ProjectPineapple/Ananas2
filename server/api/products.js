@@ -3,6 +3,21 @@ const {Product, Review} = require('../db/models')
 const {Op} = require('sequelize')
 module.exports = router
 
+function requireLoggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.status(401).send('Please log in first!')
+  }
+}
+
+function requireAdminStatus(req, res, next) {
+  if (req.user.isAdmin) {
+    next()
+  } else {
+    res.sendStatus(403)
+  }
+}
 // //api/products route
 // router.get('/', async (req, res, next) => {
 //   try {
@@ -29,7 +44,6 @@ router.get('/', async (req, res, next) => {
     // }
     const whereclause = {}
     const page = req.query.page || 1
-    console.log(req.query.categories)
     if (req.query.categories) {
       whereclause.tags = {[Op.contains]: [req.query.categories]}
     }
@@ -42,7 +56,7 @@ router.get('/', async (req, res, next) => {
       // whereclause.description = {[Op.substring]: req.query.search}
       // whereclause.name = req.query.search
     }
-    console.log('WhereClause', whereclause)
+
     const results = await Product.findAndCountAll({
       include: [Review],
       where: whereclause,
@@ -56,22 +70,27 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
-  try {
-    const {name, description, price, stock, tags, photos} = req.body
-    const product = await Product.create({
-      name,
-      description,
-      price,
-      stock,
-      tags,
-      photos
-    })
-    res.status(201).json(product)
-  } catch (err) {
-    next(err)
+router.post(
+  '/',
+  requireLoggedIn,
+  requireAdminStatus,
+  async (req, res, next) => {
+    try {
+      const {name, description, price, stock, tags, photos} = req.body
+      const product = await Product.create({
+        name,
+        description,
+        price,
+        stock,
+        tags,
+        photos
+      })
+      res.status(201).json(product)
+    } catch (err) {
+      next(err)
+    }
   }
-})
+)
 
 router.get('/:productId', async (req, res, next) => {
   try {
@@ -84,37 +103,47 @@ router.get('/:productId', async (req, res, next) => {
   }
 })
 
-router.put('/:productId', async (req, res, next) => {
-  try {
-    const productId = Number(req.params.productId)
-    if (!await Product.findByPk(productId, {include: [Review]})) {
-      res.sendStatus(404)
-    } else {
-      const {name, description, price, stock, tags, photos} = req.body
-      await Product.update(
-        {
-          name,
-          description,
-          price,
-          stock,
-          tags,
-          photos
-        },
-        {where: {id: productId}}
-      )
-      const updatedProduct = await Product.findbyPk(productId)
-      res.status(200).json(updatedProduct)
+router.put(
+  '/:productId',
+  requireLoggedIn,
+  requireAdminStatus,
+  async (req, res, next) => {
+    try {
+      const productId = Number(req.params.productId)
+      if (!await Product.findByPk(productId, {include: [Review]})) {
+        res.sendStatus(404)
+      } else {
+        const {name, description, price, stock, tags, photos} = req.body
+        await Product.update(
+          {
+            name,
+            description,
+            price,
+            stock,
+            tags,
+            photos
+          },
+          {where: {id: productId}}
+        )
+        const updatedProduct = await Product.findbyPk(productId)
+        res.status(200).json(updatedProduct)
+      }
+    } catch (error) {
+      next(error)
     }
-  } catch (error) {
-    next(error)
   }
-})
+)
 
-router.delete('/:productId', async (req, res, next) => {
-  try {
-    await Product.destroy({where: {id: Number(req.params.productId)}})
-    res.status(204).end()
-  } catch (error) {
-    next(error)
+router.delete(
+  '/:productId',
+  requireLoggedIn,
+  requireAdminStatus,
+  async (req, res, next) => {
+    try {
+      await Product.destroy({where: {id: req.params.productId}})
+      res.status(204).end()
+    } catch (error) {
+      next(error)
+    }
   }
-})
+)
