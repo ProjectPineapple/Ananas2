@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {fetchAllUsers} from '../../store/allUsers'
+import {Link} from 'react-router-dom'
 
 const AllUsers = props => {
   const dispatch = useDispatch()
@@ -15,7 +16,10 @@ const AllUsers = props => {
         <div key={user.id} className="listing-users">
           <div className="user-name">
             <h3>
-              User #{user.id + ' '} {user.name}
+              <Link to={`/view/user/${user.id}`}>
+                {' '}
+                User #{user.id + ' '} {user.name}
+              </Link>
             </h3>
           </div>
           <div className="user-information" />
