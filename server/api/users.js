@@ -22,11 +22,12 @@ router.put('/:userId', async (req, res, next) => {
     if (!await User.findByPk(userId)) {
       res.sendStatus(404)
     } else {
+      const {email, name, password} = req.body
       await User.update(
         {
-          email: req.body.email,
-          name: req.body.name,
-          password: req.body.password
+          email,
+          name,
+          password
         },
         {where: {id: userId}}
       )
