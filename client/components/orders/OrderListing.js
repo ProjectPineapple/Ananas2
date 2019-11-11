@@ -7,7 +7,7 @@ import {fetchUserOrders} from '../../store/userOrders.js'
 import {fetchSingleOrder} from '../../store/singleOrder.js'
 import {Link} from 'react-router-dom'
 
-const OrderListing = props => {
+const OrderListing = ({history, location}) => {
   const user = useSelector(state => state.user)
   if (!user)
     return (
@@ -40,6 +40,9 @@ const OrderListing = props => {
   return (
     <div>
       <h2>Order #{order.id}</h2>
+      <Button onClick={() => history.push(`/update/orders/${order.id}`)}>
+        Update Order
+      </Button>
       {/* General Info */}
       <Table singleLine>
         <Table.Header>
@@ -110,4 +113,4 @@ const OrderListing = props => {
   )
 }
 
-export default OrderListing
+export default withRouter(OrderListing)

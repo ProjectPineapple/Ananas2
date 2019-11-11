@@ -16,9 +16,11 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     ///NEED TO SANITIZE REVIEWS [NPM SANITIZE?]
+    const {id} = req.user
     const {stars, description, photos} = req.body.review
     const productId = Number(req.body.productId)
     const review = await Review.create({stars, description, photos})
+    review.setUser(id)
     review.setProduct(productId)
     res.status(200).json(review)
   } catch (err) {
@@ -27,13 +29,14 @@ router.post('/', async (req, res, next) => {
 })
 
 //NOTE FOR POSTING REVIEWS, HAVE TO MAKE SURE USER === VALID + HAS PURCHASED PRODUCT
-router.get('/:reviewId', async (req, res, next) => {
+router.get('/ownedbyuser/:userId', async (req, res, next) => {
   try {
-    const reviews = await Review.findByPk(req.params.reviewId, {
-      include: [User, Product]
+    const reviews = await Review.findAll({
+      include: [Product],
+      where: {userId: +req.params.userId}
     })
     res.json(reviews)
   } catch (err) {
-    console.error(err)
+    next(err)
   }
 })

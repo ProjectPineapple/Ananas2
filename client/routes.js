@@ -13,9 +13,14 @@ import {
   checkoutForm,
   ViewCart,
   OrderListing,
-  ConfirmationPage
+  ConfirmationPage,
+  EditOrderForm,
+  SingleUser,
+  EditUserForm
 } from './components'
 import {me} from './store'
+import {updateOrder} from './store/singleOrder'
+import {changeUser} from './store/user'
 
 /**
  * COMPONENT
@@ -26,7 +31,7 @@ class Routes extends Component {
   }
 
   render() {
-    const {user, location} = this.props
+    const {user, location, order} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
     console.log('admin? ', isAdmin)
@@ -36,6 +41,7 @@ class Routes extends Component {
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/home" component={UserHome} />
+        <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route
           path="/products"
@@ -65,6 +71,16 @@ class Routes extends Component {
               path="/update/products/:productId"
               component={UpdateProductForm}
             />
+            <Route
+              exact
+              path="/update/orders/:orderId"
+              render={() => <EditOrderForm onSubmit={this.props.submit} />}
+            />
+            <Route
+              exact
+              path="/update/users/:userId"
+              render={() => <EditUserForm onSubmit={this.props.submitUser} />}
+            />
           </Switch>
         )}
         <Redirect to="/404NotFound" />
@@ -90,6 +106,12 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    submit(order) {
+      dispatch(updateOrder(order))
+    },
+    submitUser(user) {
+      dispatch(changeUser(user))
     }
   }
 }

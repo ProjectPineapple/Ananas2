@@ -30,13 +30,8 @@ export const deleteProduct = productId => {
 }
 export const changeProduct = (product, productId) => {
   return async dispatch => {
-    console.log('intheThunk')
     try {
-      console.log('inthetry')
-      console.log('productId', productId)
-      console.log('product', product)
       const {data} = await axios.put(`/api/products/${productId}`, product)
-      console.log(data)
       dispatch(updateProduct(data))
     } catch (error) {
       console.log(error)

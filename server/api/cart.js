@@ -10,10 +10,9 @@ module.exports = router
 router.use(cors())
 
 router.post('/checkout', async (req, res, next) => {
-  console.log('STRIPE:', stripe)
-
   let error
   let status
+  let receipt = {}
 
   try {
     const {order, token, billingAddress, shippingAddress} = req.body
@@ -44,20 +43,11 @@ router.post('/checkout', async (req, res, next) => {
             postal_code: token.card.address_zip
           }
         }
-        // billing: {
-        //   name: token.card.name,
-        //   address: {
-        //     line1: token.card.address_line1,
-        //     line2: token.card.address_line2,
-        //     city: token.card.address_city,
-        //     country: token.card.address_country,
-        //     postal_code: token.card.address_zip
-        //   }
-        // }
       },
       {idempotency_key}
     )
     console.log('Charge', {charge})
+
     status = 'success'
     res.json(orderWithConfCode)
   } catch (error) {

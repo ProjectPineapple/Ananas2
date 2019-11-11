@@ -58,40 +58,15 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    const {name, description, price, stock, tags, photos} = req.body
     const product = await Product.create({
-      name: req.body.name,
-      description: req.body.description,
-      stock: req.body.stock,
-      tags: req.body.tags,
-      price: req.body.price,
-      photos: req.body.photos
+      name,
+      description,
+      price,
+      stock,
+      tags,
+      photos
     })
-    // //ASSOCIATION PRODUCT-ORDER
-    // //PROB MOVE TO API/ORDERS +/- API/USERS
-    // if (req.body.orders !== undefined) {
-    //   const orderIds = req.body.orders.map(order => Number(order.id))
-
-    //   //find orders containing the product
-    //   const ordered = await Order.findAll({
-    //     where: {id: {[Op.in]: orderIds}}
-    //   })
-
-    //   //add to product instance
-    //   product.addOrders(ordered)
-    // }
-
-    //ASSOCIATION PRODUCT-REVIEW
-    //DONT THINK WILL BE ADDING REVIEW TO NEWLY CREATED PRODUCT
-    // if (req.body.reviews !== undefined) {
-    //   const reviewIds = req.body.reviews.map(review => Number(review.id))
-
-    //   const productReviews = await Review.findAll({
-    //     where: {id: {[Op.in]: reviewIds}}
-    //   })
-
-    //   product.addReviews(productReviews)
-    // }
-
     res.status(201).json(product)
   } catch (err) {
     next(err)
@@ -115,14 +90,15 @@ router.put('/:productId', async (req, res, next) => {
     if (!await Product.findByPk(productId, {include: [Review]})) {
       res.sendStatus(404)
     } else {
+      const {name, description, price, stock, tags, photos} = req.body
       await Product.update(
         {
-          name: req.body.name,
-          description: req.body.description,
-          price: req.body.price,
-          stock: req.body.stock,
-          tags: req.body.tags,
-          photos: req.body.photos
+          name,
+          description,
+          price,
+          stock,
+          tags,
+          photos
         },
         {where: {id: productId}}
       )
@@ -136,7 +112,7 @@ router.put('/:productId', async (req, res, next) => {
 
 router.delete('/:productId', async (req, res, next) => {
   try {
-    await Product.destroy({where: {id: req.params.productId}})
+    await Product.destroy({where: {id: Number(req.params.productId)}})
     res.status(204).end()
   } catch (error) {
     next(error)
