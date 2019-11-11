@@ -1,9 +1,16 @@
 const router = require('express').Router()
 const {Review, Product, User} = require('../db/models')
-// const {Op} = require('sequelize')
 module.exports = router
 
-//api/reviews route
+function requireLoggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.status(401).send('Please log in first!')
+  }
+}
+
+// api/reviews route
 router.get('/', async (req, res, next) => {
   try {
     const reviews = await Review.findAll({include: [Product, User]})
@@ -13,7 +20,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', requireLoggedIn, async (req, res, next) => {
   try {
     ///NEED TO SANITIZE REVIEWS [NPM SANITIZE?]
     const {id} = req.user
@@ -29,7 +36,7 @@ router.post('/', async (req, res, next) => {
 })
 
 //NOTE FOR POSTING REVIEWS, HAVE TO MAKE SURE USER === VALID + HAS PURCHASED PRODUCT
-router.get('/ownedbyuser/:userId', async (req, res, next) => {
+router.get('/ownedbyuser/:userId', requireLoggedIn, async (req, res, next) => {
   try {
     const reviews = await Review.findAll({
       include: [Product],

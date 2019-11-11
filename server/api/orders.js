@@ -3,6 +3,14 @@ const {Order, Session, Product, OrderLineItem} = require('../db/models')
 
 module.exports = router
 
+function requireLoggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.status(401).send('Please log in first!')
+  }
+}
+
 //Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   // add admin validation
@@ -55,7 +63,7 @@ router.get('/cart', async (req, res, next) => {
 })
 
 // Gets order by id
-router.get('/:orderId', async (req, res, next) => {
+router.get('/:orderId', requireLoggedIn, async (req, res, next) => {
   // add validations
   try {
     const order = await Order.findByPk(+req.params.orderId, {
@@ -67,7 +75,7 @@ router.get('/:orderId', async (req, res, next) => {
   }
 })
 
-router.get('/ownedbyuser/:userId', async (req, res, next) => {
+router.get('/ownedbyuser/:userId', requireLoggedIn, async (req, res, next) => {
   //validation here as well to check userID against req.session
   try {
     const orders = await Order.findAll({
@@ -196,7 +204,7 @@ router.put('/cart', async (req, res, next) => {
   console.log(req.body)
 })
 
-router.put('/order/:orderId', async (req, res, next) => {
+router.put('/order/:orderId', requireLoggedIn, async (req, res, next) => {
   try {
     const orderId = Number(req.params.orderId)
     if (!await Order.findByPk(orderId)) {
