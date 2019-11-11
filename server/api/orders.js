@@ -44,11 +44,24 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
+// Gets order by id
+router.get('/:orderId', async (req, res, next) => {
+  // add validations
+  try {
+    const order = await Order.findByPk(+req.params.orderId, {
+      include: {model: OrderLineItem, include: [{model: Product}]}
+    })
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/ownedbyuser/:userId', async (req, res, next) => {
   //validation here as well to check userID against req.session
   try {
     const orders = await Order.findAll({
-      where: {userId: req.params.userId},
+      where: {userId: +req.params.userId},
       include: {model: OrderLineItem, include: [{model: Product}]}
     })
     res.json(orders)
@@ -153,4 +166,26 @@ router.put('/checkout', async (req, res, next) => {
 })
 router.put('/cart', async (req, res, next) => {
   console.log(req.body)
+})
+
+router.put('/order/:orderId', async (req, res, next) => {
+  try {
+    const orderId = Number(req.params.orderId)
+    if (!await Order.findByPk(orderId)) {
+      res.sendStatus(404)
+    } else {
+      await Order.update(
+        {
+          status: req.params.status,
+          subtotal: req.status.subtotal,
+          address: req.params.address
+        },
+        {where: {id: orderId}}
+      )
+      const updatedOrder = await Order.findByPk(orderId)
+      res.status(200).json(updatedOrder)
+    }
+  } catch (error) {
+    next(error)
+  }
 })

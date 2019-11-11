@@ -3,7 +3,7 @@ import {Table, Modal, Button, Icon, Divider} from 'semantic-ui-react'
 import {withRouter} from 'react-router'
 import {centsToPrice} from '../../utilityMethods'
 
-const OrderModal = ({order}) => {
+const OrderModal = ({order, history}) => {
   const lineItems = order.OrderLineItems
   const [open, setOpen] = useState(false)
   const [dimmer, setDimmer] = useState(true)
@@ -71,7 +71,8 @@ const OrderModal = ({order}) => {
             </Table.Row>
           </Table.Body>
 
-          {/* Maybe we can include some pagination if the order is long enough -- shelving it for now. <Table.Footer>
+          {/* Maybe we can include some pagination if the order is long enough -- shelving it for now.
+	      <Table.Footer>
 	      <Table.Row>
 	      <Table.HeaderCell colSpan='3'>
 	      <Menu floated='right' pagination>
