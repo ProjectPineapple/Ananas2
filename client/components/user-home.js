@@ -1,16 +1,20 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import ViewCart from './ViewCart'
 import {Image, Tab} from 'semantic-ui-react'
 
 import UserOrders from './orders/UserOrders'
 import AllOrders from './orders/AllOrders'
+import AllReviews from './reviews/AllReviews'
+import UserReviews from './reviews/UserReviews'
+
 import UserForm from './EditUserForm'
 import {changeUser} from '../store/user'
 
 const UserHome = props => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
+  const userId = user.id
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
@@ -53,18 +57,32 @@ const UserHome = props => {
     },
     {
       menuItem: {key: 'reviews', icon: 'star', content: 'Reviews'},
-      render: () => <Tab.Pane>Reviews</Tab.Pane>
+      render: () => (
+        <Tab.Pane>
+          Reviews <UserReviews userId={userId} />
+        </Tab.Pane>
+      )
     }
   ]
   if (isAdminStatus) {
-    panes.push({
-      menuItem: {key: 'allorders', icon: 'history', content: 'All Orders'},
-      render: () => (
-        <Tab.Pane>
-          <AllOrders />
-        </Tab.Pane>
-      )
-    })
+    panes.push(
+      {
+        menuItem: {key: 'allorders', icon: 'history', content: 'All Orders'},
+        render: () => (
+          <Tab.Pane>
+            <AllOrders />
+          </Tab.Pane>
+        )
+      },
+      {
+        menuItem: {key: 'allreviews', icon: 'star', content: 'All Reviews'},
+        render: () => (
+          <Tab.Pane>
+            <AllReviews />
+          </Tab.Pane>
+        )
+      }
+    )
   }
 
   return (
