@@ -1,21 +1,45 @@
 import React, {useState} from 'react'
-import {Table, Modal, Button, Icon, Divider} from 'semantic-ui-react'
+import {Table, Modal, Button, Icon, Divider, Label} from 'semantic-ui-react'
 import {withRouter} from 'react-router'
+import {useDispatch, useSelector} from 'react-redux'
 import {centsToPrice} from '../../utilityMethods'
+import {changeOrder} from '../../store/singleOrder'
 
 const OrderModal = ({order, history}) => {
   const lineItems = order.OrderLineItems
   const [open, setOpen] = useState(false)
   const [dimmer, setDimmer] = useState(true)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
     setDimmer(true)
     setOpen(!open)
   }
 
-  const handleClickClose = () => {
+  const handleClickClose = e => {
     setOpen(!open)
   }
+
+  //CAN ONLY CANCEL PAID ORDER
+  const handleClickCancel = () => {
+    order.status = 'cancelled'
+    dispatch(changeOrder(order, order.id))
+    setOpen(!open)
+  }
+
+  //CAN ONLY DISPUTE PAID, SHIPPED, DELIVERED, OR COMPLETED ORDERS
+  const handleClickDispute = () => {
+    order.status = 'in-dispute'
+    dispatch(changeOrder(order, order.id))
+    setOpen(!open)
+  }
+
+  const paid = order.status === 'paid'
+  const paidShippedDeliveredOrCompleted =
+    order.status === 'paid' ||
+    order.status === 'shipped' ||
+    order.status === 'delivered' ||
+    order.status === 'completed'
 
   return (
     <Modal
@@ -93,6 +117,26 @@ const OrderModal = ({order, history}) => {
         </Table>
       </Modal.Content>
       <Modal.Actions>
+        {paid ? (
+          <Button secondary onClick={handleClickCancel}>
+            <Icon name="cancel" />Cancel Order
+          </Button>
+        ) : (
+          <span />
+        )}
+        {paidShippedDeliveredOrCompleted ? (
+          <Button secondary onClick={handleClickDispute}>
+            <Icon name="flag outline" />Dispute Order
+          </Button>
+        ) : (
+          <span />
+        )}
+        {order.status === 'cancelled' ? <Label>Cancelled</Label> : <span />}
+        {order.status === 'in-dispute' ? (
+          <Label color="red">In Dispute</Label>
+        ) : (
+          <span />
+        )}
         <Button primary onClick={() => history.push(`/orders/${order.id}`)}>
           More Options <Icon name="right chevron" />
         </Button>
