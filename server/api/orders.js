@@ -1,9 +1,28 @@
 const router = require('express').Router()
-const {Order, Session, Product, OrderLineItem} = require('../db/models')
+const {Order, Session, Product, OrderLineItem, User} = require('../db/models')
+const customId = require('custom-id')
 
 module.exports = router
 
-//Gets all orders - used for admin listing
+//pagination GET all (for admins)
+const PER_PAGE = 10
+router.get('/', async (req, res, next) => {
+  try {
+    console.log('request query ', req.query)
+    const page = 2
+    const results = await Order.findAll({
+      include: {model: OrderLineItem, include: [{model: Product}]},
+      offset: (page - 1) * 10,
+      limit: PER_PAGE,
+      order: [['status']]
+    })
+    res.json(results)
+  } catch (err) {
+    next(err)
+  }
+})
+
+/*//Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   // add admin validation
   try {
@@ -14,7 +33,7 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-})
+})*/
 
 const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user
@@ -186,14 +205,15 @@ router.put('/checkout', async (req, res, next) => {
   const formData = req.body.formData
   const orderId = req.body.orderId
   try {
-    const response = User.findOrCreate({where: {email: formData.email}})
-    console.log(response)
+    const userOnOrder = User.findOrCreate({where: {email: formData.email}})
+    const orderWithConfCode = await Order.update(
+      {confirmationCode: customId({email: userOnOrder.email})},
+      {returning: true, where: {id: orderId}}
+    )
+    res.json({orderWithConfCode, userOnOrder})
   } catch (error) {
     next(error)
   }
-})
-router.put('/cart', async (req, res, next) => {
-  console.log(req.body)
 })
 
 router.put('/order/:orderId', async (req, res, next) => {

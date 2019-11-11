@@ -68,6 +68,9 @@ const Order = db.define('order', {
   completedTime: {
     // when order is ALL DONE
     type: Sequelize.DATE
+  },
+  confirmationCode: {
+    type: Sequelize.STRING
   }
 })
 
@@ -92,7 +95,7 @@ Order.addItemToOrder = async (orderId, productId) => {
       throw new Error(`Not enough stock to add to cart:${product.name}`)
     }
   }
-  if (orderLineItemToChange.quantity >= orderLineItemToChange.product.stock) {
+  if (orderLineItemToChange.quantity > orderLineItemToChange.product.stock) {
     throw new Error(
       `Not enough stock to add to cart:${orderLineItemToChange.product.name}`
     )
@@ -122,6 +125,7 @@ Order.removeItemFromOrder = async (orderId, productId) => {
   }
 }
 
+// TODO: fix :P
 Order.afterUpdate(order => {
   switch (order.status) {
     case 'payment-in-progress':

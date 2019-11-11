@@ -13,6 +13,7 @@ import {
   checkoutForm,
   ViewCart,
   OrderListing,
+  ConfirmationPage,
   EditOrderForm,
   SingleUser,
   EditUserForm
@@ -61,7 +62,7 @@ class Routes extends Component {
 
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
-
+        <Route exact path="/success" render={() => <ConfirmationPage />} />
         {isAdmin && (
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />
