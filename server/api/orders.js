@@ -5,24 +5,24 @@ const customId = require('custom-id')
 module.exports = router
 
 //pagination GET all (for admins)
-const PER_PAGE = 10
-router.get('/', async (req, res, next) => {
-  try {
-    console.log('request query ', req.query)
-    const page = 2
-    const results = await Order.findAll({
-      include: {model: OrderLineItem, include: [{model: Product}]},
-      offset: (page - 1) * 10,
-      limit: PER_PAGE,
-      order: [['status']]
-    })
-    res.json(results)
-  } catch (err) {
-    next(err)
-  }
-})
+// const PER_PAGE = 10
+// router.get('/', async (req, res, next) => {
+//   try {
+//     console.log('request query ', req.query)
+//     const page = 2
+//     const results = await Order.findAll({
+//       include: {model: OrderLineItem, include: [{model: Product}]},
+//       offset: (page - 1) * 10,
+//       limit: PER_PAGE,
+//       order: [['status']]
+//     })
+//     res.json(results)
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 
-/*//Gets all orders - used for admin listing
+//Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   // add admin validation
   try {
@@ -33,7 +33,7 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-})*/
+})
 
 const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user
