@@ -2,10 +2,11 @@ import axios from 'axios'
 
 const SET_ORDER = 'SET_ORDER'
 const RESET_ORDER = 'RESET_ORDER'
-const ADD_TO_ORDER = 'ADD_TO_ORDER'
+const UPDATE_ORDER = 'UPDATE_ORDER'
 
 export const setOrder = order => ({type: SET_ORDER, order})
-export const resetOrder = order => ({type: RESET_ORDER})
+export const resetOrder = () => ({type: RESET_ORDER})
+export const updateOrder = order => ({type: UPDATE_ORDER, order})
 
 export const fetchOrder = orderId => {
   return async dispatch => {
@@ -14,6 +15,17 @@ export const fetchOrder = orderId => {
       dispatch(setOrder(data))
     } catch (err) {
       console.error(err)
+    }
+  }
+}
+
+export const changeOrder = (order, orderId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`/api/orders/${orderId}`)
+      dispatch(updateOrder(data))
+    } catch (error) {
+      console.log(error)
     }
   }
 }
