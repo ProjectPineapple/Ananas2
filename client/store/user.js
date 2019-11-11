@@ -5,6 +5,7 @@ import history from '../history'
  * ACTION TYPES
  */
 const GET_USER = 'GET_USER'
+const CHANGE_USER = 'CHANGE_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
 /**
@@ -17,6 +18,7 @@ const defaultUser = {}
  */
 export const getUser = user => ({type: GET_USER, user}) // if creating users when they order things and tracking them by email, need this elsewhere
 const removeUser = () => ({type: REMOVE_USER})
+export const changeUser = user => ({type: CHANGE_USER, user})
 
 /**
  * THUNK CREATORS
@@ -56,6 +58,17 @@ export const logout = () => async dispatch => {
   }
 }
 
+export const updateUser = (user, userId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`/api/users/${userId}`, user)
+      dispatch(changeUser(data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
@@ -65,6 +78,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case CHANGE_USER:
+      return action.user
     default:
       return state
   }
