@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import ViewCart from './ViewCart'
-import {Image, Tab} from 'semantic-ui-react'
+import {Header, Image, Tab} from 'semantic-ui-react'
 
 import UserOrders from './orders/UserOrders'
 import AllOrders from './orders/AllOrders'
@@ -16,6 +16,7 @@ const UserHome = props => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const userId = user.id
+  const displayName = user.name
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
@@ -98,10 +99,11 @@ const UserHome = props => {
 
   return (
     <div>
-      <div>
-        <h2>Welcome {user.email || 'guest'}!</h2>
-        <Image src="https://picsum.photos/100/100" circular />
-      </div>
+      <br />
+      <Header as="h2">
+        <Image circular src="https://picsum.photos/100/100" />Welcome,{' '}
+        {displayName || 'guest'}!
+      </Header>
       <br />
       <br />
       <Tab panes={panes} />

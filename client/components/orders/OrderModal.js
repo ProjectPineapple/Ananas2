@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Table, Modal, Button, Icon, Divider} from 'semantic-ui-react'
+import {Table, Modal, Button, Icon, Divider, Label} from 'semantic-ui-react'
 import {withRouter} from 'react-router'
 import {centsToPrice} from '../../utilityMethods'
 
@@ -13,9 +13,26 @@ const OrderModal = ({order, history}) => {
     setOpen(!open)
   }
 
-  const handleClickClose = () => {
+  const handleClickClose = e => {
     setOpen(!open)
   }
+
+  //CAN ONLY CANCEL PAID ORDER
+  const handleClickCancel = e => {
+    console.log('handled cancel')
+  }
+
+  //CAN ONLY DISPUTE PAID, SHIPPED, DELIVERED, OR COMPLETED ORDERS
+  const handleClickDispute = e => {
+    console.log('handled dispute')
+  }
+
+  const paid = order.status === 'paid'
+  const paidShippedDeliveredOrCompleted =
+    order.status === 'paid' ||
+    order.status === 'shipped' ||
+    order.status === 'delivered' ||
+    order.status === 'completed'
 
   return (
     <Modal
@@ -93,6 +110,26 @@ const OrderModal = ({order, history}) => {
         </Table>
       </Modal.Content>
       <Modal.Actions>
+        {paid ? (
+          <Button secondary onClick={handleClickCancel}>
+            <Icon name="cancel" />Cancel Order
+          </Button>
+        ) : (
+          <span />
+        )}
+        {paidShippedDeliveredOrCompleted ? (
+          <Button secondary onClick={handleClickDispute}>
+            <Icon name="flag outline" />Dispute Order
+          </Button>
+        ) : (
+          <span />
+        )}
+        {order.status === 'cancelled' ? <Label>Cancelled</Label> : <span />}
+        {order.status === 'in-dispute' ? (
+          <Label color="red">In Dispute</Label>
+        ) : (
+          <span />
+        )}
         <Button primary onClick={() => history.push(`/orders/${order.id}`)}>
           More Options <Icon name="right chevron" />
         </Button>
