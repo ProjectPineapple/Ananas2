@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import ViewCart from './ViewCart'
-import {Image, Tab} from 'semantic-ui-react'
+import {Image, Tab, Header, Segment} from 'semantic-ui-react'
 
 import UserOrders from './orders/UserOrders'
 import AllOrders from './orders/AllOrders'
@@ -98,10 +98,10 @@ const UserHome = props => {
 
   return (
     <div>
-      <div>
-        <h2>Welcome {user.email || 'guest'}!</h2>
+      <Segment padded="very">
+        <Header as="h1">Welcome {user.email || 'guest'}!</Header>
         <Image src="https://picsum.photos/100/100" circular />
-      </div>
+      </Segment>
       <br />
       <br />
       <Tab panes={panes} />

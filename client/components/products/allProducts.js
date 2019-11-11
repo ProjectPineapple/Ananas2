@@ -39,8 +39,6 @@ const AllProducts = ({history, location}) => {
 
   const handleSearchSubmit = event => {
     if (event.keyCode === 13) {
-      const form = event.target.value
-      console.log(form)
       const searchParam = event.target.value
       history.push(`/products?search=${searchParam}`)
     }

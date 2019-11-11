@@ -53,7 +53,7 @@ router.get('/cart', async (req, res, next) => {
     })
     const subtotal = cart.OrderLineItems
       ? cart.OrderLineItems.reduce(
-          (acc, lineItem) => acc + lineItem.priceAtPurchase,
+          (acc, lineItem) => acc + lineItem.priceAtPurchase * lineItem.quantity,
           0
         )
       : 0
@@ -113,7 +113,7 @@ router.put('/additemtocart/:orderId', async (req, res, next) => {
       ]
     })
     const subtotal = cart.OrderLineItems.reduce(
-      (acc, lineItem) => acc + lineItem.priceAtPurchase,
+      (acc, lineItem) => acc + lineItem.priceAtPurchase * lineItem.quantity,
       0
     )
     const shipping = SHIPPING_PRICE
@@ -149,7 +149,7 @@ router.put('/removeitemfromcart/', async (req, res, next) => {
       ]
     })
     const subtotal = cart.OrderLineItems.reduce(
-      (acc, lineItem) => acc + lineItem.priceAtPurchase,
+      (acc, lineItem) => acc + lineItem.priceAtPurchase * lineItem.quantity,
       0
     )
     const shipping = SHIPPING_PRICE
@@ -281,7 +281,6 @@ router.put('/mergecarts', async (req, res, next) => {
 })
 
 router.put('/order/:orderId', requireLoggedIn, async (req, res, next) => {
-
   try {
     const orderId = Number(req.params.orderId)
     if (!await Order.findByPk(orderId)) {
