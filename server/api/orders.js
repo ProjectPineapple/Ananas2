@@ -16,6 +16,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user
 router.get('/cart', async (req, res, next) => {
   try {
@@ -28,7 +29,7 @@ router.get('/cart', async (req, res, next) => {
     whereClause.status = 'in-cart'
     if (req.user) whereClause.userId = req.user.id
     else whereClause.SessionId = session.id
-    const cart = await Order.findOrCreate({
+    const [cart, created] = await Order.findOrCreate({
       // where: whereClause,
       where: whereClause,
       include: [
@@ -38,7 +39,16 @@ router.get('/cart', async (req, res, next) => {
         }
       ]
     })
-    res.json(cart[0])
+    const subtotal = cart.OrderLineItems.reduce(
+      (acc, lineItem) => acc + lineItem.priceAtPurchase,
+      0
+    )
+    const shipping = SHIPPING_PRICE
+    const taxes = 0.09
+    // How do taxes get rounded at cents level
+    const total = cart.subtotal + shipping + Math.round(cart.subtotal * taxes)
+    await cart.update({subtotal, total})
+    res.json(cart)
   } catch (err) {
     next(err)
   }
