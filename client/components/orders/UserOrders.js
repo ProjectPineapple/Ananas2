@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {fetchUserOrders, resetUserOrders} from '../store/userOrders'
+import {fetchUserOrders, resetUserOrders} from '../../store/userOrders'
 import {Segment, Item, Tab} from 'semantic-ui-react'
 import OrderList from './OrderList'
 
@@ -26,7 +26,7 @@ const UserOrders = () => {
         const allOrders = orders.filter(order => order.status !== 'in-cart')
         return (
           <Tab.Pane>
-            <OrderList orders={orders} all={true} />
+            <OrderList orders={allOrders} all={true} />
           </Tab.Pane>
         )
       }

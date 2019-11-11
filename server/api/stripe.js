@@ -36,7 +36,7 @@ app.post('/checkout', async (req, res, next) => {
             line2: token.card.address_line2,
             city: token.card.address_city,
             country: token.card.address_country,
-            postal_code: token.card.address.zip
+            postal_code: token.card.address_zip
           }
         },
         billing: {
@@ -46,7 +46,7 @@ app.post('/checkout', async (req, res, next) => {
             line2: token.card.address_line2,
             city: token.card.address_city,
             country: token.card.address_country,
-            postal_code: token.card.address.zip
+            postal_code: token.card.address_zip
           }
         }
       },

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {withRouter} from 'react-router'
-import {addReviewThunk} from '../store/addReview'
+import {addReviewThunk} from '../../store/addReview'
 import {
   Button,
   Divider,
@@ -20,7 +20,6 @@ const AddReview = props => {
   const [open, setOpen] = useState(false)
   const [dimmer, setDimmer] = useState(true)
   const [error, setError] = useState(false)
-  //photo logic TK (photo1, photo2, photo)
   let {stars, description, photo1, photo2, photo3} =
     useSelector(state => state.addedReview) || {}
   const dispatch = useDispatch()
@@ -36,25 +35,23 @@ const AddReview = props => {
     setIsClickedClose(!isClickedClose)
   }
 
-  // let stars
-  ///NEED TO SEND RATING + DESCRIPTION TO DB
   const handleRate = (e, {rating}) => {
     stars = rating
   }
 
-  const handleChange = (e, {name, value}) => {
+  const handleChangeDescription = (e, {name, value}) => {
     description = value
   }
 
-  const handleChangePhoto1 = (e, {name, value}) => {
+  const handleChangePhoto1 = (e, {value}) => {
     photo1 = value
   }
 
-  const handleChangePhoto2 = (e, {name, value}) => {
+  const handleChangePhoto2 = (e, {value}) => {
     photo2 = value
   }
 
-  const handleChangePhoto3 = (e, {name, value}) => {
+  const handleChangePhoto3 = (e, {value}) => {
     photo3 = value
   }
 
@@ -63,9 +60,9 @@ const AddReview = props => {
     if (!description) {
       setError(!error)
     } else {
+      //stars no longer become undefined. maybe b/c I deleted the <Message />
       stars = stars.toFixed(2) //string with 2 decimal places (ex: 4.00)
       const photos = [photo1, photo2, photo3]
-      console.log('Photos!', photos)
       const reviewData = {
         stars,
         description,
@@ -104,13 +101,14 @@ const AddReview = props => {
           onRate={handleRate}
         />
         <Divider hidden />
-        <Form error={error}>
+        <Form error={error} onSubmit={handleSubmit}>
           <Form.Field
             style={{minHeight: 100}}
             width={12}
             control={TextArea}
+            // name="description"
             value={description}
-            onChange={handleChange}
+            onChange={handleChangeDescription}
             label="Add a written review"
             placeholder="What did you like or dislike about your battleship? How did you use it?"
             required={true}
@@ -147,12 +145,7 @@ const AddReview = props => {
             />
           </Form.Group>
           <Divider hidden />
-          <Form.Field
-            control={Button}
-            color="green"
-            content="Submit Review"
-            onClick={handleSubmit}
-          />
+          <Form.Field control={Button} color="green" content="Submit Review" />
         </Form>
       </Modal.Content>
     </Modal>

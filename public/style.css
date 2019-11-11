@@ -71,3 +71,17 @@ form div {
   flex-direction: column;
   text-align: left;
 }
+
+.listing-orders {
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.order-status {
+  display: flex;
+  justify-content: flex-start;
+}

@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {fetchSingleProduct, deleteProduct} from '../store/singleProduct'
+import {fetchSingleProduct, deleteProduct} from '../../store/singleProduct'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 
 import {Button, Segment, Image, Label, Header} from 'semantic-ui-react'
-import ProductReviews from './ProductReviews'
+import ProductReviews from '../reviews/ProductReviews'
 import UpdateProjectForm from './UpdateProductForm'
 import AddToCartButton from './AddToCartButton'
 
-import {centsToPrice} from '../utilityMethods'
+import {centsToPrice} from '../../utilityMethods'
 // import UpdateProjectForm from './UpdateProductForm'
 
 const ProductListing = props => {
