@@ -4,18 +4,18 @@ module.exports = router
 
 router.post('/login', async (req, res, next) => {
   try {
-    const user = await User.findOne({where: {email: req.body.email}})
+    const {email, password} = req.body
+    const user = await User.findOne({where: {email}})
     if (!user) {
-      console.log('No such user found:', req.body.email)
+      // console.log('No such user found:', req.body.email)
       res.status(401).send('Wrong username and/or password')
-    } else if (!user.correctPassword(req.body.password)) {
-      console.log('Incorrect password for user:', req.body.email)
+    } else if (!user.correctPassword(password)) {
+      // console.log('Incorrect password for user:', req.body.email)
       res.status(401).send('Wrong username and/or password')
     } else {
       // const usersCart = await Order.findOne({
       //   where: {userId: user.id, status: 'in-cart'}
       // })
-
       req.login(user, err => (err ? next(err) : res.json(user)))
     }
   } catch (err) {
@@ -25,7 +25,9 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const {email, password} = req.body
+    //DO WE WANT PASSWORD HERE?
+    const user = await User.create(email, password)
     req.login(user, err => (err ? next(err) : res.json(user)))
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
