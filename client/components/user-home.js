@@ -3,8 +3,8 @@ import {useSelector, useDispatch} from 'react-redux'
 import ViewCart from './ViewCart'
 import {Image, Tab} from 'semantic-ui-react'
 
-import UserOrders from './UserOrders'
-import AllOrders from './AllOrders'
+import UserOrders from './orders/UserOrders'
+import AllOrders from './orders/AllOrders'
 import UserForm from './EditUserForm'
 import {changeUser} from '../store/user'
 
