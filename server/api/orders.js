@@ -44,11 +44,24 @@ router.get('/cart', async (req, res, next) => {
   }
 })
 
+// Gets order by id
+router.get('/:orderId', async (req, res, next) => {
+  // add validations
+  try {
+    const order = await Order.findByPk(+req.params.orderId, {
+      include: {model: OrderLineItem, include: [{model: Product}]}
+    })
+    res.json(order)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/ownedbyuser/:userId', async (req, res, next) => {
   //validation here as well to check userID against req.session
   try {
     const orders = await Order.findAll({
-      where: {userId: req.params.userId},
+      where: {userId: +req.params.userId},
       include: {model: OrderLineItem, include: [{model: Product}]}
     })
     res.json(orders)

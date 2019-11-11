@@ -15,6 +15,7 @@ import allOrders from './allOrders'
 import allReviews from './reviews'
 import totalItems from './totalItems'
 import addAReview from './addReview'
+import singleOrder from './singleOrder.js'
 
 const reducer = combineReducers({
   allProducts,
@@ -28,7 +29,8 @@ const reducer = combineReducers({
   addProduct,
   allReviews,
   totalItems,
-  addAReview
+  addAReview,
+  singleOrder
 })
 
 const middleware = composeWithDevTools(

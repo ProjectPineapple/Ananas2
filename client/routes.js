@@ -11,7 +11,8 @@ import {
   UpdateProductForm,
   AddProductForm,
   checkoutForm,
-  ViewCart
+  ViewCart,
+  OrderListing
 } from './components'
 import {me} from './store'
 
@@ -27,17 +28,18 @@ class Routes extends Component {
     const {user, location} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
-    console.log(isAdmin)
+    console.log('admin? ', isAdmin)
     return (
       <Switch>
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/home" component={UserHome} />
+
         <Route
           path="/products"
           render={() => <AllProducts key={location.search} />}
         />
-
         <Route
           exact
           path="/view/product/:productId"
@@ -45,10 +47,15 @@ class Routes extends Component {
             <ProductListing key={this.props.match.params.productId} />
           )}
         />
-        <Route path="/signup" component={Signup} />
+        <Route
+          exact
+          path="/orders/:orderId"
+          render={() => <OrderListing key={this.props.match.params.orderId} />}
+        />
+
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
-        <Route exact path="/home" component={UserHome} />
+
         {isAdmin && (
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />
