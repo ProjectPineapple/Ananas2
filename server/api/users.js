@@ -15,3 +15,25 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/:userId', async (req, res, next) => {
+  try {
+    const userId = Number(req.params.userId)
+    if (!await User.findByPk(userId)) {
+      res.sendStatus(404)
+    } else {
+      await User.update(
+        {
+          email: req.body.email,
+          name: req.body.name,
+          password: req.body.password
+        },
+        {where: {id: userId}}
+      )
+      const updatedUser = await User.findByPk(userId)
+      res.status(200).json(updatedUser)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
