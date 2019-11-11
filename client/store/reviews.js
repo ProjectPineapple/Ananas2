@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const SET_REVIEWS = 'SET_REVIEWS'
 
-const setReviews = reviews => ({type: SET_REVIEWS, reviews})
+export const setReviews = reviews => ({type: SET_REVIEWS, reviews})
 
 const initialState = []
 
