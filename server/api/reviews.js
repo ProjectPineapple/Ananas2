@@ -29,13 +29,14 @@ router.post('/', async (req, res, next) => {
 })
 
 //NOTE FOR POSTING REVIEWS, HAVE TO MAKE SURE USER === VALID + HAS PURCHASED PRODUCT
-router.get('/:reviewId', async (req, res, next) => {
+router.get('/ownedbyuser/:userId', async (req, res, next) => {
   try {
-    const reviews = await Review.findByPk(req.params.reviewId, {
-      include: [User, Product]
+    const reviews = await Review.findAll({
+      include: [Product],
+      where: {userId: +req.params.userId}
     })
     res.json(reviews)
   } catch (err) {
-    console.error(err)
+    next(err)
   }
 })
