@@ -1,16 +1,25 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import ViewCart from './ViewCart'
 import {Image, Tab} from 'semantic-ui-react'
-import UserOrders from './orders/UserOrders'
-import AllOrders from './orders/AllOrders'
+
+import UserOrders from './UserOrders'
+import AllOrders from './AllOrders'
+import UserForm from './EditUserForm'
+import {changeUser} from '../store/user'
 
 const UserHome = props => {
+  const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
   const cartSize = !cart.products ? 0 : cart.products.length
+
+  const submit = user => {
+    // print the form values to the console
+    dispatch(changeUser(user))
+  }
 
   const panes = [
     {
@@ -19,6 +28,7 @@ const UserHome = props => {
         icon: 'shopping basket',
         content: `Cart ${cartSize}`
       },
+
       render: () => (
         <Tab.Pane>
           <ViewCart cart={cart} />
@@ -35,7 +45,11 @@ const UserHome = props => {
     },
     {
       menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
-      render: () => <Tab.Pane>Edit Your Profile</Tab.Pane>
+      render: () => (
+        <Tab.Pane>
+          Edit Your Profile <UserForm onSubmit={submit} />
+        </Tab.Pane>
+      )
     },
     {
       menuItem: {key: 'reviews', icon: 'star', content: 'Reviews'},

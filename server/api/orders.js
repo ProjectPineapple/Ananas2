@@ -167,3 +167,25 @@ router.put('/checkout', async (req, res, next) => {
 router.put('/cart', async (req, res, next) => {
   console.log(req.body)
 })
+
+router.put('/order/:orderId', async (req, res, next) => {
+  try {
+    const orderId = Number(req.params.orderId)
+    if (!await Order.findByPk(orderId)) {
+      res.sendStatus(404)
+    } else {
+      await Order.update(
+        {
+          status: req.params.status,
+          subtotal: req.status.subtotal,
+          address: req.params.address
+        },
+        {where: {id: orderId}}
+      )
+      const updatedOrder = await Order.findByPk(orderId)
+      res.status(200).json(updatedOrder)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
