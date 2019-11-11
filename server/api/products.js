@@ -112,7 +112,7 @@ router.put('/:productId', async (req, res, next) => {
 
 router.delete('/:productId', async (req, res, next) => {
   try {
-    await Product.destroy({where: {id: req.params.productId}})
+    await Product.destroy({where: {id: Number(req.params.productId)}})
     res.status(204).end()
   } catch (error) {
     next(error)
