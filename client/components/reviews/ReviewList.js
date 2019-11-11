@@ -4,7 +4,6 @@ import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const ReviewList = props => {
   const {reviews} = props
-  console.log(reviews)
 
   return !reviews.length ? (
     <div>
@@ -18,7 +17,6 @@ const ReviewList = props => {
         {reviews.map(review => {
           let stars = Number(review.stars)
           let reviewDate = review.updatedAt.toString().slice(0, 10)
-          console.log(review)
 
           return (
             <Segment textAlign="left" key={review.id}>
