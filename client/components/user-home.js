@@ -7,6 +7,7 @@ import UserOrders from './orders/UserOrders'
 import AllOrders from './orders/AllOrders'
 import UserForm from './EditUserForm'
 import {changeUser} from '../store/user'
+import AllUsers from './users/AllUsers'
 
 const UserHome = props => {
   const dispatch = useDispatch()
@@ -62,6 +63,16 @@ const UserHome = props => {
       render: () => (
         <Tab.Pane>
           <AllOrders />
+        </Tab.Pane>
+      )
+    })
+  }
+  if (isAdminStatus) {
+    panes.push({
+      menuItem: {key: 'allusers', icon: 'user', content: 'All Users'},
+      render: () => (
+        <Tab.Pane>
+          <AllUsers />
         </Tab.Pane>
       )
     })
