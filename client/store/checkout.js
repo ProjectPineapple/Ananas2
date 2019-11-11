@@ -64,10 +64,7 @@ export const checkoutOrder = (formData, orderId, history) => {
 // at least thats how i envision it -Antanas
 export const createUser = (formData, history) => {
   return async dispatch => {
-    const {data: user} = await axios.post(
-      'SOME_ROUTE_TO_USER_CREATION',
-      formData
-    )
+    const {data: user} = await axios.post(`/api/orders/checkout`, formData)
     dispatch(getUser(user))
     history.push('HOMEPAGE')
   }

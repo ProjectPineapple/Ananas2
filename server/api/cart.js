@@ -2,13 +2,13 @@ const router = require('express').Router()
 const stripe = require('stripe')('sk_test_wwuKxIwA53kDbI8akkAS5RLu00TV9cjmTN')
 const uuid = require('uuid/v4')
 const cors = require('cors')
+const customId = require('custom-id')
 const {Order, Session, Product, OrderLineItem} = require('../db/models')
 
 module.exports = router
 
 router.use(cors())
 
-// Stripe actions
 router.post('/checkout', async (req, res, next) => {
   let error
   let status
@@ -20,6 +20,10 @@ router.post('/checkout', async (req, res, next) => {
       email: token.email,
       source: token.id
     })
+    const orderWithConfCode = await Order.update(
+      {confirmationCode: customId({email: customer.email})},
+      {returning: true, where: {id: order.id}}
+    )
 
     const idempotency_key = uuid()
     const charge = await stripe.charges.create(
@@ -45,6 +49,7 @@ router.post('/checkout', async (req, res, next) => {
     console.log('Charge', {charge})
 
     status = 'success'
+    res.json(orderWithConfCode)
   } catch (error) {
     console.error('Error', error)
     status = 'failure'
