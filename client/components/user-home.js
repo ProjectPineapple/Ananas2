@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import {Route, NavLink, matchPath} from 'react-router-dom'
 import ViewCart from './ViewCart'
 import {Image, Tab, Header, Segment} from 'semantic-ui-react'
 
@@ -16,6 +17,7 @@ const UserHome = props => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const userId = user.id
+  const displayName = user.name
   const cart = useSelector(state => state.viewCart)
   const isAdminStatus = user.status === 'admin'
 
@@ -29,73 +31,135 @@ const UserHome = props => {
   const panes = [
     {
       menuItem: {
+        as: NavLink,
+        to: '/home/my-cart',
+        exact: true,
         key: 'cart',
         icon: 'shopping basket',
         content: `Cart ${cartSize}`
       },
-
       render: () => (
-        <Tab.Pane>
-          <ViewCart cart={cart} />
-        </Tab.Pane>
+        <Route exact path="/home/my-cart">
+          <Tab.Pane>
+            <ViewCart cart={cart} />
+          </Tab.Pane>
+        </Route>
       )
     },
     {
-      menuItem: {key: 'order', icon: 'history', content: 'Orders'},
+      menuItem: {
+        as: NavLink,
+        to: `/home/my-orders`,
+        exact: true,
+        key: 'order',
+        icon: 'history',
+        content: 'Orders'
+      },
       render: () => (
-        <Tab.Pane>
-          <UserOrders />
-        </Tab.Pane>
+        <Route exact path="/home">
+          <Tab.Pane>
+            <UserOrders />
+          </Tab.Pane>
+        </Route>
       )
     },
     {
-      menuItem: {key: 'editProfile', icon: 'edit', content: 'Edit Profile'},
+      menuItem: {
+        as: NavLink,
+        to: '/home/my-profile',
+        exact: true,
+        key: 'editProfile',
+        icon: 'edit',
+        content: 'Edit Profile'
+      },
       render: () => (
-        <Tab.Pane>
-          Edit Your Profile <UserForm onSubmit={submit} />
-        </Tab.Pane>
+        <Route exact path="/my-profile">
+          <Tab.Pane>
+            Edit Your Profile <UserForm onSubmit={submit} />
+          </Tab.Pane>
+        </Route>
       )
     },
     {
-      menuItem: {key: 'reviews', icon: 'star', content: 'Reviews'},
+      menuItem: {
+        as: NavLink,
+        to: '/home/my-reviews',
+        exact: true,
+        key: 'reviews',
+        icon: 'star',
+        content: 'Reviews'
+      },
       render: () => (
-        <Tab.Pane>
-          Reviews <UserReviews userId={userId} />
-        </Tab.Pane>
+        <Route exact path="/my-reviews">
+          <Tab.Pane>
+            Reviews <UserReviews userId={userId} />
+          </Tab.Pane>
+        </Route>
       )
     }
   ]
   if (isAdminStatus) {
     panes.push(
       {
-        menuItem: {key: 'allorders', icon: 'history', content: 'All Orders'},
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-orders',
+          exact: true,
+          key: 'allorders',
+          icon: 'history',
+          content: 'All Orders'
+        },
         render: () => (
-          <Tab.Pane>
-            <AllOrders />
-          </Tab.Pane>
+          <Route exact path="/home/all-orders">
+            <Tab.Pane>
+              <AllOrders />
+            </Tab.Pane>
+          </Route>
         )
       },
       {
-        menuItem: {key: 'allreviews', icon: 'star', content: 'All Reviews'},
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-reviews',
+          exact: true,
+          key: 'allreviews',
+          icon: 'star',
+          content: 'All Reviews'
+        },
         render: () => (
-          <Tab.Pane>
-            <AllReviews />
-          </Tab.Pane>
+          <Route exact path="/home/all-reviews">
+            <Tab.Pane>
+              <AllReviews />
+            </Tab.Pane>
+          </Route>
+        )
+      },
+      {
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-users',
+          exact: true,
+          key: 'allusers',
+          icon: 'user',
+          content: 'All Users'
+        },
+        render: () => (
+          <Route exact path="/home/all-users">
+            <Tab.Pane>
+              <AllUsers />
+            </Tab.Pane>
+          </Route>
         )
       }
     )
   }
-  if (isAdminStatus) {
-    panes.push({
-      menuItem: {key: 'allusers', icon: 'user', content: 'All Users'},
-      render: () => (
-        <Tab.Pane>
-          <AllUsers />
-        </Tab.Pane>
-      )
-    })
-  }
 
+  const defaultActiveIndex = panes.findIndex(pane => {
+    return !!matchPath(window.location.pathname, {
+      path: pane.menuItem.to,
+      exact: true
+    })
+  })
   return (
     <div>
       <Segment padded="very">
@@ -104,7 +168,7 @@ const UserHome = props => {
       </Segment>
       <br />
       <br />
-      <Tab panes={panes} />
+      <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
     </div>
   )
 }

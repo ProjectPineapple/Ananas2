@@ -18,7 +18,8 @@ import {
   SingleUser,
   EditUserForm,
   NotFound,
-  CustomerService
+  CustomerService,
+  AllOrders
 } from './components'
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
@@ -36,13 +37,13 @@ class Routes extends Component {
     const {user, location, order} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
-    console.log('admin? ', isAdmin)
     return (
       <Switch>
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
-        <Route exact path="/home" component={UserHome} />
+        <Route path="/home" component={UserHome} />
+
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route

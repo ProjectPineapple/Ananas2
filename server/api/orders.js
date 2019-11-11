@@ -280,17 +280,22 @@ router.put('/mergecarts', async (req, res, next) => {
   // destroy sessionCart
 })
 
-router.put('/order/:orderId', requireLoggedIn, async (req, res, next) => {
+//JM UPDATED THIS FROM /order/:orderId
+router.put('/:orderId', requireLoggedIn, async (req, res, next) => {
   try {
     const orderId = Number(req.params.orderId)
+    const {order} = req.body
+    const {status} = order
+
     if (!await Order.findByPk(orderId)) {
       res.sendStatus(404)
     } else {
       await Order.update(
         {
-          status: req.params.status,
-          subtotal: req.status.subtotal,
-          address: req.params.address
+          status
+          // status: req.params.status,
+          // subtotal: req.status.subtotal,
+          // address: req.params.address
         },
         {where: {id: orderId}}
       )
