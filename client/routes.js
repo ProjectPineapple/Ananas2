@@ -11,9 +11,11 @@ import {
   UpdateProductForm,
   AddProductForm,
   checkoutForm,
-  ViewCart
+  ViewCart,
+  EditOrderForm
 } from './components'
 import {me} from './store'
+import {updateOrder} from './store/singleOrder'
 
 /**
  * COMPONENT
@@ -24,10 +26,11 @@ class Routes extends Component {
   }
 
   render() {
-    const {user, location} = this.props
+    const {user, location, order} = this.props
     const isAdmin = user.status === 'admin'
     const isLoggedIn = !!user.id
     console.log(isAdmin)
+
     return (
       <Switch>
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
@@ -57,6 +60,11 @@ class Routes extends Component {
               path="/update/products/:productId"
               component={UpdateProductForm}
             />
+            <Route
+              exact
+              path="/update/orders/:orderId"
+              render={() => <EditOrderForm onSubmit={this.props.submit} />}
+            />
           </Switch>
         )}
         <Redirect to="/404NotFound" />
@@ -82,6 +90,9 @@ const mapDispatch = dispatch => {
   return {
     loadInitialData() {
       dispatch(me())
+    },
+    submit(order) {
+      dispatch(updateOrder(order))
     }
   }
 }
