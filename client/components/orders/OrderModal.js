@@ -1,12 +1,15 @@
 import React, {useState} from 'react'
 import {Table, Modal, Button, Icon, Divider, Label} from 'semantic-ui-react'
 import {withRouter} from 'react-router'
+import {useDispatch, useSelector} from 'react-redux'
 import {centsToPrice} from '../../utilityMethods'
+import {changeOrder} from '../../store/singleOrder'
 
 const OrderModal = ({order, history}) => {
   const lineItems = order.OrderLineItems
   const [open, setOpen] = useState(false)
   const [dimmer, setDimmer] = useState(true)
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
     setDimmer(true)
@@ -18,13 +21,17 @@ const OrderModal = ({order, history}) => {
   }
 
   //CAN ONLY CANCEL PAID ORDER
-  const handleClickCancel = e => {
-    console.log('handled cancel')
+  const handleClickCancel = () => {
+    order.status = 'cancelled'
+    dispatch(changeOrder(order, order.id))
+    setOpen(!open)
   }
 
   //CAN ONLY DISPUTE PAID, SHIPPED, DELIVERED, OR COMPLETED ORDERS
-  const handleClickDispute = e => {
-    console.log('handled dispute')
+  const handleClickDispute = () => {
+    order.status = 'in-dispute'
+    dispatch(changeOrder(order, order.id))
+    setOpen(!open)
   }
 
   const paid = order.status === 'paid'

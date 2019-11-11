@@ -32,8 +32,9 @@ export const fetchSingleOrder = orderId => {
 export const changeOrder = (order, orderId) => {
   return async dispatch => {
     try {
-      const {data} = await axios.put(`/api/orders/${orderId}`)
-      dispatch(updateOrder(data))
+      orderId = Number(orderId)
+      const {data} = await axios.put(`/api/orders/${orderId}`, {order: order})
+      dispatch(setOrder(data))
     } catch (error) {
       console.log(error)
     }
