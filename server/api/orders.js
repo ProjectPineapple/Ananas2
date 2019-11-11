@@ -4,25 +4,15 @@ const customId = require('custom-id')
 
 module.exports = router
 
-//pagination GET all (for admins)
-const PER_PAGE = 10
-router.get('/', async (req, res, next) => {
-  try {
-    console.log('request query ', req.query)
-    const page = 2
-    const results = await Order.findAll({
-      include: {model: OrderLineItem, include: [{model: Product}]},
-      offset: (page - 1) * 10,
-      limit: PER_PAGE,
-      order: [['status']]
-    })
-    res.json(results)
-  } catch (err) {
-    next(err)
+function requireLoggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.status(401).send('Please log in first!')
   }
-})
+}
 
-/*//Gets all orders - used for admin listing
+//Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   // add admin validation
   try {
@@ -33,7 +23,7 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-})*/
+})
 
 const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user
@@ -79,7 +69,7 @@ router.get('/cart', async (req, res, next) => {
 })
 
 // Gets order by id
-router.get('/:orderId', async (req, res, next) => {
+router.get('/:orderId', requireLoggedIn, async (req, res, next) => {
   // add validations
   try {
     const order = await Order.findByPk(+req.params.orderId, {
@@ -91,7 +81,7 @@ router.get('/:orderId', async (req, res, next) => {
   }
 })
 
-router.get('/ownedbyuser/:userId', async (req, res, next) => {
+router.get('/ownedbyuser/:userId', requireLoggedIn, async (req, res, next) => {
   //validation here as well to check userID against req.session
   try {
     const orders = await Order.findAll({
@@ -290,7 +280,8 @@ router.put('/mergecarts', async (req, res, next) => {
   // destroy sessionCart
 })
 
-router.put('/order/:orderId', async (req, res, next) => {
+router.put('/order/:orderId', requireLoggedIn, async (req, res, next) => {
+
   try {
     const orderId = Number(req.params.orderId)
     if (!await Order.findByPk(orderId)) {
