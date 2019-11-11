@@ -40,14 +40,7 @@ class Routes extends Component {
         <Route exact path="/" component={user.id ? UserHome : AllProducts} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
-        <Route exact path="/home" component={UserHome} />
-        <Route exact path="/home/my-cart" component={UserHome} />
-        <Route exact path="/home/my-profile" component={UserHome} />
-        <Route exact path="/home/my-orders" component={UserHome} />
-        <Route exact path="/home/my-reviews" component={UserHome} />
-        <Route exact path="/home/all-users" component={UserHome} />
-        <Route exact path="/home/all-reviews" component={UserHome} />
-        <Route exact path="/home/all-orders" component={UserHome} />
+        <Route path="/home" component={UserHome} />
 
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
