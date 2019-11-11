@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const {User, Order, Review} = require('../db/models')
+var formValues = require('redux-form')
+
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -33,11 +35,12 @@ router.put('/:userId', async (req, res, next) => {
     if (!await User.findByPk(userId)) {
       res.sendStatus(404)
     } else {
-      const {email, name, password} = req.body
+      console.log(formValues)
+      const {status, password} = formValues
+      console.log(req.body)
       await User.update(
         {
-          email,
-          name,
+          status,
           password
         },
         {where: {id: userId}}

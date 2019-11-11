@@ -9,9 +9,11 @@ import {Button, Segment, Image, Label, Header} from 'semantic-ui-react'
 
 const SingleUser = props => {
   const user = useSelector(state => state.user)
+  const users = useSelector(state => state.allUsers)
   const isAdmin = user.status === 'admin'
   const dispatch = useDispatch()
   const userId = +props.match.params.userId
+  const currentUser = users.find(selectedUser => selectedUser.id === userId)
 
   useEffect(
     () => {
@@ -28,15 +30,15 @@ const SingleUser = props => {
         {isAdmin ? (
           <Button
             onClick={() => {
-              props.history.push(`/update/users/${user.id}`)
+              props.history.push(`/update/users/${currentUser.id}`)
             }}
           >
             Edit User
           </Button>
         ) : null}
         <Segment basic>
-          <Header as="h1">{user.name}</Header>
-          <h3>User Status: {user.status} </h3>
+          <Header as="h1">{currentUser.name}</Header>
+          <h3>User Status: {currentUser.status} </h3>
         </Segment>
         <Segment basic padded="very" />
       </div>
