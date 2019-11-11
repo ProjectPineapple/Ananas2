@@ -45,6 +45,7 @@ const checkoutForm = function(props) {
     value: addressDefinitions.state_abbr[index]
   }))
 
+  // add some sort of setTimeout to make sure that people arent sitting in checkout on sale items
   async function handleToken(token) {
     const response = await axios.post('/api/cart/checkout', {token, order})
     const {status} = data

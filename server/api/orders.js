@@ -45,8 +45,8 @@ router.get('/cart', async (req, res, next) => {
     )
     const shipping = SHIPPING_PRICE
     const taxes = 0.09
-    // How do taxes get rounded at cents level
-    const total = cart.subtotal + shipping + Math.round(cart.subtotal * taxes)
+    const total = subtotal + shipping + Math.round(subtotal * taxes)
+
     await cart.update({subtotal, total})
     res.json(cart)
   } catch (err) {
@@ -98,6 +98,15 @@ router.put('/additemtocart/:orderId', async (req, res, next) => {
         }
       ]
     })
+    const subtotal = cart.OrderLineItems.reduce(
+      (acc, lineItem) => acc + lineItem.priceAtPurchase,
+      0
+    )
+    const shipping = SHIPPING_PRICE
+    const taxes = 0.09
+    const total = subtotal + shipping + Math.round(subtotal * taxes)
+
+    await cart.update({subtotal, total})
     res.json(cart)
   } catch (err) {
     if (err.message === 'Not enough stock to add to cart') {
@@ -125,6 +134,15 @@ router.put('/removeitemfromcart/', async (req, res, next) => {
         }
       ]
     })
+    const subtotal = cart.OrderLineItems.reduce(
+      (acc, lineItem) => acc + lineItem.priceAtPurchase,
+      0
+    )
+    const shipping = SHIPPING_PRICE
+    const taxes = 0.09
+    const total = subtotal + shipping + Math.round(subtotal * taxes)
+
+    await cart.update({subtotal, total})
     res.json(cart)
   } catch (err) {
     if (err.message === 'No line item matching that cart') {
