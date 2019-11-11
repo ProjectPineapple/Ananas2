@@ -18,6 +18,7 @@ import userReviews from './userReviews'
 import totalItems from './totalItems'
 import singleOrder from './singleOrder.js'
 import {reducer as formReducer} from 'redux-form'
+import allUsers from './allUsers'
 
 const reducer = combineReducers({
   allProducts,
@@ -34,7 +35,8 @@ const reducer = combineReducers({
   userReviews,
   totalItems,
   singleOrder,
-  form: formReducer
+  form: formReducer,
+  allUsers
 })
 
 const middleware = composeWithDevTools(

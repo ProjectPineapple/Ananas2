@@ -4,17 +4,21 @@ import {useSelector} from 'react-redux'
 
 let UserForm = props => {
   const {handleSubmit} = props
+  const user = useSelector(state => state.user)
+  const isAdmin = user.status === 'admin'
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email</label>
-        <Field name="email" component="input" type="email" />
-      </div>
-      <div>
-        <label htmlFor="name">Name</label>
-        <Field name="name" component="input" type="text" />
-      </div>
+      {isAdmin ? (
+        <div>
+          <label htmlFor="status">User Status</label>
+          <Field name="status" component="select">
+            <option />
+            <option value="admin">Admin</option>
+            <option value="auth">User</option>
+          </Field>
+        </div>
+      ) : null}
       <div>
         <label htmlFor="password">Password</label>
         <Field name="password" component="input" type="text" />
