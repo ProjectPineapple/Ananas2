@@ -66,7 +66,7 @@ export const createUser = (formData, history) => {
   return async dispatch => {
     const {data: user} = await axios.post(`/api/orders/checkout`, formData)
     dispatch(getUser(user))
-    history.push('HOMEPAGE')
+    history.push('/home')
   }
 }
 
