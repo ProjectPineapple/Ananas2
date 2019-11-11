@@ -10,7 +10,7 @@ const AllReviews = props => {
 
   useEffect(() => {
     dispatch(fetchAllReviews())
-  })
+  }, [])
   const panes = [
     {
       menuItem: {

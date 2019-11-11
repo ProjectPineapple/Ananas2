@@ -22,10 +22,8 @@ const ViewCart = ({history, match}) => {
     dispatch(fetchCart())
   }, [])
 
-  const subtotal = lineItems.reduce(
-    (acc, item) => acc + item.priceAtPurchase * item.quantity,
-    0
-  )
+  const subtotal = cart.subtotal
+  const total = cart.total
 
   return lineItems.length ? (
     <div>
@@ -107,6 +105,9 @@ const ViewCart = ({history, match}) => {
         ))}
         <Grid.Row>
           <h2 align="right">Subtotal: {centsToPrice(subtotal)}</h2>
+        </Grid.Row>
+        <Grid.Row>
+          <h2 align="right">Total: {centsToPrice(total)}</h2>
         </Grid.Row>
       </Grid>
     </div>
