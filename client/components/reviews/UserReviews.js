@@ -5,7 +5,8 @@ import {fetchUserReviews} from '../../store/userReviews'
 
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const UserReviews = props => {
-  const {userId} = props
+  console.log(props)
+  const {userId, displayName} = props
   const userReviews = useSelector(state => state.userReviews)
   const dispatch = useDispatch()
 
@@ -38,7 +39,7 @@ const UserReviews = props => {
                   src="https://upload.wikimedia.org/wikipedia/commons/d/de/John_Hoppner_-_Portrait_of_Lord_Nelson.jpg"
                 />
                 <List.Header>
-                  <h5>Admiral Akbar</h5>
+                  <h5>{displayName}</h5>
                 </List.Header>
                 <List.Content>
                   <p>{reviewDate}</p>
