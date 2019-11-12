@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Review, Product, User, Order, OrderLineItem} = require('../db/models')
+const {Review, Product, User} = require('../db/models')
 module.exports = router
 
 function requireLoggedIn(req, res, next) {
@@ -12,23 +12,14 @@ function requireLoggedIn(req, res, next) {
 
 //WIP - requirePurchasedItem
 async function requirePurchasedItem(req, res, next) {
-  const {id} = req.user
   const productId = Number(req.body.productId)
-  const userPaidOrderIds = await Order.findAll({
-    attributes: ['id'],
-    where: {userId: id, status: 'paid'}
-  })
-
-  const purchasedProducts = userPaidOrderIds.filter(async order => {
-    const productsOnOrder = await OrderLineItem.findAll(order.id)
-    return productsOnOrder.includes(productId)
-  })
-
-  ///NEED TO MAKE SURE WE CHANGE ORDER STATUS ON CHECKOUT
-  if (purchasedProducts.includes(true)) {
+  if (await req.user.hasOrderedProductById(productId)) {
+    console.log('made it here')
     next()
   } else {
-    res.status(401).send('Please only review battleships you purchased')
+    res
+      .status(401)
+      .send('Please provide reviews for battleships you have purchased.')
   }
 }
 
