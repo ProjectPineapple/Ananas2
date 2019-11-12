@@ -18,8 +18,7 @@ import {
   SingleUser,
   EditUserForm,
   NotFound,
-  CustomerService,
-  AllOrders
+  CustomerService
 } from './components'
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
@@ -70,7 +69,6 @@ class Routes extends Component {
           path="/:confcode/success"
           render={props => <ConfirmationPage {...props} />}
         />
-        <Route exact path="/success" render={() => <ConfirmationPage />} />
         <Route exact path="/customerservice" component={CustomerService} />
         <Route exact path="/NotFound" component={NotFound} />
         {isAdmin && (

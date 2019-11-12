@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
 import {Container, Button, Header, Icon} from 'semantic-ui-react'
 import {logout} from '../store'
+import {fetchCart} from '../store/viewCart.js'
 import {withRouter} from 'react-router'
 
 const Navbar = ({history}) => {
@@ -12,9 +13,13 @@ const Navbar = ({history}) => {
   const Logout = () => {
     dispatch(logout())
   }
-  const totalItemsInCart = order.OrderLineItems
-    ? order.OrderLineItems.reduce((acc, lineItem) => acc + lineItem.quantity, 0)
-    : 0
+  const totalItemsInCart =
+    order && order.OrderLineItems
+      ? order.OrderLineItems.reduce(
+          (acc, lineItem) => acc + lineItem.quantity,
+          0
+        )
+      : 0
   return (
     <div className="navbar">
       <Container onClick={() => history.push('/')}>
