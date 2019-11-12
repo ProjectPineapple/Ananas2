@@ -3,7 +3,7 @@ const stripe = require('stripe')('sk_test_wwuKxIwA53kDbI8akkAS5RLu00TV9cjmTN')
 const uuid = require('uuid/v4')
 const cors = require('cors')
 const customId = require('custom-id')
-const {Order, Session, Product, OrderLineItem} = require('../db/models')
+const {Order, Session, Product, OrderLineItem, User} = require('../db/models')
 
 module.exports = router
 
@@ -47,7 +47,8 @@ router.post('/checkout', async (req, res, next) => {
         {confirmationCode: customId({email: customer.email}), status: 'paid'},
         {returning: true, where: {id: order.id}}
       )
-      console.log('TCL: orderWithConfCode', rows[0])
+      const userOnOrder = await User.findByPk(rows[0].userId)
+      userOnOrder.setOrders(rows[0])
       res.status(200).json(rows[0])
     } else {
       res.sendStatus(404)
@@ -56,7 +57,4 @@ router.post('/checkout', async (req, res, next) => {
     console.error('Error', error)
     status = 'failure'
   }
-  const userProfile = {}
-  console.log(status)
-  res.json({error, status})
 })
