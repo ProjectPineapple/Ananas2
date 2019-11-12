@@ -13,11 +13,10 @@ function requireLoggedIn(req, res, next) {
 async function requirePurchasedItem(req, res, next) {
   const productId = Number(req.body.productId)
   if (await req.user.hasOrderedProductById(productId)) {
-    console.log('made it here')
     next()
   } else {
     res
-      .status(401)
+      .status(403)
       .send('Please provide reviews for battleships you have purchased.')
   }
 }

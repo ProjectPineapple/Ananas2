@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Route, NavLink, matchPath} from 'react-router-dom'
+import {Route, NavLink, matchPath, withRouter} from 'react-router-dom'
 import {fetchAllOrders} from '../../store/allOrders'
-import {Tab} from 'semantic-ui-react'
+import {Tab, Input, Pagination, Icon} from 'semantic-ui-react'
+import querystring from 'query-string'
 import OrderList from './OrderList'
 
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)
-  //  const user = useSelector(state => state.user) // idea: display user associated to order
+  //  const user = useSelector(state => state.user) // idea: display user info associated to order
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllOrders())
+    dispatch(fetchAllOrders(location.search))
   }, [])
 
   const panes = [
@@ -184,4 +185,4 @@ const AllOrders = props => {
   )
 }
 
-export default AllOrders
+export default withRouter(AllOrders)

@@ -40,7 +40,13 @@ class Routes extends Component {
     const isLoggedIn = !!user.id
     return (
       <Switch>
-        <Route exact path="/" component={user.id ? UserHome : AllProducts} />
+        <Route
+          exact
+          path="/"
+          render={props =>
+            user.id ? <UserHome {...props} /> : <AllProducts />
+          }
+        />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/checkYourEmail" component={CheckYourEmail} />
