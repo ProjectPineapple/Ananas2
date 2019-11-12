@@ -169,7 +169,7 @@ const AllOrders = props => {
       }
     }
   ]
-  const defaultActiveIndex = panes.findIndex(pane => {
+  const activeIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
       exact: false
@@ -178,7 +178,7 @@ const AllOrders = props => {
 
   return (
     <Tab
-      defaultActiveIndex={defaultActiveIndex}
+      defaultActiveIndex={activeIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
       renderActiveOnly={false}
