@@ -43,7 +43,7 @@ router.post('/signup', async (req, res, next) => {
       } else {
         user.update({verified: verificationCode})
         const verificationEmail = {
-          from: 'Battleship Provider <no_reply@seaBayarmstrading.com>',
+          from: 'Battleship Provider <no_reply@seaBayUpcycledShips.com>',
           to: `${email}`,
           subject: 'Verify your battleshipment account',
           text: `verify your email at https://seabayarmstrading.herokuapp.com/verify?email=${email}&code=${verificationCode}`,
@@ -64,6 +64,21 @@ router.post('/signup', async (req, res, next) => {
     } else {
       next(err)
     }
+  }
+})
+
+router.put('/verify', async (req, res, next) => {
+  try {
+    const {email, code} = req.body
+    const user = await User.findOne({where: {email}})
+    if (user.verified === code) {
+      await user.update({verified: 'true'})
+      res.json('verified')
+    } else {
+      res.json('failed to verify')
+    }
+  } catch (error) {
+    next(error)
   }
 })
 
