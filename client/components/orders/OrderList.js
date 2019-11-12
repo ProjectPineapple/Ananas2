@@ -2,19 +2,27 @@ import React from 'react'
 import {Pagination, Icon, Header, Segment} from 'semantic-ui-react'
 import OrderModal from './OrderModal'
 import {parse, stringify} from 'query-string'
-import {NavLink} from 'react-router-dom'
+import {NavLink, matchPath} from 'react-router-dom'
+import {withRouter} from 'react-router'
 
 const OrderList = props => {
   const {all, orders} = props
+  const whichTab = props.match.path
+  console.log(whichTab)
 
   const handlePageChange = (event, data) => {
-    console.log('hi')
+    const queryObject = parse(location.search)
+    console.log(queryObject)
+    queryObject.page = data
+    const queryParams = stringify(queryObject)
+    history.push(`/orders/${whichTab}?${queryParams}`)
   }
+  const currentPage = parse(location.search).page || 1
 
   return orders.length ? (
     <div>
       <Pagination
-        defaultActivePage={1}
+        defaultActivePage={currentPage}
         prevItem={{content: <Icon name="angle left" />, icon: true}}
         nextItem={{content: <Icon name="angle right" />, icon: true}}
         totalPages={Math.ceil(orders.length / 10)}
@@ -58,4 +66,4 @@ const OrderList = props => {
   )
 }
 
-export default OrderList
+export default withRouter(OrderList)

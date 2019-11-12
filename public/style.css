@@ -87,4 +87,7 @@ form div {
 }
 
 .user-home-tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }

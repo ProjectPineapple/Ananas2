@@ -11,7 +11,6 @@ const AllOrders = props => {
   //  const user = useSelector(state => state.user) // idea: display user info associated to order
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log(location.search)
     dispatch(fetchAllOrders(location.search))
   }, [])
 
