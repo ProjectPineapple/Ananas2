@@ -30,6 +30,15 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
+async function requireAdminStatusOrOriginator(req, res, next) {
+  const orderId = Number(req.params.orderId)
+  if (req.user.isAdmin || (await req.user.ownsOrder(orderId))) {
+    next()
+  } else {
+    res.status(403).send('You can only edit your orders.')
+  }
+}
+
 //Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
   // add admin validation
@@ -249,7 +258,7 @@ router.put('/checkout', async (req, res, next) => {
 })
 
 //merge cart
-router.put('/mergecarts', async (req, res, next) => {
+router.put('/mergecarts', requireLoggedIn, async (req, res, next) => {
   const session = await Session.findOne({
     where: {
       sid: req.sessionID
@@ -318,28 +327,33 @@ router.put('/mergecarts', async (req, res, next) => {
 })
 
 //JM UPDATED THIS FROM /order/:orderId
-router.put('/:orderId', requireLoggedIn, async (req, res, next) => {
-  try {
-    const orderId = Number(req.params.orderId)
-    const {order} = req.body
-    const {status} = order
+router.put(
+  '/:orderId',
+  requireLoggedIn,
+  requireAdminStatusOrOriginator,
+  async (req, res, next) => {
+    try {
+      const orderId = Number(req.params.orderId)
+      const {order} = req.body
+      const {status} = order
 
-    if (!await Order.findByPk(orderId)) {
-      res.sendStatus(404)
-    } else {
-      await Order.update(
-        {
-          status
-          // status: req.params.status,
-          // subtotal: req.status.subtotal,
-          // address: req.params.address
-        },
-        {where: {id: orderId}}
-      )
-      const updatedOrder = await Order.findByPk(orderId)
-      res.status(200).json(updatedOrder)
+      if (!await Order.findByPk(orderId)) {
+        res.sendStatus(404)
+      } else {
+        await Order.update(
+          {
+            status
+            // status: req.params.status,
+            // subtotal: req.status.subtotal,
+            // address: req.params.address
+          },
+          {where: {id: orderId}}
+        )
+        const updatedOrder = await Order.findByPk(orderId)
+        res.status(200).json(updatedOrder)
+      }
+    } catch (error) {
+      next(error)
     }
-  } catch (error) {
-    next(error)
   }
-})
+)
