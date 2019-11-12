@@ -32,7 +32,7 @@ function requireLoggedIn(req, res, next) {
 
 async function requireAdminStatusOrOriginator(req, res, next) {
   const orderId = Number(req.params.orderId)
-  if (req.user.isAdmin || (await req.user.ownsOrder(orderId))) {
+  if (req.user.status === 'admin' || (await req.user.ownsOrder(orderId))) {
     next()
   } else {
     res.status(403).send('You can only edit your orders.')
@@ -289,23 +289,31 @@ router.put('/mergecarts', async (req, res, next) => {
     })
   }
 
-  if (sessionCart.OrderLineItems.length === 0) {
-    sessionCart.destroy()
-    res.json(userCart)
-  } else if (userCart.OrderLineItems.length === 0) {
+  if (userCart) {
+    if (sessionCart.OrderLineItems.length === 0) {
+      sessionCart.destroy()
+      res.json(userCart)
+    } else if (userCart.OrderLineItems.length === 0) {
+      await sessionCart.setUser(req.user.id)
+      res.json(sessionCart)
+    } else {
+      //case where both carts have items
+      const PromiseArray = []
+      for (const lineItem of sessionCart.OrderLineItems) {
+        for (let i; i < lineItem.quantity; i++) {
+          PromiseArray.push(
+            Order.addItemToOrder(userCart.id, lineItem.productId)
+          )
+        }
+      }
+      await Promise.all(PromiseArray)
+      sessionCart.destroy()
+      res.json(userCart)
+    }
+    //if user has nothing in cart
+  } else {
     await sessionCart.setUser(req.user.id)
     res.json(sessionCart)
-  } else {
-    //case where both carts have items
-    const PromiseArray = []
-    for (const lineItem of sessionCart.OrderLineItems) {
-      for (let i; i < lineItem.quantity; i++) {
-        PromiseArray.push(Order.addItemToOrder(userCart.id, lineItem.productId))
-      }
-    }
-    await Promise.all(PromiseArray)
-    sessionCart.destroy()
-    res.json(userCart)
   }
 })
 

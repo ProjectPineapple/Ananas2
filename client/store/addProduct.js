@@ -40,15 +40,12 @@ export const setDescription = description => ({
 export const resetForm = () => ({type: RESET_FORM})
 
 export const addAProduct = formData => {
-  console.log('intheThunk')
   return async dispatch => {
     try {
       const {data} = await axios.post('/api/products', formData)
-      console.log('formData', formData)
-      console.log('data', data)
       dispatch(addProduct(data))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }

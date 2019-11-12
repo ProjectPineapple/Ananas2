@@ -12,22 +12,19 @@ const defaultItem = {}
 
 export const incrementItem = itemToInc => async dispatch => {
   try {
-    console.log(itemToInc)
     const {data} = await axios.put(`/api/cart`, {product: itemToInc, op: 'inc'})
-    console.log(data)
     dispatch(getItem(data || defaultItem))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
 export const decrementItem = itemToDec => async dispatch => {
   try {
     const {data} = await axios.put(`/api/cart`, {product: itemToDec, op: 'dec'})
-    console.log(data)
     dispatch(getItem(data || defaultItem))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 

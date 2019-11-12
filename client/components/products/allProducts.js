@@ -41,16 +41,11 @@ const AllProducts = ({history, location}) => {
 
   // cDm
   useEffect(() => {
-    console.log(location.search)
-    // const params = querystring.parse(location.search)
-    // const urlQueryString =
-    // console.log('QuerystringParams: ', params)
     dispatch(fetchAllProducts(location.search))
   }, [])
 
   const handleSearchSubmit = event => {
     if (event.keyCode === 13) {
-      console.log('event.target', event.target)
       const searchParam = event.target.value
       history.push(`/products?search=${searchParam}`)
     }
@@ -64,7 +59,6 @@ const AllProducts = ({history, location}) => {
   }
 
   const handleSortChange = (event, {value}) => {
-    console.log('value', value)
     const queryObject = querystring.parse(location.search)
     queryObject.sortBy = value
     const queryParams = querystring.stringify(queryObject)

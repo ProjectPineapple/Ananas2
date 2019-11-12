@@ -49,7 +49,6 @@ export const auth = (email, password, method) => async dispatch => {
     } else {
       dispatch(getUser(res.data))
       const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
-      console.log(mergedCart)
       dispatch(getCart(mergedCart))
       history.push('/home')
     }
@@ -77,7 +76,7 @@ export const updateUser = (user, userId) => {
       const {data} = await axios.put(`/api/users/${userId}`, user)
       dispatch(changeUser(data))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 }

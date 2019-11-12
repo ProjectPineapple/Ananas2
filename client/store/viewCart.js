@@ -46,7 +46,6 @@ export const removeFromCart = (productId, orderId) => async dispatch => {
       productId,
       orderId
     })
-    console.log('Thunk sending this back', data)
     dispatch(getCart(data))
   } catch (err) {
     console.error(err)

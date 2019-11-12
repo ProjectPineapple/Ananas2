@@ -9,18 +9,14 @@ app.use(express.json())
 app.use(cors())
 
 app.post('/checkout', async (req, res, next) => {
-  console.log('Request:', req.body)
-
   let error
   let status
-
   try {
     const {order, token, billingAddress, shippingAddress} = req.body
     const customer = await stripe.customer.create({
       email: token.email,
       source: token.id
     })
-
     const idempotency_key = uuid()
     const charge = await stripe.charges.create(
       {

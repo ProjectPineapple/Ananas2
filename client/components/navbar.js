@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
 import {Container, Button, Header, Icon} from 'semantic-ui-react'
 import {logout} from '../store'
-import {fetchCart} from '../store/viewCart.js'
+// import {fetchCart} from '../store/viewCart.js'
 import {withRouter} from 'react-router'
 
 const Navbar = ({history}) => {
@@ -27,17 +27,12 @@ const Navbar = ({history}) => {
           seaBay
         </Header>
       </Container>
-      <Button labelPosition="left" icon="cart" content={totalItemsInCart} />
-      {/* <Button onClick={() => history.push('/cart')}>
-        {order.OrderLineItems ? (
-          <Icon name="cart" color="black">
-            {totalItemsInCart}
-          </Icon>
-        ) : (
-          <Icon name="cart" color="black" />
-        )}
-      </Button> */}
-      {/* <Button.Group> */}
+      <Button
+        onClick={() => history.push('/cart')}
+        labelPosition="left"
+        icon="cart"
+        content={totalItemsInCart}
+      />
       <Button
         onClick={() =>
           user.email ? history.push('/home') : history.push('/login')
@@ -47,7 +42,6 @@ const Navbar = ({history}) => {
       </Button>
       <Button onClick={() => history.push('/products')}>Browse</Button>
       {user.email ? <Button onClick={Logout}>Logout</Button> : <span />}
-      {/* </Button.Group> */}
     </div>
   )
 }

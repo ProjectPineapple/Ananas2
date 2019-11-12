@@ -24,7 +24,6 @@ export const fetchAllProducts = urlQueryString => {
 export const createProduct = product => {
   return async dispatch => {
     try {
-      console.log(product)
       const {data} = await axios.post('api/products', product)
       dispatch(addProduct(data))
     } catch (err) {
