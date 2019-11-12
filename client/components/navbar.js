@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {useSelector, useDispatch} from 'react-redux'
 import {Container, Button, Header, Icon} from 'semantic-ui-react'
 import {logout} from '../store'
-import {fetchCart} from '../store/viewCart.js'
+// import {fetchCart} from '../store/viewCart.js'
 import {withRouter} from 'react-router'
 
 const Navbar = ({history}) => {

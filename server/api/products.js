@@ -12,7 +12,7 @@ function requireLoggedIn(req, res, next) {
 }
 
 function requireAdminStatus(req, res, next) {
-  if (req.user.isAdmin) {
+  if (req.user.status === 'admin') {
     next()
   } else {
     res.sendStatus(403)
