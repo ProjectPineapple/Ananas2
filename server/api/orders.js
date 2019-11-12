@@ -59,6 +59,8 @@ const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user
 router.get('/cart', async (req, res, next) => {
   try {
+    console.log('REQ SESSION ', req.session)
+    console.log('REQ SESSIONID ', req.sessionID, req.sessionId)
     const session = await Session.findOne({
       where: {
         sid: req.sessionID
@@ -70,7 +72,7 @@ router.get('/cart', async (req, res, next) => {
     if (req.user) {
       whereClause.userId = req.user.id
     } else {
-      whereClause.SessionId = session.id
+      whereClause.SessionSid = req.sessionID
     }
     const [cart, cartCreated] = await Order.findOrCreate({
       where: whereClause,
@@ -262,17 +264,10 @@ router.put('/checkout', async (req, res, next) => {
 
 //merge cart
 router.put('/mergecarts', async (req, res, next) => {
-  const session = await Session.findOne({
-    where: {
-      sid: req.sessionID
-    }
-  })
-  console.log(`SESSION ID ${session.id}`)
-  console.log(req.user ? `USER ID (STEVE IS 1) ${req.user.id}` : 'NO USER')
   const sessionCart = await Order.findOne({
     where: {
       status: 'in-cart',
-      SessionId: session.id
+      SessionSid: req.sessionID
     },
     include: [
       {model: OrderLineItem, include: [{model: Product}]},
@@ -297,17 +292,8 @@ router.put('/mergecarts', async (req, res, next) => {
     })
   }
 
-  console.log(
-    'SESSION CART ITEMS',
-    sessionCart.OrderLineItems ? sessionCart.OrderLineItems.length : 'NONE'
-  )
-
-  console.log(
-    'USER CART ITEMS',
-    userCart ? userCart.OrderLineItems.length : 'NONE'
-  )
-
   if (sessionCart.OrderLineItems.length === 0) {
+    sessionCart.destroy()
     res.json(userCart)
   } else if (userCart.OrderLineItems.length === 0) {
     await sessionCart.setUser(req.user.id)
@@ -321,12 +307,9 @@ router.put('/mergecarts', async (req, res, next) => {
       }
     }
     await Promise.all(PromiseArray)
+    sessionCart.destroy()
     res.json(userCart)
   }
-
-  // IF userCart
-  // take sessionCart OrderLine Items and add OrderLineItems to userCart
-  // destroy sessionCart
 })
 
 //JM UPDATED THIS FROM /order/:orderId
@@ -337,15 +320,16 @@ router.put(
   async (req, res, next) => {
     try {
       const orderId = Number(req.params.orderId)
-      const {order} = req.body
-      const {status} = order
+      const {status, subtotal, address} = req.body
 
       if (!await Order.findByPk(orderId)) {
         res.sendStatus(404)
       } else {
         await Order.update(
           {
-            status
+            status,
+            subtotal,
+            address
             // status: req.params.status,
             // subtotal: req.status.subtotal,
             // address: req.params.address

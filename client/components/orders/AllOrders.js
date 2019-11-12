@@ -17,7 +17,7 @@ const AllOrders = props => {
   //  const user = useSelector(state => state.user) // idea: display user info associated to order
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllOrders(location.search))
+    dispatch(fetchAllOrders())
   }, [])
 
   const handlePageChange = (event, data) => {
@@ -31,7 +31,7 @@ const AllOrders = props => {
     {
       menuItem: {
         as: NavLink,
-        to: '/home/all-orders?all',
+        to: '/home/all-orders',
         exact: true,
         key: 'allOrders',
         icon: 'unordered list',
@@ -173,16 +173,14 @@ const AllOrders = props => {
         return (
           <Route exact path="/home/all-orders/completed">
             <Tab.Pane>
-              <OrderList
-                orders={orders.filter(order => order.status === 'completed')}
-              />
+              <OrderList orders={completedOrders} />
             </Tab.Pane>
           </Route>
         )
       }
     }
   ]
-  const defaultActiveIndex = panes.findIndex(pane => {
+  const activeIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
       exact: false
@@ -193,7 +191,7 @@ const AllOrders = props => {
 
   return (
     <Tab
-      defaultActiveIndex={defaultActiveIndex}
+      defaultActiveIndex={activeIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
     >
