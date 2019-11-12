@@ -3,7 +3,15 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
 import {withRouter} from 'react-router'
-import {Input, Button} from 'semantic-ui-react'
+import {
+  Button,
+  Segment,
+  Image,
+  Header,
+  Grid,
+  Divider,
+  Form
+} from 'semantic-ui-react'
 
 /**
  * COMPONENT
@@ -11,26 +19,52 @@ import {Input, Button} from 'semantic-ui-react'
 const AuthForm = ({name, displayName, handleSubmit, error, history}) => {
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <Input label="Email" name="email" type="text" />
-        </div>
-        <div>
-          <Input label="Password" name="password" type="password" />
-        </div>
-        <div>
-          <Button type="submit">{displayName}</Button>
-        </div>
-        {displayName === 'Login' ? (
-          <div>
-            <Button onClick={() => history.push('/signup')}>
-              Go to Signup
+      <Divider hidden />
+      <Divider hidden />
+      <Divider hidden />
+      <Grid column={1} centered>
+        <Segment compact textAlign="center" padded="very" color="teal" raised>
+          <Header color="teal" as="h2">
+            Welcome to seaBay!
+          </Header>
+          <br />
+          <Image
+            size="small"
+            centered
+            src="https://cdn-images.threadless.com/threadless-media/artist_shops/shops/mblaidd/products/629906/shirt-1529419075-dd6fabe6fd9dfc47c97309cb57878b37.png?v=3&d=eyJvbmx5X21ldGEiOiBmYWxzZSwgImZvcmNlIjogZmFsc2UsICJvcHMiOiBbWyJ0cmltIiwgW2ZhbHNlLCBmYWxzZV0sIHt9XSwgWyJyZXNpemUiLCBbXSwgeyJ3aWR0aCI6IDk5Ni4wLCAiYWxsb3dfdXAiOiBmYWxzZSwgImhlaWdodCI6IDk5Ni4wfV0sIFsiY2FudmFzX2NlbnRlcmVkIiwgWzEyMDAsIDEyMDBdLCB7ImJhY2tncm91bmQiOiAiZmZmZmZmIn1dLCBbInJlc2l6ZSIsIFs4MDBdLCB7fV0sIFsiY2FudmFzX2NlbnRlcmVkIiwgWzgwMCwgODAwLCAiI2ZmZmZmZiJdLCB7fV0sIFsiZW5jb2RlIiwgWyJqcGciLCA4NV0sIHt9XV19"
+          />
+          <br />
+          <Form onSubmit={handleSubmit} name={name}>
+            <Form.Field>
+              <label htmlFor="email">Email Address</label>
+              <input placeholder="E-mail address" type="email" name="email" />
+            </Form.Field>
+            <br />
+            <Form.Field>
+              <label htmlFor="password">Password</label>
+              <input placeholder="Password" type="password" name="password" />
+            </Form.Field>
+            <Divider hidden />
+            <br />
+            <Button basic color="teal" type="submit">
+              {displayName}
             </Button>
-          </div>
-        ) : null}
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-      <a href="/auth/google">{displayName} with Google</a>
+            {displayName === 'Login' ? (
+              <Button
+                basic
+                color="teal"
+                onClick={() => history.push('/signup')}
+              >
+                Go to Signup
+              </Button>
+            ) : null}
+            <br />
+            {error && error.response && <div> {error.response.data} </div>}
+          </Form>
+          <br />
+          <a href="/auth/google">{displayName} with Google</a>
+        </Segment>
+      </Grid>
     </div>
   )
 }

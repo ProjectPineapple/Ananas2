@@ -12,6 +12,7 @@ module.exports = router
 router.post('/login', async (req, res, next) => {
   try {
     const {email, password} = req.body
+    console.log(req.body)
     const user = await User.findOne({where: {email}})
     if (!user) {
       // console.log('No such user found:', req.body.email)
@@ -33,6 +34,7 @@ router.post('/login', async (req, res, next) => {
 
 router.post('/signup', async (req, res, next) => {
   try {
+    console.log('Req.body in /signup POST route: ', req.body)
     const {email, password} = req.body
     console.log(email)
     const user = await User.create({email, password})
