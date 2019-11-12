@@ -43,7 +43,10 @@ router.get('/', async (req, res, next) => {
     //   direction: "asc" or "desc"
     // }
     const whereclause = {}
+    const sortBy = req.query.sortBy
     const page = req.query.page || 1
+    const direction = req.query.direction
+    console.log('req.query', req.query)
     if (req.query.categories) {
       whereclause.tags = {[Op.contains]: [req.query.categories]}
     }
@@ -52,17 +55,18 @@ router.get('/', async (req, res, next) => {
         name: {[Op.substring]: req.query.search},
         description: {[Op.substring]: req.query.search}
       }
-      // whereclause.name = {[Op.substring]: req.query.search}
-      // whereclause.description = {[Op.substring]: req.query.search}
-      // whereclause.name = req.query.search
     }
+
+    // whereclause.name = {[Op.substring]: req.query.search}
+    // whereclause.description = {[Op.substring]: req.query.search}
+    // whereclause.name = req.query.search
 
     const results = await Product.findAndCountAll({
       include: [Review],
       where: whereclause,
       limit: PER_PAGE,
       offset: (page - 1) * 24,
-      orderBy: [['id', 'asc']]
+      order: [[sortBy, direction]]
     })
     res.json(results) // Object with products and total count as count
   } catch (err) {
