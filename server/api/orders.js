@@ -101,10 +101,11 @@ router.get(
     //validation here as well to check userID against req.session
     try {
       const orderId = +req.params.orderId
-      const order = await Order.findByPk(
-        orderId,
-        (include: {model: OrderLineItem, include: [{model: Product}]})
-      )
+      const userId = +req.params.userId
+      const order = await Order.findOne({
+        where: {id: orderId, userId},
+        include: {model: OrderLineItem, include: [{model: Product}]}
+      })
       res.json(order)
     } catch (err) {
       next(err)

@@ -63,7 +63,11 @@ class Routes extends Component {
 
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
-        <Route exact path="/success" render={() => <ConfirmationPage />} />
+        <Route
+          exact
+          path="/:confcode/success"
+          render={props => <ConfirmationPage {...props} />}
+        />
         {isAdmin && (
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />
