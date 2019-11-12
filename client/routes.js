@@ -25,6 +25,7 @@ import {
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
 import {updateUser} from './store/addUser'
+import AdminDashboard from './components/admin-dashboard'
 
 /**
  * COMPONENT
@@ -57,6 +58,7 @@ class Routes extends Component {
             user.id ? <UserHome {...props} /> : <AllProducts />
           }
         />
+        <Route path="/admin" component={AdminDashboard} />
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route

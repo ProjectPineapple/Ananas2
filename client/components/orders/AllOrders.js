@@ -11,7 +11,7 @@ const AllOrders = props => {
   //  const user = useSelector(state => state.user) // idea: display user info associated to order
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchAllOrders(location.search))
+    dispatch(fetchAllOrders())
   }, [])
 
   const panes = [
@@ -160,9 +160,7 @@ const AllOrders = props => {
         return (
           <Route exact path="/home/all-orders/completed">
             <Tab.Pane>
-              <OrderList
-                orders={orders.filter(order => order.status === 'completed')}
-              />
+              <OrderList orders={completedOrders} />
             </Tab.Pane>
           </Route>
         )
@@ -181,7 +179,6 @@ const AllOrders = props => {
       defaultActiveIndex={activeIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
-      renderActiveOnly={false}
     />
   )
 }

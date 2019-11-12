@@ -1,18 +1,16 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Route, NavLink, matchPath} from 'react-router-dom'
 import ViewCart from './ViewCart'
-import {Image, Tab, Header, Segment} from 'semantic-ui-react'
+import {Button, Image, Tab, Header, Segment} from 'semantic-ui-react'
 
 import UserOrders from './orders/UserOrders'
-import AllOrders from './orders/AllOrders'
-import AllReviews from './reviews/AllReviews'
 import UserReviews from './reviews/UserReviews'
-
 import UserForm from './EditUserForm'
+import AdminDashboard from './admin-dashboard'
+
 import {changeUser} from '../store/user'
-import {fetchAllOrders} from '../store/allOrders.js'
 import AllUsers from './users/AllUsers'
 
 const UserHome = props => {
@@ -23,8 +21,13 @@ const UserHome = props => {
   const cart = useSelector(state => state.viewCart)
   //  const allOrders = useSelector(state => state.allOrders)
   const isAdminStatus = user.status === 'admin'
+  const [isClickedAdminDash, setIsClickedAdminDash] = useState(false)
 
   const cartSize = !cart.products ? 0 : cart.products.length
+
+  const handleClick = () => {
+    setIsClickedAdminDash(!isClickedAdminDash)
+  }
 
   const submit = user => {
     // print the form values to the console
@@ -63,7 +66,7 @@ const UserHome = props => {
         content: 'Orders'
       },
       render: () => (
-        <Route exact path="/home">
+        <Route exact path="/home/my-orders">
           <Tab.Pane>
             <UserOrders />
           </Tab.Pane>
@@ -105,67 +108,13 @@ const UserHome = props => {
       )
     }
   ]
-  if (isAdminStatus)
-    panes.push(
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-orders',
-          exact: true,
-          key: 'allorders',
-          icon: 'history',
-          content: 'All Orders'
-        },
-        render: () => (
-          <Route exact path="/home/all-orders">
-            <Tab.Pane>
-              <AllOrders />
-            </Tab.Pane>
-          </Route>
-        )
-      },
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-reviews',
-          exact: true,
-          key: 'allreviews',
-          icon: 'star',
-          content: 'All Reviews'
-        },
-        render: () => (
-          <Route exact path="/home/all-reviews">
-            <Tab.Pane>
-              <AllReviews />
-            </Tab.Pane>
-          </Route>
-        )
-      },
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-users',
-          exact: true,
-          key: 'allusers',
-          icon: 'user',
-          content: 'All Users'
-        },
-        render: () => (
-          <Route exact path="/home/all-users">
-            <Tab.Pane>
-              <AllUsers />
-            </Tab.Pane>
-          </Route>
-        )
-      }
-    )
-
   const activeIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
       exact: true
     })
   })
+
   return (
     <div>
       <Segment padded="very">
@@ -173,12 +122,26 @@ const UserHome = props => {
           <Image circular src="https://picsum.photos/100/100" />
           Welcome, {displayName || 'guest'}!
         </Header>
+        {isAdminStatus ? (
+          <Button
+            color="teal"
+            floated="right"
+            type="submit"
+            onClick={handleClick}
+            color={isClickedAdminDash ? 'teal' : 'yellow'}
+          >
+            {isClickedAdminDash ? 'Back to Home Page' : 'Open Admin Dashboard'}
+          </Button>
+        ) : null}
       </Segment>
       <br />
-      <br />
-      <div className="user-home-tabs">
-        <Tab activeIndex={activeIndex} panes={panes} />
-      </div>
+      {isAdminStatus && isClickedAdminDash ? (
+        <AdminDashboard isAdminStatus={isAdminStatus} />
+      ) : (
+        <div className="user-home-tabs">
+          <Tab defaultActiveIndex={activeIndex} panes={panes} />
+        </div>
+      )}
     </div>
   )
 }
