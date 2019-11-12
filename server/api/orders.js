@@ -112,6 +112,25 @@ router.get('/ownedbyuser/:userId', requireLoggedIn, async (req, res, next) => {
   }
 })
 
+router.get(
+  '/ownedbyuser/:userId/:orderId',
+  requireLoggedIn,
+  async (req, res, next) => {
+    //validation here as well to check userID against req.session
+    try {
+      const orderId = +req.params.orderId
+      const userId = +req.params.userId
+      const order = await Order.findOne({
+        where: {id: orderId, userId},
+        include: {model: OrderLineItem, include: [{model: Product}]}
+      })
+      res.json(order)
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
 // adds Item to cart and then returns the cart
 router.put('/additemtocart/:orderId', async (req, res, next) => {
   try {

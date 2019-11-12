@@ -65,6 +65,11 @@ class Routes extends Component {
 
         <Route exact path="/cart" render={() => <ViewCart />} />
         <Route exact path="/cart/checkout" component={checkoutForm} />
+        <Route
+          exact
+          path="/:confcode/success"
+          render={props => <ConfirmationPage {...props} />}
+        />
         <Route exact path="/success" render={() => <ConfirmationPage />} />
         <Route exact path="/customerservice" component={CustomerService} />
         <Route exact path="/NotFound" component={NotFound} />
