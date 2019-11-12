@@ -1,26 +1,9 @@
 const router = require('express').Router()
 const {Order, Session, Product, OrderLineItem, User} = require('../db/models')
+const {Op} = require('sequelize')
 const customId = require('custom-id')
 
 module.exports = router
-
-//pagination GET all (for admins)
-// const PER_PAGE = 10
-// router.get('/', async (req, res, next) => {
-//   try {
-//     console.log('request query ', req.query)
-//     const page = 2
-//     const results = await Order.findAll({
-//       include: {model: OrderLineItem, include: [{model: Product}]},
-//       offset: (page - 1) * 10,
-//       limit: PER_PAGE,
-//       order: [['status']]
-//     })
-//     res.json(results)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
 
 function requireLoggedIn(req, res, next) {
   if (req.user) {
@@ -39,18 +22,38 @@ async function requireAdminStatusOrOriginator(req, res, next) {
   }
 }
 
-//Gets all orders - used for admin listing
+//pagination GET all (for admins)
+const PER_PAGE = 10
 router.get('/', async (req, res, next) => {
-  // add admin validation
   try {
-    const orders = await Order.findAll({
-      include: {model: OrderLineItem, include: [{model: Product}]}
+    const sortBy = req.query.sortBy || 'id'
+    const page = req.query.page || 1
+    const direction = req.query.direction || 'asc'
+    console.log('request query ', req.query)
+    const results = await Order.findAndCountAll({
+      include: {model: OrderLineItem, include: [{model: Product}]},
+      offset: (page - 1) * PER_PAGE,
+      limit: PER_PAGE,
+      order: [[sortBy, direction]]
     })
-    res.json(orders)
+    res.json(results)
   } catch (err) {
     next(err)
   }
 })
+
+//Gets all orders - used for admin listing
+/* router.get('/', async (req, res, next) => {
+ *   // add admin validation
+ *   try {
+ *     const orders = await Order.findAll({
+ *       include: {model: OrderLineItem, include: [{model: Product}]}
+ *     })
+ *     res.json(orders)
+ *   } catch (err) {
+ *     next(err)
+ *   }
+ * }) */
 
 const SHIPPING_PRICE = 50000
 // Finds or creates a cart if no cart exists for the user

@@ -3,8 +3,14 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Route, NavLink, matchPath, withRouter} from 'react-router-dom'
 import {fetchAllOrders} from '../../store/allOrders'
 import {Tab, Input, Pagination, Icon} from 'semantic-ui-react'
-import querystring from 'query-string'
+import {parse, stringify} from 'query-string'
 import OrderList from './OrderList'
+
+const sortbyOptions = [
+  {key: 'total', text: 'total', value: 'total'},
+  {key: 'id', text: 'id', value: 'id'},
+  {key: 'status', text: 'status', value: 'status'}
+]
 
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)
@@ -14,11 +20,18 @@ const AllOrders = props => {
     dispatch(fetchAllOrders(location.search))
   }, [])
 
+  const handlePageChange = (event, data) => {
+    const queryObject = parse(location.search)
+    queryObject.page = data
+    const queryParams = stringify(queryObject)
+    history.push(`/home/all-orders/?${queryParams}`)
+  }
+
   const panes = [
     {
       menuItem: {
         as: NavLink,
-        to: '/home/all-orders/all',
+        to: '/home/all-orders?all',
         exact: true,
         key: 'allOrders',
         icon: 'unordered list',
@@ -26,7 +39,7 @@ const AllOrders = props => {
       },
       render: () => {
         return (
-          <Route exact path="/home/all-orders/all">
+          <Route exact path="/home/all-orders">
             <Tab.Pane>
               <OrderList orders={orders} all={true} />
             </Tab.Pane>
@@ -37,7 +50,7 @@ const AllOrders = props => {
     {
       menuItem: {
         as: NavLink,
-        to: '/home/all-orders/paid',
+        to: '/home/all-orders?status=paid',
         exact: true,
         key: 'paid',
         icon: 'money',
@@ -176,12 +189,20 @@ const AllOrders = props => {
     })
   })
 
+  const currentPage = parse(location.search).page || 1
+
   return (
     <Tab
       defaultActiveIndex={defaultActiveIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
-    />
+    >
+      <Pagination
+        defaultActivePage={currentPage}
+        totalPages={2}
+        onPageChange={handlePageChange}
+      />
+    </Tab>
   )
 }
 

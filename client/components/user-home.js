@@ -160,6 +160,12 @@ const UserHome = props => {
       exact: true
     })
   })
+  const adminDefaultActiveIndex = adminPanes.findIndex(pane => {
+    return !!matchPath(window.location.pathname, {
+      path: pane.menuItem.to,
+      exact: true
+    })
+  })
   return (
     <div>
       <Segment padded="very">
@@ -173,7 +179,10 @@ const UserHome = props => {
       <div className="user-home-tabs">
         <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
         {isAdminStatus && (
-          <Tab defaultActiveIndex={defaultActiveIndex} panes={adminPanes} />
+          <Tab
+            defaultActiveIndex={adminDefaultActiveIndex}
+            panes={adminPanes}
+          />
         )}
       </div>
     </div>
