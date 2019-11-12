@@ -1,9 +1,16 @@
 import React, {useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
+import {fetchAllUsers} from '../../store/allUsers'
 
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const ReviewList = props => {
   const {reviews} = props
+  const users = useSelector(state => state.allUsers)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchAllUsers())
+  }, [])
 
   return !reviews.length ? (
     <div>
@@ -17,6 +24,7 @@ const ReviewList = props => {
         {reviews.map(review => {
           let stars = Number(review.stars)
           let reviewDate = review.updatedAt.toString().slice(0, 10)
+          let reviewer = users.find(user => user.id === review.userId) || []
 
           return (
             <Segment textAlign="left" key={review.id}>
@@ -26,7 +34,7 @@ const ReviewList = props => {
                   src="https://upload.wikimedia.org/wikipedia/commons/d/de/John_Hoppner_-_Portrait_of_Lord_Nelson.jpg"
                 />
                 <List.Header>
-                  <h5>Admiral Akbar</h5>
+                  <h5>{reviewer.name}</h5>
                 </List.Header>
                 <List.Content>
                   <p>{reviewDate}</p>

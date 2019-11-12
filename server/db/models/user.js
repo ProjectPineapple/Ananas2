@@ -1,6 +1,8 @@
 const crypto = require('crypto')
 const Sequelize = require('sequelize')
 const db = require('../db')
+const Order = require('./order')
+const OrderLineItem = require('./OrderLineItem')
 
 const User = db.define('user', {
   email: {
@@ -62,6 +64,30 @@ module.exports = User
  */
 User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
+}
+
+User.prototype.hasOrderedProductById = async function(productId) {
+  //return Boolean
+  try {
+    ///why doesn't this recognize Order??!
+    const userPurchases = await Order.findAll({
+      attributes: ['id'],
+      where: {
+        userId: this.id,
+        status: 'paid'
+      },
+      include: [
+        {
+          model: OrderLineItem,
+          where: {productId: +productId},
+          required: true
+        }
+      ]
+    })
+    return userPurchases.length
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 /**

@@ -35,6 +35,7 @@ export const fetchOrderByUser = (orderId, userId) => {
       const {data} = await axios.get(
         `/api/orders/ownedbyuser/${userId}/${orderId}`
       )
+      dispatch(setOrder(data))
     } catch (err) {
       console.error(err)
     }

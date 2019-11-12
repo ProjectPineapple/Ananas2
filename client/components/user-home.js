@@ -92,7 +92,7 @@ const UserHome = props => {
       render: () => (
         <Route exact path="/my-reviews">
           <Tab.Pane>
-            Reviews <UserReviews userId={userId} />
+            Reviews <UserReviews userId={userId} displayName={displayName} />
           </Tab.Pane>
         </Route>
       )
@@ -163,8 +163,10 @@ const UserHome = props => {
   return (
     <div>
       <Segment padded="very">
-        <Header as="h1">Welcome {user.email || 'guest'}!</Header>
-        <Image src="https://picsum.photos/100/100" circular />
+        <Header as="h2">
+          <Image circular src="https://picsum.photos/100/100" />
+          Welcome, {displayName || 'guest'}!
+        </Header>
       </Segment>
       <br />
       <br />
