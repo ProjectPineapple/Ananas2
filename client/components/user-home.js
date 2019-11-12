@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import {withRouter} from 'react-router'
 import {Route, NavLink, matchPath} from 'react-router-dom'
 import ViewCart from './ViewCart'
 import {Image, Tab, Header, Segment} from 'semantic-ui-react'
@@ -11,6 +12,7 @@ import UserReviews from './reviews/UserReviews'
 
 import UserForm from './EditUserForm'
 import {changeUser} from '../store/user'
+import {fetchAllOrders} from '../store/allOrders.js'
 import AllUsers from './users/AllUsers'
 
 const UserHome = props => {
@@ -19,6 +21,7 @@ const UserHome = props => {
   const userId = user.id
   const displayName = user.name
   const cart = useSelector(state => state.viewCart)
+  //  const allOrders = useSelector(state => state.allOrders)
   const isAdminStatus = user.status === 'admin'
 
   const cartSize = !cart.products ? 0 : cart.products.length
@@ -27,6 +30,8 @@ const UserHome = props => {
     // print the form values to the console
     dispatch(changeUser(user))
   }
+
+  //  useEffect(() => { dispatch(fetchAllOrders()) }, [userId])
 
   if (!user.id) props.history.push('/')
 
@@ -100,61 +105,62 @@ const UserHome = props => {
       )
     }
   ]
-  const adminPanes = [
-    {
-      menuItem: {
-        as: NavLink,
-        to: '/home/all-orders',
-        exact: true,
-        key: 'allorders',
-        icon: 'history',
-        content: 'All Orders'
+  if (isAdminStatus)
+    panes.push(
+      {
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-orders',
+          exact: true,
+          key: 'allorders',
+          icon: 'history',
+          content: 'All Orders'
+        },
+        render: () => (
+          <Route exact path="/home/all-orders">
+            <Tab.Pane>
+              <AllOrders />
+            </Tab.Pane>
+          </Route>
+        )
       },
-      render: () => (
-        <Route exact path="/home/all-orders">
-          <Tab.Pane>
-            <AllOrders />
-          </Tab.Pane>
-        </Route>
-      )
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        to: '/home/all-reviews',
-        exact: true,
-        key: 'allreviews',
-        icon: 'star',
-        content: 'All Reviews'
+      {
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-reviews',
+          exact: true,
+          key: 'allreviews',
+          icon: 'star',
+          content: 'All Reviews'
+        },
+        render: () => (
+          <Route exact path="/home/all-reviews">
+            <Tab.Pane>
+              <AllReviews />
+            </Tab.Pane>
+          </Route>
+        )
       },
-      render: () => (
-        <Route exact path="/home/all-reviews">
-          <Tab.Pane>
-            <AllReviews />
-          </Tab.Pane>
-        </Route>
-      )
-    },
-    {
-      menuItem: {
-        as: NavLink,
-        to: '/home/all-users',
-        exact: true,
-        key: 'allusers',
-        icon: 'user',
-        content: 'All Users'
-      },
-      render: () => (
-        <Route exact path="/home/all-users">
-          <Tab.Pane>
-            <AllUsers />
-          </Tab.Pane>
-        </Route>
-      )
-    }
-  ]
+      {
+        menuItem: {
+          as: NavLink,
+          to: '/home/all-users',
+          exact: true,
+          key: 'allusers',
+          icon: 'user',
+          content: 'All Users'
+        },
+        render: () => (
+          <Route exact path="/home/all-users">
+            <Tab.Pane>
+              <AllUsers />
+            </Tab.Pane>
+          </Route>
+        )
+      }
+    )
 
-  const defaultActiveIndex = panes.findIndex(pane => {
+  const activeIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
       exact: true
@@ -171,13 +177,10 @@ const UserHome = props => {
       <br />
       <br />
       <div className="user-home-tabs">
-        <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
-        {isAdminStatus && (
-          <Tab defaultActiveIndex={defaultActiveIndex} panes={adminPanes} />
-        )}
+        <Tab activeIndex={activeIndex} panes={panes} />
       </div>
     </div>
   )
 }
 
-export default UserHome
+export default withRouter(UserHome)

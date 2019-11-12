@@ -7,22 +7,23 @@ import {withRouter} from 'react-router'
 
 const OrderList = props => {
   const {all, orders} = props
-  const whichTab = props.match.path
-  console.log(whichTab)
+  //  const whichTab = props.match.path
+  //  console.log(whichTab)
 
   const handlePageChange = (event, data) => {
-    const queryObject = parse(location.search)
+    console.log('hi')
+    /*    const queryObject = parse(location.search)
     console.log(queryObject)
     queryObject.page = data
     const queryParams = stringify(queryObject)
-    history.push(`/orders/${whichTab}?${queryParams}`)
+    history.push(`/orders/${whichTab}?${queryParams}`)*/
   }
-  const currentPage = parse(location.search).page || 1
+  //  const currentPage = parse(location.search).page || 1
 
   return orders.length ? (
     <div>
       <Pagination
-        defaultActivePage={currentPage}
+        defaultActivePage={1}
         prevItem={{content: <Icon name="angle left" />, icon: true}}
         nextItem={{content: <Icon name="angle right" />, icon: true}}
         totalPages={Math.ceil(orders.length / 10)}

@@ -18,7 +18,7 @@ const AllOrders = props => {
     {
       menuItem: {
         as: NavLink,
-        to: '/home/all-orders/all',
+        to: '/home/all-orders',
         exact: true,
         key: 'allOrders',
         icon: 'unordered list',
@@ -26,7 +26,7 @@ const AllOrders = props => {
       },
       render: () => {
         return (
-          <Route exact path="/home/all-orders/all">
+          <Route exact path="/home/all-orders">
             <Tab.Pane>
               <OrderList orders={orders} all={true} />
             </Tab.Pane>
@@ -181,6 +181,7 @@ const AllOrders = props => {
       defaultActiveIndex={defaultActiveIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
+      renderActiveOnly={false}
     />
   )
 }
