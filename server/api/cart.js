@@ -55,6 +55,6 @@ router.post('/checkout', async (req, res, next) => {
     }
   } catch (error) {
     console.error('Error', error)
-    status = 'failure'
+    // status = 'failure'
   }
 })
