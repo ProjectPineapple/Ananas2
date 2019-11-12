@@ -28,6 +28,8 @@ const UserHome = props => {
     dispatch(changeUser(user))
   }
 
+  if (!Array.from(user).length) props.history.push('/')
+
   const panes = [
     {
       menuItem: {
