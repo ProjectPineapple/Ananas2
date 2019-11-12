@@ -27,11 +27,16 @@ const Navbar = ({history}) => {
           seaBay
         </Header>
       </Container>
-      <Button onClick={() => history.push('/cart')}>
-        <Icon name="cart" color="black">
-          {totalItemsInCart}
-        </Icon>
-      </Button>
+      <Button labelPosition="left" icon="cart" content={totalItemsInCart} />
+      {/* <Button onClick={() => history.push('/cart')}>
+        {order.OrderLineItems ? (
+          <Icon name="cart" color="black">
+            {totalItemsInCart}
+          </Icon>
+        ) : (
+          <Icon name="cart" color="black" />
+        )}
+      </Button> */}
       {/* <Button.Group> */}
       <Button
         onClick={() =>

@@ -317,15 +317,16 @@ router.put(
   async (req, res, next) => {
     try {
       const orderId = Number(req.params.orderId)
-      const {order} = req.body
-      const {status} = order
+      const {status, subtotal, address} = req.body
 
       if (!await Order.findByPk(orderId)) {
         res.sendStatus(404)
       } else {
         await Order.update(
           {
-            status
+            status,
+            subtotal,
+            address
             // status: req.params.status,
             // subtotal: req.status.subtotal,
             // address: req.params.address
