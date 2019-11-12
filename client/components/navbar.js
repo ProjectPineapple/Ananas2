@@ -27,7 +27,12 @@ const Navbar = ({history}) => {
           seaBay
         </Header>
       </Container>
-      <Button labelPosition="left" icon="cart" content={totalItemsInCart} />
+      <Button
+        onClick={() => history.push('/cart')}
+        labelPosition="left"
+        icon="cart"
+        content={totalItemsInCart}
+      />
       {/* <Button onClick={() => history.push('/cart')}>
         {order.OrderLineItems ? (
           <Icon name="cart" color="black">
