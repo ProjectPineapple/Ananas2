@@ -4,6 +4,24 @@ var formValues = require('redux-form')
 
 module.exports = router
 
+function requireLoggedIn(req, res, next) {
+  if (req.user) {
+    next()
+  } else {
+    res.status(401).send('Please log in first!')
+  }
+}
+
+// function requireAdminStatusOrUser(req, res, next) {
+//   const userId = Number(req.params.userId)
+//   console.log(req.user.id)
+//   if (req.user.isAdmin || req.user.id === userId) {
+//     next()
+//   } else {
+//     res.status(403).send('You can only edit your orders.')
+//   }
+// }
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -18,7 +36,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', requireLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findByPk(Number(req.params.userId), {
       include: [Review, Order]
@@ -29,7 +47,7 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/orders', async (req, res, next) => {
+router.get('/:userId/orders', requireLoggedIn, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {userId: +req.params.userId}
@@ -40,7 +58,7 @@ router.get('/:userId/orders', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/cart', async (req, res, next) => {
+router.get('/:userId/cart', requireLoggedIn, async (req, res, next) => {
   try {
     const cart = await Order.findOne({
       where: {
@@ -54,7 +72,7 @@ router.get('/:userId/cart', async (req, res, next) => {
   }
 })
 
-router.put('/:userId', async (req, res, next) => {
+router.put('/:userId', requireLoggedIn, async (req, res, next) => {
   try {
     const userId = Number(req.params.userId)
     if (!await User.findByPk(userId)) {
@@ -78,7 +96,7 @@ router.put('/:userId', async (req, res, next) => {
   }
 })
 
-router.delete('/:userId', async (req, res, next) => {
+router.delete('/:userId', requireLoggedIn, async (req, res, next) => {
   try {
     await User.destroy({where: {id: Number(req.params.userId)}})
     res.status(204).end()

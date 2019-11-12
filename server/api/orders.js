@@ -30,12 +30,9 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
-//JM USE THIS!
 async function requireAdminStatusOrOriginator(req, res, next) {
   const orderId = Number(req.params.orderId)
-  console.log('made it here')
   if (req.user.isAdmin || (await req.user.ownsOrder(orderId))) {
-    console.log('made it to requireAdmin... if block')
     next()
   } else {
     res.status(403).send('You can only edit your orders.')

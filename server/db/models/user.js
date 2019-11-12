@@ -68,8 +68,10 @@ User.prototype.correctPassword = function(candidatePwd) {
 
 User.prototype.ownsOrder = async function(orderId) {
   try {
-    const userOrders = await Order.findByPk(orderId)
-    console.log('TCL: userOrders', userOrders)
+    const userOrders = await Order.findAll({
+      attributes: ['id'],
+      where: {id: orderId, userId: this.id}
+    })
     return userOrders.length
   } catch (err) {
     console.error(err)
