@@ -24,7 +24,7 @@ export const deleteProduct = productId => {
       await axios.delete(`/api/products/${productId}`)
       dispatch(removeProduct(productId))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }
@@ -34,7 +34,7 @@ export const changeProduct = (product, productId) => {
       const {data} = await axios.put(`/api/products/${productId}`, product)
       dispatch(updateProduct(data))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 }

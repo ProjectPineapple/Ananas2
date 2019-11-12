@@ -5,7 +5,6 @@ import {fetchUserReviews} from '../../store/userReviews'
 
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
 const UserReviews = props => {
-  console.log(props)
   const {userId, displayName} = props
   const userReviews = useSelector(state => state.userReviews)
   const dispatch = useDispatch()

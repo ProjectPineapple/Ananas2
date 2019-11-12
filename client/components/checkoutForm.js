@@ -24,9 +24,7 @@ const checkoutForm = props => {
   async function handleToken(token) {
     const {data} = await axios.post('/api/cart/checkout', {token, order})
     const {status} = data
-    console.log('data ', data, 'status ', status)
     if (status === 'paid') {
-      //      toast('Success! Check email for details!', {type: 'success'})
       props.history.push(`/${data.confirmationCode}/success`)
     } else {
       toast('Something went wrong, sad beans', {type: 'error'})

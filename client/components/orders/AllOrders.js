@@ -44,11 +44,9 @@ const AllOrders = props => {
         content: `Paid`
       },
       render: () => {
-        console.log('orders', orders)
         const paidOrders = orders.filter(order => {
           return order.status === 'paid'
         })
-        console.log('paidOrders', paidOrders)
         return (
           <Route exact path="/home/all-orders/paid">
             <Tab.Pane>

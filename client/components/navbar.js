@@ -33,16 +33,6 @@ const Navbar = ({history}) => {
         icon="cart"
         content={totalItemsInCart}
       />
-      {/* <Button onClick={() => history.push('/cart')}>
-        {order.OrderLineItems ? (
-          <Icon name="cart" color="black">
-            {totalItemsInCart}
-          </Icon>
-        ) : (
-          <Icon name="cart" color="black" />
-        )}
-      </Button> */}
-      {/* <Button.Group> */}
       <Button
         onClick={() =>
           user.email ? history.push('/home') : history.push('/login')
@@ -52,7 +42,6 @@ const Navbar = ({history}) => {
       </Button>
       <Button onClick={() => history.push('/products')}>Browse</Button>
       {user.email ? <Button onClick={Logout}>Logout</Button> : <span />}
-      {/* </Button.Group> */}
     </div>
   )
 }

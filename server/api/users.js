@@ -12,16 +12,6 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
-// function requireAdminStatusOrUser(req, res, next) {
-//   const userId = Number(req.params.userId)
-//   console.log(req.user.id)
-//   if (req.user.isAdmin || req.user.id === userId) {
-//     next()
-//   } else {
-//     res.status(403).send('You can only edit your orders.')
-//   }
-// }
-
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
