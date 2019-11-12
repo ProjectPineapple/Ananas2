@@ -10,7 +10,6 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
-//WIP - requirePurchasedItem
 async function requirePurchasedItem(req, res, next) {
   const productId = Number(req.body.productId)
   if (await req.user.hasOrderedProductById(productId)) {
