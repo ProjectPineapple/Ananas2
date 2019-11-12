@@ -17,6 +17,18 @@ const dummyUsers = [
     defaultBillingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
     defaultShippingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
     addresses: [this.defaultBilling, this.defaultShipping]
+  },
+
+  {
+    name: faker.name.firstName() + ' ' + faker.name.lastName(),
+    email: 'linda@linda.com',
+    password: '12345',
+    status: 'user',
+    googleId: faker.random.uuid(),
+    facebookId: faker.random.uuid(),
+    defaultBillingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    defaultShippingAddress: `${faker.address.countryCode()} ${faker.address.streetAddress()} ${faker.address.city()} ${faker.address.stateAbbr()} ${faker.address.zipCode()}`,
+    addresses: [this.defaultBilling, this.defaultShipping]
   }
 
   //Edge Cases TK

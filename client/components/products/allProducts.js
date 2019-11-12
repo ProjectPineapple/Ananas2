@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {withRouter} from 'react-router'
 import {Link} from 'react-router-dom'
 import {fetchAllProducts, createProduct} from '../../store/allProducts'
-
 import {centsToPrice, getAverageRating} from '../../utilityMethods'
 import AddToCartButton from './AddToCartButton'
 import querystring from 'query-string'
@@ -17,8 +16,20 @@ import {
   Form,
   Input,
   Pagination,
-  Header
+  Header,
+  Dropdown
 } from 'semantic-ui-react'
+
+const sortbyOptions = [
+  {key: 'price', text: 'price', value: 'price'},
+  {key: 'id', text: 'id', value: 'id'},
+  {key: 'stock', text: 'stock', value: 'stock'}
+]
+
+const ascOptions = [
+  {key: 'asc', text: 'asc', value: 'asc'},
+  {key: 'desc', text: 'desc', value: 'desc'}
+]
 
 const AllProducts = ({history, location}) => {
   const totalResults = useSelector(state => state.totalItems)
@@ -39,8 +50,7 @@ const AllProducts = ({history, location}) => {
 
   const handleSearchSubmit = event => {
     if (event.keyCode === 13) {
-      const form = event.target.value
-      console.log(form)
+      console.log('event.target', event.target)
       const searchParam = event.target.value
       history.push(`/products?search=${searchParam}`)
     }
@@ -49,6 +59,21 @@ const AllProducts = ({history, location}) => {
   const handlePageChange = (event, {activePage}) => {
     const queryObject = querystring.parse(location.search)
     queryObject.page = activePage
+    const queryParams = querystring.stringify(queryObject)
+    history.push(`/products?${queryParams}`)
+  }
+
+  const handleSortChange = (event, {value}) => {
+    console.log('value', value)
+    const queryObject = querystring.parse(location.search)
+    queryObject.sortBy = value
+    const queryParams = querystring.stringify(queryObject)
+    history.push(`/products?${queryParams}`)
+  }
+
+  const handleAscChange = (event, {value}) => {
+    const queryObject = querystring.parse(location.search)
+    queryObject.direction = value
     const queryParams = querystring.stringify(queryObject)
     history.push(`/products?${queryParams}`)
   }
@@ -77,6 +102,20 @@ const AllProducts = ({history, location}) => {
   ) : (
     <div>
       <Input placeholder="Search..." onKeyDown={handleSearchSubmit} />
+      <Dropdown
+        placeholder="Sort By"
+        search
+        selection
+        options={sortbyOptions}
+        onChange={handleSortChange}
+      />
+      <Dropdown
+        placeholder="Order By"
+        search
+        selection
+        options={ascOptions}
+        onChange={handleAscChange}
+      />
       <Pagination
         defaultActivePage={currentPage}
         totalPages={Math.ceil(totalResults / 24)}

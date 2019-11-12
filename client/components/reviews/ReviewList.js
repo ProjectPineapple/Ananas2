@@ -1,13 +1,11 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Icon, Image, List, Rating, Segment} from 'semantic-ui-react'
-import AddReview from './AddReview'
 import {fetchAllUsers} from '../../store/allUsers'
-import {userInfo} from 'os'
 
 //NOTE: Not importing fetchAllReviews thunk b/c the single product GET route has eager loading;
-const ProductReviews = props => {
-  const {product, reviews} = props
+const ReviewList = props => {
+  const {reviews} = props
   const users = useSelector(state => state.allUsers)
   const dispatch = useDispatch()
   useEffect(() => {
@@ -17,12 +15,8 @@ const ProductReviews = props => {
   return !reviews.length ? (
     <div>
       <p>
-        No customer reviews yet. <Icon name="frown outline" />
+        No customers have submitted reviews yet. <Icon name="frown outline" />
       </p>
-      <p>
-        Have you purchased this battleship? Be the first to share your thoughts!
-      </p>
-      <AddReview product={product} />
     </div>
   ) : (
     <div>
@@ -44,9 +38,10 @@ const ProductReviews = props => {
                 </List.Header>
                 <List.Content>
                   <p>{reviewDate}</p>
+                  {/* <h3>{productName}</h3>
+                  <Image src={productPhoto} /> */}
                   <Rating defaultRating={stars} maxRating={5} disabled />
                   <p>{review.description}</p>
-                  {/* INCLUDE ANY REVIEW PHOTOS! NOT SURE OF FORMATTING; maybe MODAL? with NEXT BUTTON? And separate COMPONENT?*/}
                   {!review.photos || !review.photos.length ? (
                     <span />
                   ) : (
@@ -60,12 +55,8 @@ const ProductReviews = props => {
           )
         })}
       </List>
-      <p>
-        Have you purchased this battleship? Share your thoughts with others!
-      </p>
-      <AddReview product={product} />
     </div>
   )
 }
 
-export default ProductReviews
+export default ReviewList

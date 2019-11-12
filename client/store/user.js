@@ -1,10 +1,12 @@
 import axios from 'axios'
 import history from '../history'
+import {getCart, fetchCart} from './viewCart'
 
 /**
  * ACTION TYPES
  */
 const GET_USER = 'GET_USER'
+const CHANGE_USER = 'CHANGE_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
 /**
@@ -17,6 +19,7 @@ const defaultUser = {}
  */
 export const getUser = user => ({type: GET_USER, user}) // if creating users when they order things and tracking them by email, need this elsewhere
 const removeUser = () => ({type: REMOVE_USER})
+export const changeUser = user => ({type: CHANGE_USER, user})
 
 /**
  * THUNK CREATORS
@@ -40,6 +43,9 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
+    const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
+    console.log(mergedCart)
+    dispatch(getCart(mergedCart))
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
@@ -50,9 +56,21 @@ export const logout = () => async dispatch => {
   try {
     await axios.post('/auth/logout')
     dispatch(removeUser())
+    dispatch(fetchCart())
     history.push('/login')
   } catch (err) {
     console.error(err)
+  }
+}
+
+export const updateUser = (user, userId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`/api/users/${userId}`, user)
+      dispatch(changeUser(data))
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
@@ -65,6 +83,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case CHANGE_USER:
+      return action.user
     default:
       return state
   }

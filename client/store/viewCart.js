@@ -9,7 +9,7 @@ const GET_CART = 'GET_CART'
 /**
  * ACTION CREATORS
  */
-const getCart = cart => ({type: GET_CART, cart})
+export const getCart = cart => ({type: GET_CART, cart})
 
 /**
  * INITIAL STATE
