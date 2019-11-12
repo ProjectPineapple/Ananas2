@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Route, NavLink, matchPath} from 'react-router-dom'
 import ViewCart from './ViewCart'
-import {Header, Image, Tab} from 'semantic-ui-react'
+import {Image, Tab, Header, Segment} from 'semantic-ui-react'
 
 import UserOrders from './orders/UserOrders'
 import AllOrders from './orders/AllOrders'
@@ -162,11 +162,12 @@ const UserHome = props => {
   })
   return (
     <div>
-      <br />
-      <Header as="h2">
-        <Image circular src="https://picsum.photos/100/100" />Welcome,{' '}
-        {displayName || 'guest'}!
-      </Header>
+      <Segment padded="very">
+        <Header as="h2">
+          <Image circular src="https://picsum.photos/100/100" />Welcome,{' '}
+          {displayName || 'guest'}!
+        </Header>
+      </Segment>
       <br />
       <br />
       <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />

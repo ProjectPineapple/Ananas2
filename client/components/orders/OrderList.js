@@ -1,5 +1,7 @@
 import React from 'react'
 import OrderModal from './OrderModal'
+import {Header, Segment, Icon} from 'semantic-ui-react'
+import {NavLink} from 'react-router-dom'
 
 const OrderList = props => {
   const {all, orders} = props
@@ -34,7 +36,13 @@ const OrderList = props => {
       ))}
     </div>
   ) : (
-    <h1>No Orders</h1>
+    <Segment placeholder>
+      <Header icon>
+        <Icon name="pdf file outline" />
+        No orders match these characteristics. <br />Think this is incorrect?{' '}
+        <NavLink to="/customerservice">Contact Us</NavLink>
+      </Header>
+    </Segment>
   )
 }
 

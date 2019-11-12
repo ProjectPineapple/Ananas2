@@ -17,7 +17,8 @@ import {
   EditOrderForm,
   SingleUser,
   EditUserForm,
-  AllOrders
+  NotFound,
+  CustomerService
 } from './components'
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
@@ -68,6 +69,8 @@ class Routes extends Component {
           path="/:confcode/success"
           render={props => <ConfirmationPage {...props} />}
         />
+        <Route exact path="/customerservice" component={CustomerService} />
+        <Route exact path="/NotFound" component={NotFound} />
         {isAdmin && (
           <Switch>
             <Route exact path="/add/products" component={AddProductForm} />
@@ -86,9 +89,10 @@ class Routes extends Component {
               path="/update/users/:userId"
               render={() => <EditUserForm onSubmit={this.props.submitUser} />}
             />
+            <Route exact path="/NotFound" component={NotFound} />
           </Switch>
         )}
-        <Redirect to="/404NotFound" />
+        <Redirect to="/NotFound" />
       </Switch>
     )
   }
