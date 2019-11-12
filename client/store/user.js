@@ -42,11 +42,16 @@ export const auth = (email, password, method) => async dispatch => {
   }
 
   try {
-    dispatch(getUser(res.data))
-    const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
-    console.log(mergedCart)
-    dispatch(getCart(mergedCart))
-    history.push('/home')
+    if (method === 'signup') {
+      // mailgun sent verification email on the backend
+      history.push(`/verify/${res.data.email}`)
+    } else {
+      dispatch(getUser(res.data))
+      const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
+      console.log(mergedCart)
+      dispatch(getCart(mergedCart))
+      history.push('/home')
+    }
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
