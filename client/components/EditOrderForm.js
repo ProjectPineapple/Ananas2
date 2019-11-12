@@ -1,12 +1,41 @@
 import React from 'react'
-import {Field, reduxForm, formValueSelector} from 'redux-form'
-import {connect} from 'react-redux'
+import {Field, reduxForm, formValueSelector, formValues} from 'redux-form'
+import {connect, useSelector, useDispatch} from 'react-redux'
+import {changeOrder} from '../store/singleOrder'
+import {withRouter} from 'react-router'
 
 let OrderForm = props => {
   const {handleSubmit} = props
+  // const {status, subtotal, address} = useSelector(state => state.singleOrder)
+  const dispatch = useDispatch()
+  console.log(props)
+  let status
+  if (props.status) {
+    status = props.status
+  }
+  let subtotal
+  if (props.subtotal) {
+    subtotal = props.subtotal
+  }
+  let address
+  if (props.address) {
+    address = props.address
+  }
+
+  const combinedHandleSubmit = e => {
+    e.preventDefault()
+    dispatch(handleSubmit)
+    const orderId = Number(props.match.params.orderId)
+    const orderData = {
+      status,
+      subtotal,
+      address
+    }
+    dispatch(changeOrder(orderData, orderId))
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={combinedHandleSubmit}>
       <div>
         <label htmlFor="status">Status</label>
         <div>
@@ -68,20 +97,19 @@ OrderForm = reduxForm({
 
 const selector = formValueSelector('editOrder')
 OrderForm = connect(state => {
-  const statusValue = selector(state, 'status')
-  const subtotalValue = selector(state, 'subtotal')
-  const address1Value = selector(state, 'address1')
-  const address2Value = selector(state, 'address2')
-  const cityValue = selector(state, 'city')
+  const status = selector(state, 'status')
+  const subtotal = selector(state, 'subtotal')
+  const address1 = selector(state, 'address1')
+  const address2 = selector(state, 'address2')
+  const city = selector(state, 'city')
   const stateValue = selector(state, 'state')
-  const zipValue = selector(state, 'zip')
-  const countryValue = selector(state, 'country')
+  const zip = selector(state, 'zip')
+  const country = selector(state, 'country')
   return {
-    status: statusValue,
-    subtotal: subtotalValue * 100,
-    address: `${address1Value || ''} ${address2Value || ''} ${cityValue ||
-      ''} ${stateValue || ''} ${zipValue || ''} ${countryValue || ''}`
+    status,
+    subtotal,
+    address: `${address1} ${address2} ${city} ${stateValue} ${zip} ${country}`
   }
 })(OrderForm)
 
-export default OrderForm
+export default withRouter(OrderForm)
