@@ -60,9 +60,7 @@ router.put('/:userId', async (req, res, next) => {
     if (!await User.findByPk(userId)) {
       res.sendStatus(404)
     } else {
-      console.log(formValues)
-      const {status, password} = formValues
-      console.log(req.body)
+      const {status, password} = req.body
       await User.update(
         {
           status,

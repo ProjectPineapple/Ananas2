@@ -19,6 +19,7 @@ import totalItems from './totalItems'
 import singleOrder from './singleOrder.js'
 import {reducer as formReducer} from 'redux-form'
 import allUsers from './allUsers'
+import addUser from './addUser'
 
 const reducer = combineReducers({
   allProducts,
@@ -36,7 +37,8 @@ const reducer = combineReducers({
   totalItems,
   singleOrder,
   form: formReducer,
-  allUsers
+  allUsers,
+  addUser
 })
 
 const middleware = composeWithDevTools(

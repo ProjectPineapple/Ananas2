@@ -22,7 +22,7 @@ import {
 } from './components'
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
-import {changeUser} from './store/user'
+import {updateUser} from './store/addUser'
 
 /**
  * COMPONENT
@@ -120,7 +120,7 @@ const mapDispatch = dispatch => {
       dispatch(updateOrder(order))
     },
     submitUser(user) {
-      dispatch(changeUser(user))
+      dispatch(updateUser(user))
     }
   }
 }

@@ -1,14 +1,29 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
+import {changeAUser} from '../store/addUser'
+import {withRouter} from 'react-router'
 
 let UserForm = props => {
   const {handleSubmit} = props
   const user = useSelector(state => state.user)
   const isAdmin = user.status === 'admin'
+  const dispatch = useDispatch()
+  const {status, password} = useSelector(state => state.addUser)
+
+  const combinedHandleSubmit = e => {
+    e.preventDefault()
+    dispatch(handleSubmit)
+    const userId = +props.match.params.userId
+    const userData = {
+      status,
+      password
+    }
+    dispatch(changeAUser(userData, userId))
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={combinedHandleSubmit}>
       {isAdmin ? (
         <div>
           <label htmlFor="status">User Status</label>
@@ -28,8 +43,10 @@ let UserForm = props => {
   )
 }
 
-UserForm = reduxForm({
-  form: 'editUser'
-})(UserForm)
+UserForm = withRouter(
+  reduxForm({
+    form: 'editUser'
+  })(UserForm)
+)
 
 export default UserForm
