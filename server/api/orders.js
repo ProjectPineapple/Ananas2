@@ -30,6 +30,14 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
+async function requireAdminStatus(req, res, next) {
+  if (req.user.isAdmin) {
+    next()
+  } else {
+    res.status(403).send('Error 403, forbidden')
+  }
+}
+
 async function requireAdminStatusOrOriginator(req, res, next) {
   const orderId = Number(req.params.orderId)
   if (req.user.isAdmin || (await req.user.ownsOrder(orderId))) {
@@ -40,7 +48,7 @@ async function requireAdminStatusOrOriginator(req, res, next) {
 }
 
 //Gets all orders - used for admin listing
-router.get('/', async (req, res, next) => {
+router.get('/', requireAdminStatus, async (req, res, next) => {
   // add admin validation
   try {
     const orders = await Order.findAll({
