@@ -43,9 +43,9 @@ router.get('/', async (req, res, next) => {
     //   direction: "asc" or "desc"
     // }
     const whereclause = {}
-    const sortBy = req.query.sortBy
+    const sortBy = req.query.sortBy || 'id'
     const page = req.query.page || 1
-    const direction = req.query.direction
+    const direction = req.query.direction || 'asc'
     console.log('req.query', req.query)
     if (req.query.categories) {
       whereclause.tags = {[Op.contains]: [req.query.categories]}
