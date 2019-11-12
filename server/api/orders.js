@@ -4,7 +4,6 @@ const customId = require('custom-id')
 
 module.exports = router
 
-
 //pagination GET all (for admins)
 // const PER_PAGE = 10
 // router.get('/', async (req, res, next) => {
@@ -30,7 +29,6 @@ function requireLoggedIn(req, res, next) {
     res.status(401).send('Please log in first!')
   }
 }
-
 
 //Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {

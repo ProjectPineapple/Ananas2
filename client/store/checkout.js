@@ -5,12 +5,13 @@ import {getUser} from './user'
 /**
  * ACTION TYPES
  */
-const SET_FIRSTNAME = 'SET_FIRSTNAME'
-const SET_LASTNAME = 'SET_LASTNAME'
-const SET_EMAIL = 'SET_EMAIL'
-const SET_BILLING_ADDRESS = 'SET_BILLING_ADDRESS'
-const SET_MAILING_ADDRESS = 'SET_MAILING_ADDRESS'
-const SET_PAYMENT_METHOD = 'SET_PAYMENT_METHOD'
+// const SET_FIRSTNAME = 'SET_FIRSTNAME'
+// const SET_LASTNAME = 'SET_LASTNAME'
+// const SET_EMAIL = 'SET_EMAIL'
+// const SET_BILLING_ADDRESS = 'SET_BILLING_ADDRESS'
+// const SET_MAILING_ADDRESS = 'SET_MAILING_ADDRESS'
+// const SET_PAYMENT_METHOD = 'SET_PAYMENT_METHOD'
+const SET_CHECKOUT = 'SET_CHECKOUT'
 // const SET_ORDER_NUMBER = "SET_ORDER_INFO" // part of an action that takes place on mount
 // maybe above line is just pulled from order and or cart reducer
 const RESET_FORM = 'RESET_FORM'
@@ -18,44 +19,59 @@ const RESET_FORM = 'RESET_FORM'
 /**
  * INITIAL STATE
  */
-const blankForm = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  billingAddress: '',
-  mailingAddress: '',
-  paymentMethod: 'stripe'
-}
+// const blankForm = {
+//   firstName: '',
+//   lastName: '',
+//   email: '',
+//   billingAddress: '',
+//   mailingAddress: '',
+//   paymentMethod: 'stripe'
+// }
+
+const initialState = {}
 
 /**
  * ACTION CREATORS
  */
-export const setFirstName = firstName => ({type: SET_FIRSTNAME, firstName})
-export const setLastName = lastName => ({type: SET_LASTNAME, lastName})
-export const setEmail = email => ({type: SET_EMAIL, email})
-export const setBillingAddress = billingAddress => ({
-  type: SET_BILLING_ADDRESS,
-  billingAddress
-})
-export const setMailingAddress = mailingAddress => ({
-  type: SET_MAILING_ADDRESS,
-  mailingAddress
-})
-export const setPaymentMethod = paymentMethod => ({
-  type: SET_PAYMENT_METHOD,
-  paymentMethod
-})
+// export const setFirstName = firstName => ({type: SET_FIRSTNAME, firstName})
+// export const setLastName = lastName => ({type: SET_LASTNAME, lastName})
+// export const setEmail = email => ({type: SET_EMAIL, email})
+// export const setBillingAddress = billingAddress => ({
+//   type: SET_BILLING_ADDRESS,
+//   billingAddress
+// })
+// export const setMailingAddress = mailingAddress => ({
+//   type: SET_MAILING_ADDRESS,
+//   mailingAddress
+// })
+// export const setPaymentMethod = paymentMethod => ({
+//   type: SET_PAYMENT_METHOD,
+//   paymentMethod
+// })
+export const setCheckout = checkout => ({type: SET_CHECKOUT, checkout})
 export const resetForm = () => ({type: RESET_FORM})
 
 /**
  * THUNK CREATORS
  */
 
-export const checkoutOrder = (formData, orderId, history) => {
+export const checkoutOrder = (token, order) => {
   return async dispatch => {
-    const {data} = await axios.put('/api/orders/checkout', {formData, orderId})
+    const {data} = await axios.post('/api/cart/checkout', {
+      order: order,
+      token: token
+    })
+    dispatch(setCheckout(data))
+    console.log('Thunk sent back this: ', data)
   }
 }
+// export const checkoutOrder = (formData, orderId, history) => {
+//   return async dispatch => {
+//     console.log('CheckoutOrder Thunk got this: ', formData)
+//     const {data} = await axios.put('/api/orders/checkout', {formData, orderId})
+//     console.log('CheckoutOrder Thunk sent this back: ', data)
+//   }
+// }
 
 //save user thunk goes here, for currently unauth users
 //basically takes form data on submit and makes a user
@@ -73,22 +89,24 @@ export const createUser = (formData, history) => {
 /**
  * REDUCER
  */
-export default function(state = blankForm, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
-    case SET_FIRSTNAME:
-      return {...state, firstName: action.firstName}
-    case SET_LASTNAME:
-      return {...state, lastName: action.lastName}
-    case SET_EMAIL:
-      return {...state, email: action.email}
-    case SET_BILLING_ADDRESS:
-      return {...state, billingAddress: action.billingAddress}
-    case SET_MAILING_ADDRESS:
-      return {...state, mailingAddress: action.mailingAddress}
-    case SET_PAYMENT_METHOD:
-      return {...state, paymentMethod: action.paymentMethod}
-    case RESET_FORM:
-      return blankForm
+    // case SET_FIRSTNAME:
+    //   return {...state, firstName: action.firstName}
+    // case SET_LASTNAME:
+    //   return {...state, lastName: action.lastName}
+    // case SET_EMAIL:
+    //   return {...state, email: action.email}
+    // case SET_BILLING_ADDRESS:
+    //   return {...state, billingAddress: action.billingAddress}
+    // case SET_MAILING_ADDRESS:
+    //   return {...state, mailingAddress: action.mailingAddress}
+    // case SET_PAYMENT_METHOD:
+    //   return {...state, paymentMethod: action.paymentMethod}
+    case SET_CHECKOUT:
+      return action.checkout
+    // case RESET_FORM:
+    //   return blankForm
     default:
       return state
   }
