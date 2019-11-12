@@ -84,9 +84,9 @@ router.put('/verify', async (req, res, next) => {
   }
 })
 
-router.post('/logout', (req, res) => {
-  req.logout()
-  req.session.destroy()
+router.post('/logout', async (req, res) => {
+  await req.logout()
+  console.log('DESTROY', await req.session.destroy())
   res.redirect('/')
 })
 
