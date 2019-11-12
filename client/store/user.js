@@ -60,10 +60,12 @@ export const auth = (email, password, method) => async dispatch => {
 
 export const logout = () => async dispatch => {
   try {
-    await axios.post('/auth/logout')
+    // fun bug, maybe requires lots of refactoring to avoid
+    await axios.post('/auth/logout') // is racing
     dispatch(removeUser())
-    dispatch(fetchCart())
-    history.push('/login')
+    dispatch(fetchCart()) // this to completion
+    // history.push('/login')
+    window.location.assign('http://localhost:8080/login')
   } catch (err) {
     console.error(err)
   }

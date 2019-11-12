@@ -28,13 +28,9 @@ const Navbar = ({history}) => {
         </Header>
       </Container>
       <Button onClick={() => history.push('/cart')}>
-        {order.OrderLineItems ? (
-          <Icon name="cart" color="black">
-            {totalItemsInCart}
-          </Icon>
-        ) : (
-          <Icon name="cart" color="black" />
-        )}
+        <Icon name="cart" color="black">
+          {totalItemsInCart}
+        </Icon>
       </Button>
       {/* <Button.Group> */}
       <Button
