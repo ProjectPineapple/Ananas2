@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {Grid, Image, Button, Segment, Icon} from 'semantic-ui-react'
+import {Grid, Image, Button, Segment, Icon, Header} from 'semantic-ui-react'
 import {
   fetchCart,
   removeFromCart,
@@ -8,6 +8,7 @@ import {
   addToCart
 } from '../store/viewCart'
 import {withRouter} from 'react-router'
+import {NavLink} from 'react-router-dom'
 import {centsToPrice, getActualQuantity} from '../utilityMethods'
 
 const ViewCart = ({history, match}) => {
@@ -111,7 +112,12 @@ const ViewCart = ({history, match}) => {
       </Grid>
     </div>
   ) : (
-    <h1>Your cart is empty!</h1>
+    <Segment placeholder>
+      <Header icon>
+        <Icon name="ship" />
+        Your cart is empty! <NavLink to="/products">Let's fix that.</NavLink>
+      </Header>
+    </Segment>
   )
 }
 

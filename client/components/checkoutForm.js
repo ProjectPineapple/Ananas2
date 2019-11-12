@@ -1,13 +1,6 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import {
-  Form,
-  Header,
-  Divider,
-  Button,
-  Dropdown,
-  Segment
-} from 'semantic-ui-react'
+import {Header, Divider, Button, Segment} from 'semantic-ui-react'
 import _ from 'lodash'
 import faker from 'faker'
 import ViewCart from './ViewCart'
@@ -23,7 +16,7 @@ import {
   resetForm,
   checkoutOrder
 } from '../store/checkout'
-import StripeCheckout from 'react-stripe-checkout'
+import StripeCheckout, {CardElement} from 'react-stripe-checkout'
 
 toast.configure()
 
@@ -59,6 +52,7 @@ const checkoutForm = function(props) {
 
   const handleSubmit = e => {
     e.preventDefault()
+    console.log(handleSubmit)
     const checkoutData = {
       firstName,
       lastName,
@@ -91,6 +85,9 @@ const checkoutForm = function(props) {
         amount={order.total}
         orderId={order.id}
       />
+      {/* <p>Would you like to complete this purchase?</p>
+      <CardElement />
+      <Button onClick={handleSubmit}>Purchase</Button> */}
     </div>
   )
 }
