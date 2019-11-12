@@ -11,16 +11,8 @@ const SingleUser = props => {
   const user = useSelector(state => state.user)
   const users = useSelector(state => state.allUsers)
   const isAdmin = user.status === 'admin'
-  const dispatch = useDispatch()
   const userId = +props.match.params.userId
   const currentUser = users.find(selectedUser => selectedUser.id === userId)
-
-  useEffect(
-    () => {
-      dispatch(me())
-    },
-    [userId]
-  )
 
   if (!user) {
     return <div>No User</div>
