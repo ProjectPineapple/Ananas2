@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Route, NavLink, matchPath} from 'react-router-dom'
+import {Route, NavLink, matchPath, withRouter} from 'react-router-dom'
 import {fetchAllOrders} from '../../store/allOrders'
 import {Tab, Input, Pagination, Icon} from 'semantic-ui-react'
 import querystring from 'query-string'

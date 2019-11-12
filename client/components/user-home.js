@@ -98,61 +98,59 @@ const UserHome = props => {
       )
     }
   ]
-  if (isAdminStatus) {
-    panes.push(
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-orders',
-          exact: true,
-          key: 'allorders',
-          icon: 'history',
-          content: 'All Orders'
-        },
-        render: () => (
-          <Route exact path="/home/all-orders">
-            <Tab.Pane>
-              <AllOrders />
-            </Tab.Pane>
-          </Route>
-        )
+  const adminPanes = [
+    {
+      menuItem: {
+        as: NavLink,
+        to: '/home/all-orders',
+        exact: true,
+        key: 'allorders',
+        icon: 'history',
+        content: 'All Orders'
       },
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-reviews',
-          exact: true,
-          key: 'allreviews',
-          icon: 'star',
-          content: 'All Reviews'
-        },
-        render: () => (
-          <Route exact path="/home/all-reviews">
-            <Tab.Pane>
-              <AllReviews />
-            </Tab.Pane>
-          </Route>
-        )
+      render: () => (
+        <Route exact path="/home/all-orders">
+          <Tab.Pane>
+            <AllOrders />
+          </Tab.Pane>
+        </Route>
+      )
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        to: '/home/all-reviews',
+        exact: true,
+        key: 'allreviews',
+        icon: 'star',
+        content: 'All Reviews'
       },
-      {
-        menuItem: {
-          as: NavLink,
-          to: '/home/all-users',
-          exact: true,
-          key: 'allusers',
-          icon: 'user',
-          content: 'All Users'
-        },
-        render: () => (
-          <Route exact path="/home/all-users">
-            <Tab.Pane>
-              <AllUsers />
-            </Tab.Pane>
-          </Route>
-        )
-      }
-    )
-  }
+      render: () => (
+        <Route exact path="/home/all-reviews">
+          <Tab.Pane>
+            <AllReviews />
+          </Tab.Pane>
+        </Route>
+      )
+    },
+    {
+      menuItem: {
+        as: NavLink,
+        to: '/home/all-users',
+        exact: true,
+        key: 'allusers',
+        icon: 'user',
+        content: 'All Users'
+      },
+      render: () => (
+        <Route exact path="/home/all-users">
+          <Tab.Pane>
+            <AllUsers />
+          </Tab.Pane>
+        </Route>
+      )
+    }
+  ]
 
   const defaultActiveIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
@@ -170,7 +168,12 @@ const UserHome = props => {
       </Segment>
       <br />
       <br />
-      <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
+      <div className="user-home-tabs">
+        <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
+        {isAdminStatus && (
+          <Tab defaultActiveIndex={defaultActiveIndex} panes={adminPanes} />
+        )}
+      </div>
     </div>
   )
 }
