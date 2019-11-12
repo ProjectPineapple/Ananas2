@@ -58,7 +58,6 @@ class Routes extends Component {
             user.id ? <UserHome {...props} /> : <AllProducts />
           }
         />
-        <Route path="/admin" component={AdminDashboard} />
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route
