@@ -24,8 +24,6 @@ const NotFound = function({history}) {
         Whoops Looks like you took a wrong turn at the Bermuda Triangle!
       </Header>
       <Grid columns={2} stackable textAlign="center">
-        <Divider vertical>Or</Divider>
-
         <Grid.Row verticalAlign="middle">
           <Grid.Column>
             <Header icon>

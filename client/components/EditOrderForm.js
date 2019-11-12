@@ -67,7 +67,6 @@ OrderForm = reduxForm({
 })(OrderForm)
 
 const selector = formValueSelector('editOrder')
-console.log(selector)
 OrderForm = connect(state => {
   const statusValue = selector(state, 'status')
   const subtotalValue = selector(state, 'subtotal')

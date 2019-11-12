@@ -42,11 +42,17 @@ export const auth = (email, password, method) => async dispatch => {
   }
 
   try {
-    dispatch(getUser(res.data))
-    const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
-    console.log(mergedCart)
-    dispatch(getCart(mergedCart))
-    history.push('/home')
+    if (method === 'signup') {
+      // mailgun sent verification email on the backend
+
+      history.push(`/checkYourEmail`)
+    } else {
+      dispatch(getUser(res.data))
+      const {data: mergedCart} = await axios.put('/api/orders/mergecarts')
+      console.log(mergedCart)
+      dispatch(getCart(mergedCart))
+      history.push('/home')
+    }
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -70,6 +76,17 @@ export const updateUser = (user, userId) => {
       dispatch(changeUser(data))
     } catch (error) {
       console.log(error)
+    }
+  }
+}
+
+export const verifyUser = (email, code) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.put(`/auth/verify/`, {email, code})
+      dispatch(logout())
+    } catch (error) {
+      console.error(error)
     }
   }
 }

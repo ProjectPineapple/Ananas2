@@ -18,11 +18,13 @@ import {
   SingleUser,
   EditUserForm,
   NotFound,
-  CustomerService
+  CustomerService,
+  Verified,
+  CheckYourEmail
 } from './components'
 import {me} from './store'
 import {updateOrder} from './store/singleOrder'
-import {changeUser} from './store/user'
+import {updateUser} from './store/addUser'
 
 /**
  * COMPONENT
@@ -47,6 +49,9 @@ class Routes extends Component {
         />
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/checkYourEmail" component={CheckYourEmail} />
+        <Route path="/verify" component={Verified} />
+
         <Route path="/home" component={UserHome} />
 
         <Route exact path="/view/user/:userId" component={SingleUser} />
@@ -126,7 +131,7 @@ const mapDispatch = dispatch => {
       dispatch(updateOrder(order))
     },
     submitUser(user) {
-      dispatch(changeUser(user))
+      dispatch(updateUser(user))
     }
   }
 }

@@ -52,8 +52,10 @@ const User = db.define('user', {
   },
   sessionId: {
     type: Sequelize.STRING
+  },
+  verified: {
+    type: Sequelize.STRING
   }
-  // includes Review and Order
 })
 // indexes
 

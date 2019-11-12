@@ -258,7 +258,7 @@ router.put('/checkout', async (req, res, next) => {
 })
 
 //merge cart
-router.put('/mergecarts', requireLoggedIn, async (req, res, next) => {
+router.put('/mergecarts', async (req, res, next) => {
   const session = await Session.findOne({
     where: {
       sid: req.sessionID
