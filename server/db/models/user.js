@@ -66,10 +66,18 @@ User.prototype.correctPassword = function(candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
 }
 
-User.prototype.hasOrderedProductById = async function(productId) {
-  //return Boolean
+User.prototype.ownsOrder = async function(orderId) {
   try {
-    ///why doesn't this recognize Order??!
+    const userOrders = await Order.findByPk(orderId)
+    console.log('TCL: userOrders', userOrders)
+    return userOrders.length
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+User.prototype.hasOrderedProductById = async function(productId) {
+  try {
     const userPurchases = await Order.findAll({
       attributes: ['id'],
       where: {

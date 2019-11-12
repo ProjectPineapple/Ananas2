@@ -31,13 +31,16 @@ function requireLoggedIn(req, res, next) {
 }
 
 //JM USE THIS!
-// function requireAdminStatusOrOriginator(req, res, next) {
-//   if (req.user.isAdmin || await XXXXXXXXXX) {
-//     next()
-//   } else {
-//     res.sendStatus(403)
-//   }
-// }
+async function requireAdminStatusOrOriginator(req, res, next) {
+  const orderId = Number(req.params.orderId)
+  console.log('made it here')
+  if (req.user.isAdmin || (await req.user.ownsOrder(orderId))) {
+    console.log('made it to requireAdmin... if block')
+    next()
+  } else {
+    res.status(403).send('You can only edit your orders.')
+  }
+}
 
 //Gets all orders - used for admin listing
 router.get('/', async (req, res, next) => {
@@ -330,7 +333,7 @@ router.put('/mergecarts', requireLoggedIn, async (req, res, next) => {
 router.put(
   '/:orderId',
   requireLoggedIn,
-  // requireAdminStatusOrOriginator,
+  requireAdminStatusOrOriginator,
   async (req, res, next) => {
     try {
       const orderId = Number(req.params.orderId)
