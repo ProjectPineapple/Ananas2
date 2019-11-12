@@ -36,17 +36,17 @@ const Navbar = ({history}) => {
           <Icon name="cart" color="black" />
         )}
       </Button>
-      <Button.Group>
-        <Button
-          onClick={() =>
-            user.email ? history.push('/home') : history.push('/login')
-          }
-        >
-          {user.email || 'Login'}
-        </Button>
-        <Button onClick={() => history.push('/products')}>Browse</Button>
-        {user.email ? <Button onClick={Logout}>Logout</Button> : <span />}
-      </Button.Group>
+      {/* <Button.Group> */}
+      <Button
+        onClick={() =>
+          user.email ? history.push('/home') : history.push('/login')
+        }
+      >
+        {user.email || 'Login'}
+      </Button>
+      <Button onClick={() => history.push('/products')}>Browse</Button>
+      {user.email ? <Button onClick={Logout}>Logout</Button> : <span />}
+      {/* </Button.Group> */}
     </div>
   )
 }
