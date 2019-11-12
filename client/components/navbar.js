@@ -45,7 +45,7 @@ const Navbar = ({history}) => {
           {user.email || 'Login'}
         </Button>
         <Button onClick={() => history.push('/products')}>Browse</Button>
-        <Button onClick={Logout}>Logout</Button>
+        {user.email ? <Button onClick={Logout}>Logout</Button> : <span />}
       </Button.Group>
     </div>
   )
