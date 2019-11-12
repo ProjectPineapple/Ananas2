@@ -13,12 +13,12 @@ toast.configure()
 
 const checkoutForm = props => {
   const order = useSelector(state => state.viewCart)
-  const addressDefinitions = faker.definitions.address
-  const stateOptions = _.map(addressDefinitions.state, (state, index) => ({
+  //  const addressDefinitions = faker.definitions.address
+  /*  const stateOptions = _.map(addressDefinitions.state, (state, index) => ({
     key: addressDefinitions.state_abbr[index],
     text: state,
     value: addressDefinitions.state_abbr[index]
-  }))
+  }))*/
 
   // add some sort of setTimeout to make sure that people arent sitting in checkout on sale items
   async function handleToken(token) {

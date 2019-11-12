@@ -85,3 +85,9 @@ form div {
   display: flex;
   justify-content: flex-start;
 }
+
+.user-home-tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
