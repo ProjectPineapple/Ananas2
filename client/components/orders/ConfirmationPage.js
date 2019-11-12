@@ -14,11 +14,8 @@ const ConfirmationPage = props => {
     },
     [user.id]
   )
-  console.log('user orders ', userOrders)
   const matchingOrder =
     userOrders.find(order => order.confirmationCode === confcode) || ''
-
-  console.log(matchingOrder)
 
   if (!matchingOrder)
     return (
