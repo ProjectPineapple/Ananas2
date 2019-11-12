@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import {withRouter} from 'react-router'
 import {Route, NavLink, matchPath} from 'react-router-dom'
 import ViewCart from './ViewCart'
 import {Button, Image, Tab, Header, Segment} from 'semantic-ui-react'
@@ -10,6 +11,7 @@ import UserForm from './EditUserForm'
 import AdminDashboard from './admin-dashboard'
 
 import {changeUser} from '../store/user'
+import AllUsers from './users/AllUsers'
 
 const UserHome = props => {
   const dispatch = useDispatch()
@@ -17,6 +19,7 @@ const UserHome = props => {
   const userId = user.id
   const displayName = user.name
   const cart = useSelector(state => state.viewCart)
+  //  const allOrders = useSelector(state => state.allOrders)
   const isAdminStatus = user.status === 'admin'
   const [isClickedAdminDash, setIsClickedAdminDash] = useState(false)
 
@@ -30,6 +33,8 @@ const UserHome = props => {
     // print the form values to the console
     dispatch(changeUser(user))
   }
+
+  //  useEffect(() => { dispatch(fetchAllOrders()) }, [userId])
 
   if (!user.id) props.history.push('/')
 
@@ -61,7 +66,7 @@ const UserHome = props => {
         content: 'Orders'
       },
       render: () => (
-        <Route exact path="/home">
+        <Route exact path="/home/my-orders">
           <Tab.Pane>
             <UserOrders />
           </Tab.Pane>
@@ -103,8 +108,7 @@ const UserHome = props => {
       )
     }
   ]
-
-  const defaultActiveIndex = panes.findIndex(pane => {
+  const activeIndex = panes.findIndex(pane => {
     return !!matchPath(window.location.pathname, {
       path: pane.menuItem.to,
       exact: true
@@ -131,16 +135,15 @@ const UserHome = props => {
         ) : null}
       </Segment>
       <br />
-      <br />
       {isAdminStatus && isClickedAdminDash ? (
         <AdminDashboard isAdminStatus={isAdminStatus} />
       ) : (
         <div className="user-home-tabs">
-          <Tab defaultActiveIndex={defaultActiveIndex} panes={panes} />
+          <Tab defaultActiveIndex={activeIndex} panes={panes} />
         </div>
       )}
     </div>
   )
 }
 
-export default UserHome
+export default withRouter(UserHome)

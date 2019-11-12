@@ -52,9 +52,12 @@ class Routes extends Component {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/checkYourEmail" component={CheckYourEmail} />
         <Route path="/verify" component={Verified} />
-
-        <Route path="/home" component={UserHome} />
-        <Route path="/admin" component={AdminDashboard} />
+        <Route
+          path="/home"
+          render={props =>
+            user.id ? <UserHome {...props} /> : <AllProducts />
+          }
+        />
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route
