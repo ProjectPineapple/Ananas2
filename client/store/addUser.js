@@ -12,7 +12,7 @@ export const changeAUser = (values, userId) => {
       const {data} = await axios.put(`/api/users/${userId}`, values)
       dispatch(updateUser(data))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 }

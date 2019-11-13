@@ -8,7 +8,6 @@ let OrderForm = props => {
   const {handleSubmit} = props
   // const {status, subtotal, address} = useSelector(state => state.singleOrder)
   const dispatch = useDispatch()
-  console.log(props)
   let status
   if (props.status) {
     status = props.status

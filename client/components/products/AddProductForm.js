@@ -53,7 +53,6 @@ const AddProductForm = function(props) {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('in handle submit')
     let tags
     if (tag1) {
       tags = [tag1, tag2, tag3]
@@ -70,7 +69,6 @@ const AddProductForm = function(props) {
       photos,
       description
     }
-    console.log(productData)
     dispatch(addAProduct(productData))
     props.history.push('/products')
   }

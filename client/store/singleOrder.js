@@ -44,13 +44,12 @@ export const fetchOrderByUser = (orderId, userId) => {
 
 export const changeOrder = (order, orderId) => {
   return async dispatch => {
-    console.log(order)
     try {
       orderId = Number(orderId)
       const {data} = await axios.put(`/api/orders/${orderId}`, order)
       dispatch(setOrder(data))
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 }

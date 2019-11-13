@@ -62,14 +62,11 @@ export const checkoutOrder = (token, order) => {
       token: token
     })
     dispatch(setCheckout(data))
-    console.log('Thunk sent back this: ', data)
   }
 }
 // export const checkoutOrder = (formData, orderId, history) => {
 //   return async dispatch => {
-//     console.log('CheckoutOrder Thunk got this: ', formData)
 //     const {data} = await axios.put('/api/orders/checkout', {formData, orderId})
-//     console.log('CheckoutOrder Thunk sent this back: ', data)
 //   }
 // }
 

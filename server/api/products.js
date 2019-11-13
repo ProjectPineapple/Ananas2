@@ -12,41 +12,21 @@ function requireLoggedIn(req, res, next) {
 }
 
 function requireAdminStatus(req, res, next) {
-  if (req.user.isAdmin) {
+  if (req.user.status === 'admin') {
     next()
   } else {
     res.sendStatus(403)
   }
 }
-// //api/products route
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const products = await Product.findAll()
-//     console.log('Got to Route')
-//     res.json(products)
-//   } catch (err) {
-//     next(err)
-//   }
-// })
 
 //pagination
 const PER_PAGE = 24
 router.get('/', async (req, res, next) => {
   try {
-    // req.query example
-    // {
-    //   page:4,
-    //   category:"russian",
-    //   searchParameters:"byName",
-    //   searchValue: "Roma",
-    //   orderBy: "id" or "price" or "number of reviews"
-    //   direction: "asc" or "desc"
-    // }
     const whereclause = {}
     const sortBy = req.query.sortBy || 'id'
     const page = req.query.page || 1
     const direction = req.query.direction || 'asc'
-    console.log('req.query', req.query)
     if (req.query.categories) {
       whereclause.tags = {[Op.contains]: [req.query.categories]}
     }
@@ -56,10 +36,6 @@ router.get('/', async (req, res, next) => {
         description: {[Op.substring]: req.query.search}
       }
     }
-
-    // whereclause.name = {[Op.substring]: req.query.search}
-    // whereclause.description = {[Op.substring]: req.query.search}
-    // whereclause.name = req.query.search
 
     const results = await Product.findAndCountAll({
       include: [Review],

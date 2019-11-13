@@ -38,7 +38,6 @@ const savedTags = [
 ]
 
 const UpdateProductForm = function(props) {
-  console.log('props:', props)
   const dispatch = useDispatch()
   const {
     name,
@@ -75,7 +74,6 @@ const UpdateProductForm = function(props) {
       photos,
       description
     }
-    console.log(productData)
     dispatch(changeAProduct(productData, productId))
     props.history.push(`/products/${productId}`)
   }

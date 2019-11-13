@@ -7,14 +7,10 @@ import {withRouter} from 'react-router'
 
 const OrderList = props => {
   const {all, orders} = props
-  console.log(orders)
   //  const whichTab = props.match.path
-  //  console.log(whichTab)
 
   //  const handlePageChange = (event, data) => {
-  //    console.log('hi')
   /*    const queryObject = parse(location.search)
-    console.log(queryObject)
     queryObject.page = data
     const queryParams = stringify(queryObject)
     history.push(`/orders/${whichTab}?${queryParams}`)*/
@@ -61,7 +57,8 @@ const OrderList = props => {
     <Segment placeholder>
       <Header icon>
         <Icon name="pdf file outline" />
-        No orders match these characteristics. <br />Think this is incorrect?{' '}
+        No orders match these characteristics. <br />
+        Think this is incorrect?{' '}
         <NavLink to="/customerservice">Contact Us</NavLink>
       </Header>
     </Segment>
