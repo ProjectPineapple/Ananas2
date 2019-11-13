@@ -15,7 +15,7 @@
     "lint-fix": "npm run lint -- --fix",
     "prepare": "if [ -d .git ]; then npm-merge-driver install; fi",
     "prettify": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\"",
-    "postinstall": "touch secrets.js",
+    "postinstall": "webpack -p",
     "seed": "node script/seed.js",
     "smallseed": "node script/otherSeed.js",
     "start": "node server",
@@ -78,7 +78,9 @@
     "socket.io": "^2.2.0",
     "stripe": "^7.13.0",
     "use-query-params": "^0.4.3",
-    "uuidv4": "^5.0.1"
+    "uuidv4": "^5.0.1",
+    "webpack": "^4.16.4",
+    "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
