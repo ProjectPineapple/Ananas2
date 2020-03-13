@@ -31,7 +31,7 @@ Main Tech stack for this project:
 
 Also used in this project:
 * Semantic React UI
-* Stride
+* Stripe
 * Mailgun
 * oAuth - Google
 * lodash
