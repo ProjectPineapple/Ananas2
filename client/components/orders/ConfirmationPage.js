@@ -36,6 +36,7 @@ const ConfirmationPage = props => {
   )
 }
 
-export default withRouter(ConfirmationPage)
+//export default withRouter(ConfirmationPage)
+export default ConfirmationPage
 
 // apply condition to useEffect in AddToCartButton (<<i think)

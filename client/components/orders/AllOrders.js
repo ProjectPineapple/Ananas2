@@ -61,7 +61,7 @@ const AllOrders = props => {
           return order.status === 'paid'
         })
         return (
-          <Route exact path="/home/all-orders/paid">
+          <Route exact path="/home/all-orders?status=paid">
             <Tab.Pane>
               <OrderList orders={paidOrders} />
             </Tab.Pane>
@@ -202,4 +202,5 @@ const AllOrders = props => {
   )
 }
 
-export default withRouter(AllOrders)
+//export default withRouter(AllOrders)
+export default AllOrders
