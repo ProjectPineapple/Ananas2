@@ -48,4 +48,5 @@ const NotFound = function({history}) {
     </Segment>
   )
 }
-export default withRouter(NotFound)
+//export default withRouter(NotFound)
+export default NotFound

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {Route, NavLink, matchPath} from 'react-router-dom'
-import ViewCart from './ViewCart'
+//import ViewCart from './ViewCart'
 import {Image, Tab, Header, Segment} from 'semantic-ui-react'
 
 import AllOrders from './orders/AllOrders'
