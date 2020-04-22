@@ -157,4 +157,5 @@ const AllProducts = ({history, location}) => {
   )
 }
 
-export default withRouter(AllProducts)
+//export default withRouter(AllProducts)
+export default AllProducts

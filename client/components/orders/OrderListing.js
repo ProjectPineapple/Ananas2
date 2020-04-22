@@ -13,7 +13,7 @@ const OrderListing = ({history, location}) => {
     return (
       <div>
         <h2>How did you get here?</h2>
-        <h3 onClick={() => history.back()}>Back</h3>
+        <h3 onClick={() => history.goBack()}>Back</h3>
       </div>
     )
   const isAdmin = user.status === 'admin'
@@ -34,7 +34,7 @@ const OrderListing = ({history, location}) => {
     return (
       <div>
         <h2>Unauthorized</h2>
-        <h3 onClick={() => history.back()}>Back</h3>
+        <h3 onClick={() => history.goBack()}>Back</h3>
       </div>
     )
   return (
@@ -113,4 +113,5 @@ const OrderListing = ({history, location}) => {
   )
 }
 
-export default withRouter(OrderListing)
+//export default withRouter(OrderListing)
+export default OrderListing

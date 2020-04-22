@@ -152,4 +152,5 @@ const AddReview = props => {
   )
 }
 
-export default withRouter(AddReview)
+//export default withRouter(AddReview)
+export default AddReview

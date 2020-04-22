@@ -4,7 +4,7 @@ import {fetchUserOrders, resetUserOrders} from '../../store/userOrders'
 import {Segment, Item, Tab} from 'semantic-ui-react'
 import OrderList from './OrderList'
 
-const UserOrders = () => {
+const UserOrders = ({history}) => {
   const orders = useSelector(state => state.userOrders)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
@@ -26,7 +26,7 @@ const UserOrders = () => {
         const allOrders = orders.filter(order => order.status !== 'in-cart')
         return (
           <Tab.Pane>
-            <OrderList orders={allOrders} all={true} />
+            <OrderList history={history} orders={allOrders} all={true} />
           </Tab.Pane>
         )
       }

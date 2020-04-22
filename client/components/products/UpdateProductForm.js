@@ -291,4 +291,5 @@ const UpdateProductForm = function(props) {
 //   }
 // }
 
-export default withRouter(UpdateProductForm)
+//export default withRouter(UpdateProductForm)
+export default UpdateProductForm

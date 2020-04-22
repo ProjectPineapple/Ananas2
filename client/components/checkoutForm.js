@@ -1,9 +1,9 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+//import {withRouter} from 'react-router-dom'
 import {Header, Divider, Segment} from 'semantic-ui-react'
-import _ from 'lodash'
-import faker from 'faker'
+//import _ from 'lodash'
+//import faker from 'faker'
 import ViewCart from './ViewCart'
 import axios from 'axios'
 import {toast} from 'react-toastify'
@@ -36,7 +36,7 @@ const checkoutForm = props => {
       <Segment>
         <Header as="h1">Review Your Order</Header>
       </Segment>
-      <ViewCart />
+      <ViewCart {...props} />
       <Divider />
       <StripeCheckout
         stripeKey="pk_test_0PmCoNYh2JkqkxmAX3FUAOPD00TQAUBVNb"
@@ -50,4 +50,5 @@ const checkoutForm = props => {
     </div>
   )
 }
-export default withRouter(checkoutForm)
+//export default withRouter(checkoutForm)
+export default checkoutForm

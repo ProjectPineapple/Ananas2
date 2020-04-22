@@ -51,7 +51,7 @@ const UserHome = props => {
       render: () => (
         <Route exact path="/home/my-cart">
           <Tab.Pane>
-            <ViewCart cart={cart} />
+            <ViewCart {...props} cart={cart} />
           </Tab.Pane>
         </Route>
       )
@@ -68,7 +68,7 @@ const UserHome = props => {
       render: () => (
         <Route exact path="/home/my-orders">
           <Tab.Pane>
-            <UserOrders />
+            <UserOrders history={props.history} />
           </Tab.Pane>
         </Route>
       )
@@ -114,7 +114,6 @@ const UserHome = props => {
       exact: true
     })
   })
-
   return (
     <div>
       <Segment padded="very">
@@ -146,4 +145,5 @@ const UserHome = props => {
   )
 }
 
-export default withRouter(UserHome)
+//export default withRouter(UserHome)
+export default UserHome

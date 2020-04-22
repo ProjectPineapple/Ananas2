@@ -43,10 +43,10 @@ let UserForm = props => {
   )
 }
 
-UserForm = withRouter(
+/*UserForm = withRouter(
   reduxForm({
     form: 'editUser'
   })(UserForm)
-)
+)*/
 
-export default UserForm
+export default reduxForm({form: 'editUser'})(UserForm)

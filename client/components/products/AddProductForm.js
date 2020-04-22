@@ -275,4 +275,5 @@ const AddProductForm = function(props) {
 //     }
 //   }
 // }
-export default withRouter(AddProductForm)
+//export default withRouter(AddProductForm)
+export default AddProductForm

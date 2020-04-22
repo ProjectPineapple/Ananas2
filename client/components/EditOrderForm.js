@@ -111,4 +111,5 @@ OrderForm = connect(state => {
   }
 })(OrderForm)
 
-export default withRouter(OrderForm)
+//export default withRouter(OrderForm)
+export default OrderForm

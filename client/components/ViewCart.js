@@ -82,7 +82,7 @@ const ViewCart = ({history, match}) => {
               ) : (
                 <div className="out-of-stock">
                   <div style={{color: 'red'}}>
-                    {`Sorry, this item is out of stock.`}
+                    Sorry, this item is out of stock.
                   </div>
                   <Button
                     onClick={() =>
@@ -121,4 +121,5 @@ const ViewCart = ({history, match}) => {
   )
 }
 
-export default withRouter(ViewCart)
+//export default withRouter(ViewCart)
+export default ViewCart

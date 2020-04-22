@@ -38,4 +38,5 @@ const SingleUser = props => {
   }
 }
 
-export default withRouter(SingleUser)
+//export default withRouter(SingleUser)
+export default SingleUser

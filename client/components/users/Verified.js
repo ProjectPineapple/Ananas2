@@ -18,4 +18,5 @@ const Verified = function({history, location}) {
     </Container>
   )
 }
-export default withRouter(Verified)
+//export default withRouter(Verified)
+export default Verified

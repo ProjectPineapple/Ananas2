@@ -3,8 +3,14 @@ import {useDispatch, useSelector} from 'react-redux'
 import {Route, NavLink, matchPath, withRouter} from 'react-router-dom'
 import {fetchAllOrders} from '../../store/allOrders'
 import {Tab, Input, Pagination, Icon} from 'semantic-ui-react'
-import querystring from 'query-string'
+import {parse, stringify} from 'query-string'
 import OrderList from './OrderList'
+
+const sortbyOptions = [
+  {key: 'total', text: 'total', value: 'total'},
+  {key: 'id', text: 'id', value: 'id'},
+  {key: 'status', text: 'status', value: 'status'}
+]
 
 const AllOrders = props => {
   const orders = useSelector(state => state.allOrders)
@@ -13,6 +19,13 @@ const AllOrders = props => {
   useEffect(() => {
     dispatch(fetchAllOrders())
   }, [])
+
+  const handlePageChange = (event, data) => {
+    const queryObject = parse(location.search)
+    queryObject.page = data
+    const queryParams = stringify(queryObject)
+    history.push(`/home/all-orders/?${queryParams}`)
+  }
 
   const panes = [
     {
@@ -37,7 +50,7 @@ const AllOrders = props => {
     {
       menuItem: {
         as: NavLink,
-        to: '/home/all-orders/paid',
+        to: '/home/all-orders?status=paid',
         exact: true,
         key: 'paid',
         icon: 'money',
@@ -48,7 +61,7 @@ const AllOrders = props => {
           return order.status === 'paid'
         })
         return (
-          <Route exact path="/home/all-orders/paid">
+          <Route exact path="/home/all-orders?status=paid">
             <Tab.Pane>
               <OrderList orders={paidOrders} />
             </Tab.Pane>
@@ -172,13 +185,22 @@ const AllOrders = props => {
     })
   })
 
+  const currentPage = parse(location.search).page || 1
+
   return (
     <Tab
       defaultActiveIndex={activeIndex}
       menu={{fluid: true, vertical: true, tabular: true}}
       panes={panes}
-    />
+    >
+      <Pagination
+        defaultActivePage={currentPage}
+        totalPages={2}
+        onPageChange={handlePageChange}
+      />
+    </Tab>
   )
 }
 
-export default withRouter(AllOrders)
+//export default withRouter(AllOrders)
+export default AllOrders

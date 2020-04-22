@@ -45,7 +45,7 @@ class Routes extends Component {
           exact
           path="/"
           render={props =>
-            user.id ? <UserHome {...props} /> : <AllProducts />
+            user.id ? <UserHome {...props} /> : <AllProducts {...props} />
           }
         />
         <Route exact path="/login" component={Login} />
@@ -55,29 +55,43 @@ class Routes extends Component {
         <Route
           path="/home"
           render={props =>
-            user.id ? <UserHome {...props} /> : <AllProducts />
+            user.id ? <UserHome {...props} /> : <AllProducts {...props} />
           }
         />
         <Route exact path="/view/user/:userId" component={SingleUser} />
 
         <Route
           path="/products"
-          render={() => <AllProducts key={location.search} />}
+          render={routeProps => (
+            <AllProducts {...routeProps} key={location.search} />
+          )}
         />
         <Route
           exact
           path="/view/product/:productId"
-          render={() => (
-            <ProductListing key={this.props.match.params.productId} />
+          render={routeProps => (
+            <ProductListing
+              key={this.props.match.params.productId}
+              {...routeProps}
+            />
           )}
         />
         <Route
           exact
           path="/orders/:orderId"
-          render={() => <OrderListing key={this.props.match.params.orderId} />}
+          render={routeProps => (
+            <OrderListing
+              key={this.props.match.params.orderId}
+              {...routeProps}
+            />
+          )}
         />
 
-        <Route exact path="/cart" render={() => <ViewCart />} />
+        <Route
+          exact
+          path="/cart"
+          render={routeProps => <ViewCart {...routeProps} />}
+        />
         <Route exact path="/cart/checkout" component={checkoutForm} />
         <Route
           exact

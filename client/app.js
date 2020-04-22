@@ -5,14 +5,14 @@ import {Navbar} from './components'
 import Routes from './routes'
 import {fetchCart} from './store/viewCart.js'
 
-const App = () => {
+const App = props => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchCart())
   }, [])
   return (
     <div>
-      <Navbar />
+      <Navbar {...props} />
       <Routes />
     </div>
   )
