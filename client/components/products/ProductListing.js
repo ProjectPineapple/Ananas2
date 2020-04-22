@@ -84,4 +84,5 @@ const ProductListing = props => {
   }
 }
 
-export default withRouter(ProductListing)
+//export default withRouter(ProductListing)
+export default ProductListing

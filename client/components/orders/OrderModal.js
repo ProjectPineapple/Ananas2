@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Table, Modal, Button, Icon, Divider, Label} from 'semantic-ui-react'
-import {withRouter} from 'react-router'
+//import {withRouter} from 'react-router'
 import {useDispatch, useSelector} from 'react-redux'
 import {centsToPrice} from '../../utilityMethods'
 import {changeOrder} from '../../store/singleOrder'
@@ -145,4 +145,5 @@ const OrderModal = ({order, history}) => {
   )
 }
 
-export default withRouter(OrderModal)
+//export default withRouter(OrderModal)
+export default OrderModal
