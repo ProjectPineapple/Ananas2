@@ -3,7 +3,7 @@ import {Pagination, Icon, Header, Segment} from 'semantic-ui-react'
 import OrderModal from './OrderModal'
 import {parse, stringify} from 'query-string'
 import {NavLink, matchPath} from 'react-router-dom'
-import {withRouter} from 'react-router'
+//import {withRouter} from 'react-router'
 
 const OrderList = props => {
   const {all, orders} = props
@@ -48,7 +48,7 @@ const OrderList = props => {
             ) : null}
           </div>
           <div>
-            <OrderModal order={order} />
+            <OrderModal history={props.history} order={order} />
           </div>
         </div>
       ))}
@@ -65,4 +65,5 @@ const OrderList = props => {
   )
 }
 
-export default withRouter(OrderList)
+//export default withRouter(OrderList)
+export default OrderList
