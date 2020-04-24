@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "super kawaii tip top ship shop",
   "engines": {
-    "node": ">= 7.0.0"
+    "node": "12.10.x"
   },
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,7 @@
       "git add"
     ]
   },
-  "author": "Fullstack Academy of Code",
+  "author": "Lihan Chen, Jennie Myhren, Frances Tiffin, Antanas Tricou",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
