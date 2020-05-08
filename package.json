@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "super kawaii tip top ship shop",
   "engines": {
-    "node": ">= 7.0.0"
+    "node": "~12.11.1"
   },
   "main": "index.js",
   "scripts": {
