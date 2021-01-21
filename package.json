@@ -75,7 +75,7 @@
     "sanitize": "^2.1.0",
     "semantic-ui-react": "^0.88.2",
     "sequelize": "^5.21.7",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "stripe": "^7.15.0",
     "use-query-params": "^0.4.6",
     "uuidv4": "^5.0.1"
